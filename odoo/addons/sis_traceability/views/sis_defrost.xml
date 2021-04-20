@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+		
+		<record id="today_filter" model="ir.ui.view">
+			<field name="name">defrost.filter</field>
+			<field name="model">sis.defrost.header</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<xpath expr="/search/filter[1]" position="before">
+					<filter string="Today" name="Today" domain="[['tgl_produksi','=',datetime.datetime.now().strftime('%Y-%m-%d')]]" />
+				</xpath>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_defrost_header_tree">
+			<field name="name">sis.defrost.header.tree</field>
+			<field name="model">sis.defrost.header</field>
+			<field name="arch" type="xml">
+				<tree string="Defrost ATI1">
+					<field name="defrost_id" />
+					<field name="tgl_produksi" />
+					<field name="nopotong_header" />
+					<field name="pabrik_id" />
+					<field name="defrost_state" string="Status" />
+					<field name="create_date" />
+					<field name="create_uid" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_defrost_view_alert_tree">
+			<field name="name">sis.defrost.view.alert.tree</field>
+			<field name="model">sis.defrost.view.alert</field>
+			<field name="arch" type="xml">
+				<tree string="Fishbox yang belum di input defrost"  create="false" import="false" delete="false">
+					<field name="tgl_produksi" />
+					<field name="pabrik_id"/>
+					<field name="barcode_no"/>
+					<field name="no_potong"/>
+					<field name="fish_box_no"/>
+					<field name="quantity"/>
+					<field name="tgl_keluar"/>
+					<field name="item_no"/>
+					<field name="description"/>
+					<field name="vessel_no"/>
+					<field name="hatch_no"/>
+					<field name="create_date"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_defrost_header_tree2">
+			<field name="name">sis.defrost.header.tree2</field>
+			<field name="model">sis.defrost.header</field>
+			<field name="arch" type="xml">
+				<tree string="Defrost ATI2">
+					<field name="defrost_id" />
+					<field name="tgl_produksi" />
+					<field name="nopotong_header"/>
+					<field name="pabrik_id" />
+					<field name="defrost_state" string="Status" />
+					<field name="create_date" />
+					<field name="create_uid" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_defrost_header_form">
+			<field name="name">sis.defrost.header.form</field>
+			<field name="model">sis.defrost.header</field>
+			<field name="arch" type="xml">
+				<form string="Defrost">
+					<header>
+						<field name="user_checker" invisible='1' readonly='1' />
+						<field name="user_unchecker" invisible='1' readonly='1' />
+						<button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('defrost_state','!=','draft'),('user_checker','=',False)]}" />
+						<button name="action_unconfirm" string="Un-Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('defrost_state','!=','confirm'),('user_unchecker','=',False)]}" />
+						<field name="defrost_state" widget="statusbar" statusbar_visible="draft,confirm" />
+					</header>
+					<sheet>
+						<div class="oe_title">
+							<h1>
+								<field name="defrost_id" class="oe_inline" readonly="1" />
+							</h1>
+						</div>
+						<group col="8">
+							<field name="tgl_produksi" colspan="4" />
+							<field name="pabrik_id" colspan="4" />
+							<field name="nopotong_header" colspan="4" />
+						</group>
+						<group>
+							<button name="get_barcode" string="Get Barcode" type="object" class="oe_highlight" attrs="{'invisible':[('header_status', '=', True)]}" />
+							<field name="header_status" invisible="1" />
+						</group>
+						<notebook>
+							<page string="Detail Defrost">
+								<field name="defrost_detail">
+									<tree string="Detail Defrost" editable="bottom" decoration-danger="status_pl==True" decoration-bf="status_pl==True" limit="300">
+										<button name="copydata" string="C" type="object" icon="fa-copy" invisible="0" />
+										<field name="defrost_link_id" string="__Barcode / Invoice No.__" options="{'no_open': True, 'no_create': True}" invisible="1" />
+										<field name="barcode_no" string="__Barcode__" style="text-align: center;" invisible="0" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="tgl_produksi" string="Tgl. Produksi" invisible="1" />
+										<field name="pabrik_id" string="Lokasi" invisible="1" />
+										<field name="no_tangki" string="No._Tangki" style="text-align: center;" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="no_line" string="Line" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="no_potong" string="No. Potong" readonly="1" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="fish_box_no" string="FishBox" readonly="1" style="text-align: center;" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="quantity" string="__Qty.__" readonly="1" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="tgl_start" string="Def. Mulai" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="tgl_finish" string="Def. Selesai" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="suhu_before" string="Suhu Awal" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="suhu_after" string="Suhu Akhir" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="tgl_tuang" string="Jam Potong" invisible="1" />
+										<field name="tgl_keluar" string="Tgl. Keluar" invisible="1" />
+										<field name="durasi_jam" string="Durasi" widget="float_time" options='{"fg_color": "#FFFFFF: durasi_jam>12","bg_color": "maroon: durasi_jam>12"}' />
+										<field name="status_pl" string="Pole Line" invisible="1" readonly="1" />
+										<field name="remark" string="________Remark________" options='{"bg_color": "gold: status_input==False"}' />
+										<field name="status_input" invisible="1" />
+										<field name="jenis_ikan" invisible="1" />
+										<field name="ukuran_ikan" invisible="1" />
+									</tree>
+								</field>
+							</page>
+							<page string="Audit Trail">
+								<group>
+									<group>
+										<field name="create_uid" readonly="1" />
+										<field name="create_date" readonly="1" />
+									</group>
+									<group>
+										<field name="write_uid" readonly="1" />
+										<field name="write_date" readonly="1" />
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+
+				</form>
+			</field>
+		</record>
+
+
+		<record id="sis_defrost_action" model="ir.actions.act_window">
+			<field name="name">Defrost ATI1</field>
+			<field name="res_model">sis.defrost.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('pabrik_id','=','ATI1')]</field>
+			<field name="view_id" ref="sis_defrost_header_tree" />
+		</record>
+
+		<record id="sis_defrost_action2" model="ir.actions.act_window">
+			<field name="name">Defrost ATI2</field>
+			<field name="res_model">sis.defrost.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('pabrik_id','=','ATI2')]</field>
+			<field name="view_id" ref="sis_defrost_header_tree2" />
+		</record>
+
+		<record id="sis_defrost_view_alert_action" model="ir.actions.act_window">
+			<field name="name">Data Cold Storage</field>
+			<field name="res_model">sis.defrost.view.alert</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="domain">[('pabrik_id','=','ATI1')]</field>
+		</record>
+
+		<menuitem id="menu_sis_defrost" name="Defrost" />
+		<menuitem id="menu_sis_trace_defrost" name="Defrost ATI1" action="sis_defrost_action" parent="menu_sis_defrost" />
+		<menuitem id="menu_sis_trace_defrost2" name="Defrost ATI2" action="sis_defrost_action2" parent="menu_sis_defrost" />
+		<menuitem id="sis_defrost_view_alert_menu" name="Data Cold Storage" action="sis_defrost_view_alert_action" parent="menu_sis_defrost" />
+	</data>
+</odoo>

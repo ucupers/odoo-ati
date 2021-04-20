@@ -1,0 +1,1 @@
+from odoo.addons.sis_goods_bin.models import sis_goods_bin

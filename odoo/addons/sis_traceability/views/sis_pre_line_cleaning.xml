@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_line_cleaning_pre_tree">
+        	<field name="name">sis.line.cleaning.pre.tree</field>
+        	<field name="model">sis.line.cleaning.pre</field>
+        	<field name="arch" type="xml">
+            	<tree string="Line Cleaning" editable="top">
+				    <field name="line_cleaningpre"/>	
+				    <field name="productiondate"/>	
+				    <field name="create_uid" readonly="1"/>
+                    <field name="create_date" readonly="1"/> 	    
+					<button type="object" string="Delete" name="unlink" icon="fa-trash" />				    
+ 			    </tree>
+        	</field>
+        </record>       
+ 	</data>
+</odoo>

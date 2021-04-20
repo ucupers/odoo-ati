@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_laporan_mutasi_header_form">
+            <field name="name">sis.laporan.inventory.header.form</field>
+            <field name="model">sis.report.inv.bc</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan Mutasi Barang">
+					<sheet>
+						<group col="20">
+							<field name="rpt_laporan" colspan="9"/>
+							<label string="" colspan="11"/>
+							<field name="rpt_tanggal1" colspan="4"/>
+							<field name="rpt_tanggal2" colspan="4"/>
+							<field name="rpt_kode_barang" colspan="5"/>
+							<field name="rpt_nama_barang" colspan="7"/>
+<!-- 							<field name="rpt_xlsx" colspan="9"/>
+							<label string="" colspan="11"/>
+ --><!--							<field name="header_status" invisible="1"/> -->
+						</group>
+						<button name="get_data_bc" string="  Cari Data" type="object" class="oe_highlight" icon="fa-search"/>
+						<label string="    "/>
+						<button name="clear_data_bc" string="  Hapus Filter" type="object" class="oe_highlight" icon="fa-undo"/>
+						<label string="    "/>
+						<button name="write_xlsx" string="   Excel" type="object" class="oe_highlight" icon="fa-save"/>
+                        <notebook>
+                            <page string="Detail Laporan Mutasi">
+                                <field name="rpt_inv_line">
+                                    <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+ 										<field name="line_no" style="text-align: right;" invisible="0" readonly="1"/>
+ 										<field name="item_no" string="Kode_Barang" style="text-align: left;" invisible="0" readonly="1"/>
+                                        <field name="description" invisible="0" readonly="1"/>
+                                        <field name="base_uom" style="text-align: center;" invisible="0" readonly="1"/>
+									    <field name="begbal" readonly="1"/>
+									    <field name="increase" readonly="1"/>
+									    <field name="decrease" readonly="1"/>
+									    <field name="adjustment" readonly="1"/>
+									    <field name="endbal" readonly="1"/>
+									    <field name="endbal" string="Stock Opname" readonly="1"/>
+									    <field name="adjustment" string="Selisih" readonly="1"/>
+									    <field name="remark" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+					</sheet>
+			    </form>
+            </field>
+        </record>
+        
+        <record id="sis_laporan_mutasi_action" model="ir.actions.act_window">
+            <field name="name">Laporan Mutasi</field>
+            <field name="res_model">sis.report.inv.bc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+ 			<field name="target">inline</field>            
+        </record>
+
+        <menuitem id="menu_sis_laporan_mutasi" name="Laporan Mutasi" action="sis_laporan_mutasi_action" parent="menu_sis_bc" sequence="-1"/>  
+	</data>
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="report_pickinglist_form">
+    <t t-call="web.html_container">
+			<t t-name="report.external_layout_header">
+			    <div class="header">
+	   			</div>
+			    <div class="footer">
+			    </div>
+			</t>
+
+	    <t t-call="web.external_layout">
+  			<div class="page">
+		        <div class="row" style="text-align:center;">
+					<h3>Picking List</h3>
+				</div>
+      			<div class="row" style="text-align:center;">
+					<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>		
+				</div>
+				
+      			<div class="row" style="text-align:center;border: 1px solid black;">
+					<div class="col-xs-1" style="">No.</div>
+					<div class="col-xs-2" style="">Lot No</div>			
+					<div class="col-xs-5" style="">Description</div>
+					<div class="col-xs-2" style="">Quantity</div>
+					<div class="col-xs-2" style="">Bin</div>
+				</div>
+				
+				
+				<t t-set="num" t-value="0"/>
+	        	<t t-foreach="docs" t-as="o">
+			       	<div class="row" style="border: 1px solid black;">
+						<t t-set="num" t-value="num+1"/>
+						<div class="col-xs-1" style="text-align:right;">
+							<span t-esc ="num"/>.
+						</div>
+						<div class="col-xs-2" >
+							<span t-field="o.ile"/>
+						</div>			
+						<div class="col-xs-5" >
+							<span t-field="o.description"/>
+						</div>
+						<div class="col-xs-2" style="text-align:right;">
+							<span t-field="o.quantity"/>
+						</div>
+						<div class="col-xs-2" >
+							<span t-field="o.bin"/>
+						</div>
+        			</div>
+    			</t>
+			</div>
+		</t>
+    </t>
+</template>
+
+</odoo>

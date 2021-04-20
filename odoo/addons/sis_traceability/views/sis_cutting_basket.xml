@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_cutting_basket_tree">
+        	<field name="name">sis.cutting.basket.tree</field>
+        	<field name="model">sis.cutting.basket</field>
+        	<field name="arch" type="xml">
+            	<tree string="Basket ID" editable="top" decoration-danger="status_pnl==True" decoration-bf="status_pnl==True">
+				    <field name="tgl_produksi" invisible="1"/>
+				    <field name="location" invisible="1"/>
+				    <field name="no_potong" invisible="1"/>
+				    <field name="rel_cutting" invisible="1"/>
+				    <field name="basket_id"/>
+				    <field name="tespek"/>
+				    <field name="label"/>
+				    <field name="status_pnl" invisible="1"/>
+				    <field name="create_uid" readonly="1"/>
+                    <field name="create_date" readonly="1"/> 
+					<button type="object" string="Delete" name="unlink" icon="fa-trash" />	
+ 			    </tree>
+        	</field>
+        </record>
+
+
+<!--         <record model="ir.ui.view" id="sis_cutting_basket_label_tree">
+        	<field name="name">sis.cutting.basket.label.tree</field>
+        	<field name="model">sis.cutting.basket.label</field>
+        	<field name="arch" type="xml">
+            	<tree string="Basket ID" editable="top">
+				    <field name="tgl_produksi" invisible="1"/>
+				    <field name="location" invisible="1"/>
+				    <field name="no_potong" invisible="1"/>
+				    <field name="rel_basket_label" invisible="1"/>
+				    <field name="basket_label"/>
+				    <field name="rel_tangki_label" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="create_uid" readonly="1"/>
+                    <field name="create_date" readonly="1"/>				    
+					<button type="object" string="Delete" name="unlink" icon="fa-trash" />				    
+ 			    </tree>
+        	</field>
+        </record>
+         -->
+<!--         <record model="ir.ui.view" id="sis_cutting_basket_form">
+        	<field name="name">sis.cutting.basket.form</field>
+        	<field name="model">sis.cutting.basket</field>
+        	<field name="arch" type="xml">
+            	<form string="Basket ID">
+            		<sheet>
+						<group col="8">
+						    <field name="tgl_produksi"/>
+						    <field name="location"/>
+						    <field name="no_potong"/>
+						    <field name="basket_id"/>
+						</group>
+            		</sheet>
+ 			    </form>
+        	</field>
+        </record>
+ -->          
+ 	</data>
+</odoo>

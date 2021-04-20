@@ -1,0 +1,58 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    
+    <record model="ir.ui.view" id="sis_coba_list">
+      <field name="name">sis coba list</field>
+      <field name="model">sis.coba</field>
+      <field name="arch" type="xml">
+        <tree>
+        	<field name="itemno"></field>
+			<field name="sis_item_id"></field>
+			<field name="sis_itc"></field>
+			<field name="sis_bin_id"></field>
+			<field name="sis_code_bin"></field>
+        </tree>
+      </field>
+    </record>
+    
+    <!-- Form view -->
+    <record id="sis_coba_form_view" model="ir.ui.view">
+            <field name="name">Coba Form View</field>
+            <field name="model">sis.coba</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="itemno"/>
+          						<field name="sis_item_id"></field>
+          						<field name="sis_itc" readonly="1" force_save="1"></field>
+                            </group>
+                            <group>
+                            	<field name="sis_bin_id"></field>
+                            	<field name="sis_code_bin" readonly="1" force_save="1"></field>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+    
+    
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="sis_coba_action_window">
+      <field name="name">Item list</field>
+      <field name="res_model">sis.coba</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+
+    <!-- server action to the one above -->
+    
+
+  </data>
+</odoo>

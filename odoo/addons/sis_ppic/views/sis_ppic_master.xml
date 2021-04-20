@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="sis_budomari_tree">
+            <field name="name">sis.budomari.tree</field>
+            <field name="model">sis.budomari</field>
+            <field name="arch" type="xml">
+            	<tree string="Budomari" editable="top">
+			    <field name="ati12"/>
+			    <field name="year"/>
+			    <field name="month"/>
+			    <field name="fish"/>
+			    <field name="budomari"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_line_capacity_tree">
+            <field name="name">sis.line.capacity.tree</field>
+            <field name="model">sis.line.capacity</field>
+            <field name="arch" type="xml">
+            	<tree string="Line Capacity" editable="top">
+			    <field name="ati12"/>
+			    <field name="year"/>
+			    <field name="month"/>
+			    <field name="line"/>
+			    <field name="capacity"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_clean_capacity_tree">
+            <field name="name">sis.clean.capacity.tree</field>
+            <field name="model">sis.clean.capacity</field>
+            <field name="arch" type="xml">
+            	<tree string="Clean Capacity" editable="top">
+			    <field name="ati12"/>
+			    <field name="year"/>
+			    <field name="month"/>
+			    <field name="capacity"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pgc_case48_tree">
+            <field name="name">sis.pgc.case48.tree</field>
+            <field name="model">sis.pgc.case48</field>
+            <field name="arch" type="xml">
+            	<tree string=" PGC Case48" editable="top">
+			    <field name="pgc"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_option_tree">
+            <field name="name">sis.pps.option.tree</field>
+            <field name="model">sis.pps.option</field>
+            <field name="arch" type="xml">
+            	<tree string="Option" editable="top">
+			    <field name="ati12"/>
+			    <field name="montothu"/>
+			    <field name="fri"/>
+			    <field name="sat"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_exhours_tree">
+            <field name="name">sis.pps.exhour.tree</field>
+            <field name="model">sis.pps.exhour</field>
+            <field name="arch" type="xml">
+            	<tree string="Exceptional Hours" editable="top">
+			    <field name="workdate"/>
+			    <field name="ati12"/>			    
+			    <field name="hours"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_line_tree">
+            <field name="name">sis.pps.line.tree</field>
+            <field name="model">sis.pps.line</field>
+            <field name="arch" type="xml">
+            	<tree string="Lines" editable="top">
+			    <field name="ati12"/>
+			    <field name="name"/>
+			    <field name="line1"/>
+			    <field name="line2"/>
+			    <field name="line3"/>
+			    <field name="line4"/>
+			    <field name="line5"/>
+			    <field name="linenum"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_item_tree">
+            <field name="name">sis.pps.item.tree</field>
+            <field name="model">sis.pps.item</field>
+            <field name="arch" type="xml">
+            	<tree string="Items (additional)" editable="top">
+			    <field name="ati12"/>
+			    <field name="item_no"/>
+			    <field name="description"/>			    
+			    <field name="line"/>
+			    <field name="capacity"/>
+			    <field name="altline"/>
+			    <field name="altcapacity"/>
+			    <field name="fz"/>
+			    <field name="fishmaterial"/>
+			    <field name="qtyperfcl"/>
+			    <field name="fclfactor"/>
+			    <field name="bepercent"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_num_work_days_tree">
+            <field name="name">sis.pps.num.work.days.tree</field>
+            <field name="model">sis.pps.num.work.days</field>
+            <field name="arch" type="xml">
+            	<tree string="Num Work Days" editable="top">
+			    <field name="year"/>
+			    <field name="month"/>
+			    <field name="num_work_days"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_packingline_tree">
+            <field name="name">sis.pps.packingline.tree</field>
+            <field name="model">sis.pps.packingline</field>
+            <field name="arch" type="xml">
+            	<tree string="Packing Line" editable="top">
+			    <field name="ati12"/>
+			    <field name="line"/>
+			    </tree>
+            </field>
+        </record>
+
+		<record id="sis_pps_item_get_master_action" model="ir.actions.server">
+    		<field name="name">Update from NAV Item</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_item" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_item" />
+    		<field name="state">code</field>
+    		<field name="code">model.update_from_nav_item()</field>
+		</record>
+
+        <record id="sis_pps_packingline_action" model="ir.actions.act_window">
+            <field name="name">Packing Line</field>
+            <field name="res_model">sis.pps.packingline</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_pps_num_work_days_action" model="ir.actions.act_window">
+            <field name="name">Num Work Days/Month</field>
+            <field name="res_model">sis.pps.num.work.days</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <record id="sis_budomari_action" model="ir.actions.act_window">
+            <field name="name">Budomari</field>
+            <field name="res_model">sis.budomari</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_line_capacity_action" model="ir.actions.act_window">
+            <field name="name">Line Capacity</field>
+            <field name="res_model">sis.line.capacity</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_clean_capacity_action" model="ir.actions.act_window">
+            <field name="name">Clean Capacity</field>
+            <field name="res_model">sis.clean.capacity</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_pgc_case48_action" model="ir.actions.act_window">
+            <field name="name">PGC Case48</field>
+            <field name="res_model">sis.pgc.case48</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+       <record id="sis_option_action" model="ir.actions.act_window">
+            <field name="name">Option</field>
+            <field name="res_model">sis.pps.option</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_pps_exhours_action" model="ir.actions.act_window">
+            <field name="name">Exceptional Hours</field>
+            <field name="res_model">sis.pps.exhour</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_pps_line_action" model="ir.actions.act_window">
+            <field name="name">Line</field>
+            <field name="res_model">sis.pps.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_pps_item_action" model="ir.actions.act_window">
+            <field name="name">Items (Addtl)</field>
+            <field name="res_model">sis.pps.item</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_ppic_master" name="Master" parent="menu_sis_ppic"/> 
+        <menuitem id="menu_sis_budomari" name="Budomari" action="sis_budomari_action" parent="menu_sis_ppic_master"/>
+        <menuitem id="menu_sis_line_capacity" name="Line Capacity" action="sis_line_capacity_action" parent="menu_sis_ppic_master"/>          
+        <menuitem id="menu_sis_clean_capacity" name="Clean Capacity" action="sis_clean_capacity_action" parent="menu_sis_ppic_master"/>                 
+        <menuitem id="menu_sis_pgc_case48" name="PGC Case48" action="sis_pgc_case48_action" parent="menu_sis_ppic_master"/>                 
+
+        <menuitem id="menu_sis_option" name="Option" action="sis_option_action" parent="menu_sis_ppic_master"/>
+        <menuitem id="menu_sis_exhours" name="Set Hours" action="sis_pps_exhours_action" parent="menu_sis_ppic_master"/>          
+        <menuitem id="menu_sis_pps_line" name="Lines" action="sis_pps_line_action" parent="menu_sis_ppic_master"/>                 
+        <menuitem id="menu_sis_pps_items" name="Item (Addtl)" action="sis_pps_item_action" parent="menu_sis_ppic_master"/>                 
+        <menuitem id="menu_sis_pps_packingline" name="Packing Line" action="sis_pps_packingline_action" parent="menu_sis_ppic_master"/>                 
+        <menuitem id="menu_sis_pps_num_work_days" name="Num Work Days" action="sis_pps_num_work_days_action" parent="menu_sis_ppic_master"/>              
+</odoo>

@@ -1,0 +1,110 @@
+<odoo>
+  <data>
+  
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="sis_master_time_epi_tree">
+      <field name="name">Master Time</field>
+      <field name="model">sis.master.time</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="size"/>
+          <field name="pre_cl_time" widget="float_time" colspan="2"></field>
+      	  <field name="delay_co_cl" widget="float_time" colspan="2"></field>
+       	  <field name="cooking_time" widget="float_time" colspan="2"></field>
+       	  <field name="delay_cu_co" widget="float_time" colspan="2"></field>
+
+       	  <field name="cutting_time" widget="float_time" colspan="2"></field>
+		  <field name="delay_de_cu" widget="float_time" colspan="2"></field>
+       	  <field name="defrost_time" widget="float_time" colspan="2"></field>
+       	  <field name="cs_defrost" widget="float_time" colspan="2"></field>
+       	  
+    	  <field name="tonase" colspan="2"></field>
+         
+        </tree>
+      </field>
+    </record>
+    
+    <!-- Form view -->
+    <record id="sis_master_time_epi_form_view" model="ir.ui.view">
+        <field name="name">Master Time Form View</field>
+        <field name="model">sis.master.time</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    
+                    <group col="8">
+                    	<!-- Baris pertama -->
+                  		<field name="size" placeholder="Size" colspan="4"/>
+                  		<div colspan="2"></div>
+                  		<div colspan="2"></div>
+                  		
+                  		<!-- Baris kedua -->
+                   		<field name="delay_co_cl" widget="float_time" colspan="2"></field>
+                   		<field name="cutting_time" widget="float_time" colspan="2"></field>
+                   		<field name="pre_cl_time" widget="float_time" colspan="2"></field>
+                   		<field name="de_pk" widget="float_time" colspan="2"></field>
+                   		
+                   		<!-- Baris ketiga -->
+                   		<field name="delay_cu_co" widget="float_time" colspan="2"></field>
+     					<field name="cooking_time" widget="float_time" colspan="2"></field>
+     					<field name="cs_defrost" widget="float_time" colspan="2"></field>
+     					<field name="co_pk" widget="float_time" colspan="2"></field>
+                   		
+     					
+     					<!-- Baris keempat -->
+     					<field name="delay_de_cu" widget="float_time" colspan="2"></field>
+     					<field name="defrost_time" widget="float_time" colspan="2"></field>
+                   		<field name="total_time" widget="float_time" colspan="2"></field>
+                   		<field name="cu_pk" widget="float_time" colspan="2"></field>
+                   		
+                   		<!-- Baris kelima -->
+                   		<field name="tonase" colspan="2"></field>
+                   		<field name="cl_time" widget="float_time" colspan="2"></field>
+                   		<field name="pre_pk" widget="float_time" colspan="2"></field>
+                   		
+                   		<!-- Baris keenam -->
+                   		<field name="pre_cl_time_char" invisible="1" colspan="2"></field>
+                   		<field name="delay_co_cl_char" invisible="1" colspan="2"></field>
+                   		<field name="cooking_time_char" invisible="1" colspan="2"></field>
+                   		<field name="delay_cu_co_char" invisible="1" colspan="2"></field>
+                   		
+                   		<!-- Baris ketujuh -->
+                   		<field name="cutting_time_char" invisible="1" colspan="2"></field>
+                   		<field name="delay_de_cu_char" invisible="1" colspan="2"></field>
+                   		<field name="defrost_time_char" invisible="1" colspan="2"></field>
+                   		<field name="cs_defrost_char" invisible="1" colspan="2"></field>
+                   		
+                   		<!-- Baris ke delapan -->
+                   		<field name="cl_time_char" invisible="1"></field>
+                   
+                    </group> 
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    
+                    <group>
+						<field name="note" colspan="8"/>
+					</group>
+                    
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="sis_master_time_epi_action">
+      <field name="name">Master Time</field>
+      <field name="res_model">sis.master.time</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+    
+  </data>
+</odoo>

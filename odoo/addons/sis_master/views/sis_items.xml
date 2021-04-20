@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_items_tree">
+            <field name="name">sis.items.tree</field>
+            <field name="model">sis.items</field>
+            <field name="arch" type="xml">
+            	<tree string="Items">
+			    <field name="itemno"/>
+			    <field name="description"/>			    
+			    <field name="itc"/>			    
+			    <field name="pgc"/>			    
+				<field name="blocked"/>			    
+			    <field name="refitem"/>			    
+				<field name="realitem"/>			    
+			    <field name="qtyperfcl"/>			    
+			    <field name="salesuom"/>			    
+			    <field name="qtyperuom"/>			    
+			    <field name="baseuom"/>
+			    <field name="routingno"/>
+			    <field name="fishmaterial"/>
+			    <field name="prodbomno"/>
+			    <field name="purchuom"/>
+			    <field name="purchqtyperuom"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_item_variants_tree">
+            <field name="name">sis.item.variants.tree</field>
+            <field name="model">sis.item.variants</field>
+            <field name="arch" type="xml">
+            	<tree string="Item Variants" editable="top">
+			    <field name="itemno"/>
+			    <field name="variant"/>
+			    <field name="blocked"/>			    
+			    <field name="qtyperfcl"/>			    
+			    <field name="uom"/>			    
+			    <field name="qtyperuom"/>			    			    			    			    
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_item_variants_action" model="ir.actions.act_window">
+            <field name="name">Variants</field>
+            <field name="res_model">sis.item.variants</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_items_action" model="ir.actions.act_window">
+            <field name="name">Items</field>
+            <field name="res_model">sis.items</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_items" name="Items" action="sis_items_action" parent="menu_sis_master"/>
+        <menuitem id="menu_sis_item_variants" name="Variants" action="sis_item_variants_action" parent="menu_sis_master"/>        
+
+        
+	</data>
+</openerp>

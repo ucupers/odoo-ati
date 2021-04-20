@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_spec_akses_tree">
+            <field name="name">sis.spec.akses.tree</field>
+            <field name="model">sis.spec.akses</field>
+            <field name="arch" type="xml">
+            	<tree string="Master Akses Spec" editable="top">
+	               	<field name="section"/>
+	               	<field name="view_1"/>
+	               	<field name="view_2"/>
+	               	<field name="view_3"/>
+	               	<field name="view_4"/>
+	               	<field name="view_5"/>
+	               	<field name="view_6"/>
+	               	<field name="view_7"/>
+	               	<field name="view_8"/>
+	               	<field name="view_9"/>
+	               	<field name="view_10"/>
+	               	<field name="view_11"/>
+	               	<field name="view_12"/>
+	               	<field name="view_13"/>
+	               	<field name="view_14"/>
+	               	<field name="view_15"/>
+	               	<field name="view_16"/>
+	               	<field name="view_17"/>
+	               	<field name="view_18"/>
+	               	<field name="view_19"/>
+	               	<field name="view_20"/>
+	               	<field name="view_21"/>
+	               	<field name="view_22"/>
+	               	<field name="view_23"/>
+	               	<field name="view_24"/>
+	               	<field name="view_25"/>
+	               	<field name="view_26"/>
+	               	<field name="view_27"/>
+	               	<field name="view_28"/>
+	               	<field name="view_29"/>
+	               	<field name="view_30"/>
+	               	<field name="view_31"/>
+	               	<field name="view_32"/>
+	               	<field name="view_33"/>
+	               	<field name="view_34"/>
+	               	<field name="view_35"/>
+	               	<field name="view_36"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_master_akses_action" model="ir.actions.act_window">
+            <field name="name">Master Akses</field>
+            <field name="res_model">sis.spec.akses</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        
+	</data>
+</odoo>

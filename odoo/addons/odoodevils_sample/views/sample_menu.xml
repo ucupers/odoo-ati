@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<menuitem id="sample_root" name="Sample" sequence="10" />	
+
+		<menuitem id="menu_sample_root" name="Sample" parent="sample_root"
+			sequence="10" />
+	
+			<menuitem id="sample_action" name="Sample"
+				parent="menu_sample_root" sequence="3"
+				action="action_sample_tree_view" />
+
+</odoo>
+

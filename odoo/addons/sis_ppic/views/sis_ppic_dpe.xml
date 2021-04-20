@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="sis_ppic_dpe_tree">
+            <field name="name">sis.ppic.pde.tree</field>
+            <field name="model">sis.ppic.dpe</field>
+            <field name="arch" type="xml">
+            	<tree string="Daily Production Estimation">
+			    <field name="no"/>
+			    <field name="dpe_date"/>
+			    <field name="ati12"/>			    			    
+			    <field name="qca"/>
+			    <field name="qcp"/>
+			    <field name="rnd"/>
+			    <field name="qa"/>
+			    <field name="seasoning"/>
+			    <field name="ec"/>
+			    <field name="packing"/>
+			    <field name="seamer"/>
+			    <field name="retort"/>
+			    <field name="wh"/>
+			    <field name="precl"/>
+			    <field name="cl"/>
+			    <field name="totalfcl"/>
+			    <field name="release_date"/>
+			    <field name="status"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_ppic_dpe_form">
+            <field name="name">sis.ppic.dpe.form</field>
+            <field name="model">sis.ppic.dpe</field>
+            <field name="arch" type="xml">
+            	<form string="Daily Production Estimation">
+            	<header>
+           			<button name="get_data" string="Get Data" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_button','==',False)]}" />
+           			<button name="add_detail" string="Add Detail" type="object" attrs="{'invisible':['|',('status','=','released'),('check_access_button','==',False)]}" />           			           			           			
+           			<button name="draft" string="Back To DRAFT" type="object" attrs="{'invisible':['|',('status','=','draft'),('check_access_button','==',False)]}" />
+           			<button name="release" string="RELEASE" type="object" attrs="{'invisible':['|',('status','=','released'),('check_access_button','==',False)]}" />           			           			           			
+             		<button name="click_button" string="QC Analisa OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_qca','=',False)]}" context="{'check_user':'QCA'}"/>
+            		<button name="click_button" string="QC Process OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_qcp','=',False)]}" context="{'check_user':'QCP'}"/>
+            		<button name="click_button" string="RnD OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_rnd','=',False)]}" context="{'check_user':'RND'}"/>
+            		<button name="click_button" string="QA OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_qa','=',False)]}" context="{'check_user':'QA'}"/>
+            		<button name="click_button" string="SS OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_ss','=',False)]}" context="{'check_user':'Seasoning'}"/>
+            		<button name="click_button" string="EC OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_ec','=',False)]}" context="{'check_user':'EC'}"/>
+            		<button name="click_button" string="Packing OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_pk','=',False)]}" context="{'check_user':'Packing'}"/>
+            		<button name="click_button" string="Seamer OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_sm','=',False)]}" context="{'check_user':'Seamer'}"/>
+            		<button name="click_button" string="Retort OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_rt','=',False)]}" context="{'check_user':'Retort'}"/>
+            		<button name="click_button" string="WH OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_wh','=',False)]}" context="{'check_user':'WH'}"/>            		
+            		<button name="click_button" string="PreCL OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_precl','=',False)]}" context="{'check_user':'PreCL'}"/>            		
+            		<button name="click_button" string="CL OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_cl','=',False)]}" context="{'check_user':'CL'}"/>
+					<button name="make_excel" string="XLSX" type="object" class="oe_link oe_right" attrs="{'invisible':[('status','!=','released')]}"/> 
+ 			    	<field name="status" widget="statusbar"/>       		       		            		            		            		            		            		            		 			    	           		       		            		            		            		            		            		            		
+ 			    	<field name="check_access_button" invisible="1"/>
+ 			    	<field name="check_access_composition" invisible="1"/>
+ 			    	<field name="check_access_qca" invisible="1"/>
+ 			    	<field name="check_access_qcp" invisible="1"/>
+ 			    	<field name="check_access_rnd" invisible="1"/>
+ 			    	<field name="check_access_qa" invisible="1"/>
+ 			    	<field name="check_access_ss" invisible="1"/>
+ 			    	<field name="check_access_ec" invisible="1"/>
+ 			    	<field name="check_access_pk" invisible="1"/>
+ 			    	<field name="check_access_sm" invisible="1"/>
+ 			    	<field name="check_access_rt" invisible="1"/>
+ 			    	<field name="check_access_wh" invisible="1"/>
+ 			    	<field name="check_access_precl" invisible="1"/>
+ 			    	<field name="check_access_cl" invisible="1"/>
+			    	 			    	
+            	</header>
+           		<group col="8">
+			    	<field name="no" readonly="1" colspan="2"/>
+			    	<field name="dpe_date" attrs="{'readonly':[('status','==','released')]}" colspan="2"/>
+			    	<field name="ati12" attrs="{'readonly':[('status','==','released')]}" colspan="2"/>				    			    				    	
+			    	<field name="release_date" readonly="1" colspan="2"/>
+				    			    				    	
+				    <field name="sj"  attrs="{'readonly':[('status','==','released')]}" colspan="2"/>
+				    <field name="yf"  attrs="{'readonly':[('status','==','released')]}" colspan="2"/>
+				    <field name="yfb"  attrs="{'readonly':[('status','==','released')]}" colspan="2"/>
+				    <field name="loin"  attrs="{'readonly':[('status','==','released')]}" colspan="2"/>
+
+				    <field name="ac"  attrs="{'readonly':[('status','==','released')]}" colspan="2"/>
+				    <field name="sm"  attrs="{'readonly':[('status','==','released')]}" colspan="2"/>
+				    <field name="tg"  attrs="{'readonly':[('status','==','released')]}" colspan="2"/>
+				    <field name="totalfish"  readonly="1" colspan="2"/>
+
+				    <field name="sbo"  readonly="1" colspan="2"/>
+				    <field name="sfo"  readonly="1" colspan="2"/>
+				    <field name="olive"  readonly="1" colspan="2"/>
+				    <field name="totaloil"  readonly="1" colspan="2"/>
+
+				    <field name="rapeseed"  readonly="1" colspan="2"/>
+			    	<label string="" colspan="4"/>
+				    <field name="totalfcl"  readonly="1" colspan="2"/>			    	
+
+
+
+				</group>			    
+				<notebook>
+				<page name="sis_ppic_dpe_detail" string="Details" >
+					<field name="detail_id" > <!-- style="pointer-events:none;">  -->
+						<tree string="Details" style="font-size:8px;!important" editable="top" limit="9" create="false">
+			    			<field name="line" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}"/>							
+			    			<field name="product" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" options='{"bg_color": "yellow: baru == True","fg_color": "red: ccpl == True"}'/>							
+			    			<field name="body" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" options='{"fg_color": "blue: ganti == True"}'/>							
+			    			<field name="lid" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" options='{"fg_color": "blue: ganti == True"}'/>							
+			    			<field name="meat" attrs="{'column_invisible':[('parent.check_access_composition','=',False)],'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" />							
+			    			<field name="toleransi" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_composition','=',False)]}" />							
+			    			<field name="oil" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_composition','=',False)]}" />							
+			    			<field name="remark_oil" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_composition','=',False)]}" />							
+			    			<field name="brine" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_composition','=',False)]}"/>							
+			    			<field name="vg" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_composition','=',False)]}"/>							
+			    			<field name="bumbu" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_composition','=',False)]}"/>							
+			    			<field name="topping" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_composition','=',False)]}"/>							
+			    			<field name="nw" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_composition','=',False)]}"/>							
+			    			<field name="tkg" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" />							
+			    			<field name="qtycase" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}"  options='{"bg_color":"lightgreen: lastday == True"}'/>							
+			    			<field name="est_start" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" widget="float_time"/>							
+			    			<field name="pbo" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" />							
+			    			<field name="remark" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" />							
+			    			<field name="formatpkg" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" />							
+			    			<field name="priority" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" />							
+			    			<field name="spec" readonly="1"/>			
+			    			<button name="open_spec" type="object" icon="fa-paste" />				
+			    			<field name="spec_id" invisible="1" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" options="{'no_quick_create':True, 'no_create_edit':True, 'no_create': True,  'no_open': True}"/>							
+			    			<field name="memo" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" />							
+			    			<field name="qtyfcl" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)]}" />							
+			    			<field name="baru" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_button','=',False)]}" />			    			
+			    			<field name="ganti" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_button','=',False)]}" />
+			    			<field name="ccpl" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_button','=',False)]}" />
+			    			<field name="lastday" attrs="{'readonly':['|',('status','=','released'),('check_access_button','==',False)],'column_invisible':[('parent.check_access_button','=',False)]}" />
+			    			<field name="status" invisible="1"/>
+ 			    			<field name="check_access_composition" invisible="1"/>
+ 			    			<field name="check_access_button" invisible="1"/> 			    			
+ 			    			<field name="header_id" invisible="1"/>			    			 			    						    			
+						</tree>
+					</field>
+				</page>
+				<page name="sis_ppic_dpe_ok" string="Confirmation" readonly="1">
+				<group>
+				    <field name="qca" readonly="1" colspan="2" />
+				    <field name="qcp" readonly="1" colspan="2" />
+				    <field name="rnd" readonly="1" colspan="2" />
+				    <field name="qa" readonly="1" colspan="2" />
+				    <field name="seasoning" readonly="1" colspan="2" />
+				    
+				    <field name="ec" readonly="1" colspan="2" />
+				    <field name="packing" readonly="1" colspan="2" />
+				    <field name="seamer" readonly="1" colspan="2" />
+				    <field name="retort" readonly="1" colspan="2" />
+				    
+				    <field name="wh" readonly="1" colspan="2" />
+				    <field name="precl" readonly="1" colspan="2" />
+				    <field name="cl" readonly="1" colspan="2" />            	
+				</group>
+				</page>
+
+				</notebook>
+				<group>
+				<field name="catatan"  colspan="8" attrs="{'readonly':[('status','==','released')]}"/>
+				</group>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_ppic_dpe_detail_form">
+            <field name="name">sis.ppic.dpe.detail.form</field>
+            <field name="model">sis.ppic.dpe.detail</field>
+            <field name="arch" type="xml">
+            	<form string="OK">
+					OK
+			    </form>
+            </field>
+        </record>
+
+		<record id="sis_ppic_dpe_search" model="ir.ui.view">
+			<field name="name">sis.ppic.dpe.search</field>
+			<field name="model">sis.ppic.dpe</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+					<field name="no"/>
+					<field name="status"/>
+				</search>
+			</field>
+		</record>
+
+        <record id="sis_ppic_dpe_action" model="ir.actions.act_window">
+            <field name="name">DPE</field>
+            <field name="res_model">sis.ppic.dpe</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain_force">['|',('status','=','released')]</field>            
+        </record>
+        
+<!-- 		<act_window id="sis_pps_detail_add_more"
+    		name="Add Item"
+    		src_model="sis.pps.detail"
+    		res_model="sis.pps.detail.add"
+    		view_type="form" view_mode="form"
+    		key2="client_action_multi" target="new"
+		/>
+ 		<record id="sis_pps_material_action" model="ir.actions.server">
+    		<field name="name">Material to Item</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_material" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_material" />
+    		<field name="state">code</field>
+    		<field name="code">model.open_detmaterial()</field>
+		</record>
+
+
+
+   <act_window id="sis_pps_detail_get_sales_more"
+    		name="Get Sales"
+    		src_model="sis.pps.detail"
+    		res_model="sis.pps.header"
+    		view_type="form" view_mode="form"
+    		key2="client_action_multi" target="new"
+		/> -->
+		
+        <!-- <record model="ir.values" id="sis_pps_detail_add_more">
+            <field name="model_id" ref="sale.model_sis_pps_detail" />
+            <field name="name">Add Item</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('sis_pps_detail_add_action'))" />
+            <field name="key">action</field>
+            <field name="model">sis.pps.detail</field>
+        </record> -->
+
+        <menuitem id="menu_sis_ppic_dpe" name="DPE" action="sis_ppic_dpe_action" parent="menu_sis_ppic"/> 
+</odoo>

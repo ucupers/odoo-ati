@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_master_filter_view">
+            <field name="name">sis.master.filter.view</field>
+            <field name="model">sis.report.filter.bc</field>
+            <field name="arch" type="xml">
+            	<tree string="Master Filter" editable="top">
+				    <field name="rpt_name"/>
+				    <field name="factory_code"/>
+				    <field name="description_2" string="Description_2_(NAV)"/>
+				    <field name="wip_bc"/>
+				    <button name="add_location_code" type="object" icon="fa-tags" />
+				    <field name="location_code" readonly="0"/>
+				    <button name="add_category_code" type="object" icon="fa-cube"/>
+				    <field name="item_category_code" string="Item_Category_code" readonly="1"/>
+				    <button name="add_product_group" type="object" icon="fa-window-restore" />
+				    <field name="product_group_code" readonly="0"/>
+				    <button name="add_item_no" type="object" icon="fa-cubes" />
+				    <field name="item_no" readonly="0"/>
+				    <field name="inc_bk" readonly="0"/>
+				    <field name="bisnis_group" readonly="0"/>
+				    <field name="set_active" readonly="0"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_master_filter_bc_action" model="ir.actions.act_window">
+            <field name="name">Master Filter</field>
+            <field name="res_model">sis.report.filter.bc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_bc_master_filter" name="Master Filter" action="sis_master_filter_bc_action" parent="menu_sis_bc" sequence="40"  groups="group_epte" />  
+	</data>
+</odoo>

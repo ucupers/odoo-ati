@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_goods_bin_form">
+            <field name="name">sis.goods.bin.form</field>
+            <field name="model">sis.goods.bin</field>
+            <field name="arch" type="xml">
+            	<form string="Input Goods Bin">
+           		<group>
+			    	<field name="ile_id" options="{'limit':10,'no_quick_create':1,'no_create_edit': 1,'no_open': 1}"/>
+			    	<field name="description" readonly="1"/>			    	
+				    <field name="bin_id" options="{'limit':10,'no_quick_create':1,'no_create_edit': 1,'no_open': 1}"/>
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_goods_bin_tree">
+            <field name="name">sis.goods.bin.tree</field>
+            <field name="model">sis.goods.bin</field>
+            <field name="arch" type="xml">
+            	<tree string="Goods Bin">
+			    <field name="item_no"/>
+			    <field name="description"/>
+			    <field name="posting_date"/>
+			    <field name="ile_id"/>			    
+			    <field name="bin_id"/>
+			    <field name="remaining_quantity"/>			    
+			    <field name="quantity"/>
+			    <field name="fish_box_no"/>			    
+			    <field name="vessel_no"/>
+			    <field name="container_no"/>			    
+			    <field name="voyage_no"/>
+			    <field name="hatch_no"/>			    
+			    <field name="no_basket"/>
+			    <field name="no_contract"/>			    
+			    <field name="inkjet_print"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_goods_pivot_bin_tree">
+            <field name="name">sis.goods.pivot.bin.tree</field>
+            <field name="model">sis.goods.pivot.bin</field>
+            <field name="arch" type="xml">
+            	<tree string="Goods Bin" decoration-danger="clr == 'red'">
+			    <field name="clr" invisible="1"/>
+			    <field name="item_no"/>
+			    <field name="description"/>
+			    <field name="posting_date"/>
+			    <field name="ile_id"/>			    
+			    <field name="bin_id"/>
+			    <field name="remaining_quantity"/>			    
+			    <field name="quantity"/>
+			    <field name="fish_box_no"/>			    
+			    <field name="vessel_no"/>
+			    <field name="container_no"/>			    
+			    <field name="voyage_no"/>
+			    <field name="hatch_no"/>			    
+			    <field name="no_basket"/>
+			    <field name="no_contract"/>			    
+			    <field name="inkjet_print"/>
+			    </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sis_goods_bin_pivot1">
+            <field name="name">sis.goods.bin.pivot</field>
+            <field name="model">sis.goods.pivot.bin</field>
+            <field name="arch" type="xml">
+                <pivot string="Goods Bin">
+                    <field name="description" type="row"/>
+                    <field name="remaining_quantity" type="measure"/>
+                    <field name="bin_id" type="column"/>                
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_goods_move_bin_tree">
+            <field name="name">sis.goods.move.bin.tree</field>
+            <field name="model">sis.goods.move.bin</field>
+            <field name="arch" type="xml">
+            	<tree string="Movement History" default_order='create_date'>
+			    <field name="create_date"/>
+			    <field name="item_no"/>
+			    <field name="description"/>
+			    <field name="posting_date"/>
+			    <field name="ile_id"/>			    
+			    <field name="bin_id"/>
+			    </tree>
+            </field>
+        </record>
+
+
+        <record id="sis_goods_bin_input_action" model="ir.actions.act_window">
+            <field name="name">Input Goods Bin</field>
+            <field name="res_model">sis.goods.bin</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+		<record id="sis_goods_bin_pivot_action1" model="ir.actions.server">
+			<field name="name">Pivot</field>
+			<field name="condition">True</field>
+			<field name="type">ir.actions.server</field>
+			<field name="model_id" ref="model_sis_goods_pivot_bin" />
+			<field name="state">code</field>
+			<field name="code">action = model.fill_data()</field>
+		</record>
+
+		<record id="sis_goods_bin_move_action" model="ir.actions.server">
+		<field name="name">Movement History</field>
+		<field name="condition">True</field>
+		<field name="type">ir.actions.server</field>
+		<field name="model_id" ref="model_sis_goods_move_bin" />
+		<field name="state">code</field>
+		<field name="code">action = model.fill_data()</field>
+		</record>
+
+        <record id="sis_goods_bin_action" model="ir.actions.act_window">
+            <field name="name">Goods Bin</field>
+            <field name="res_model">sis.goods.bin</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('next_id','=',None)]</field>
+        </record>
+
+        <menuitem id="menu_sis_warehouse" name="Warehouse"/>
+        <menuitem id="menu_sis_goods_input_bin" name="Input" action="sis_goods_bin_input_action" parent="menu_sis_warehouse"/> 
+        <menuitem id="menu_sis_goods_report_bin" name="Report" parent="menu_sis_warehouse"/> 
+        <menuitem id="menu_sis_goods_pivot_bin" name="Goods Bin" action="sis_goods_bin_pivot_action1" parent="menu_sis_goods_report_bin"/> 
+        <menuitem id="menu_sis_goods_move_bin" name="Movement History" action="sis_goods_bin_move_action" parent="menu_sis_goods_report_bin"/> 
+<!--        <menuitem id="menu_sis_goods_bin" name="Goods Bin" action="sis_goods_bin_action" parent="menu_sis_warehouse"/> -->
+        
+	</data>
+</openerp>

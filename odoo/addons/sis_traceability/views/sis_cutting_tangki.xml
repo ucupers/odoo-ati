@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_cutting_tangki_tree">
+        	<field name="name">No. Tangki Defrost</field>
+        	<field name="model">sis.cutting.tangki</field>
+        	<field name="arch" type="xml">
+            	<tree string="No. Tangki Defrost" editable="top" decoration-danger="status_pl==True" decoration-bf="status_pl==True">
+				    <field name="rel_defrost" options="{'no_open': True, 'no_create': True}"/>
+				    <field name="no_tangki" invisible="1"/>
+				    <field name="tgl_produksi" invisible="1"/>
+				    <field name="location" invisible="1"/>
+				    <field name="location_notangki" invisible="0"/>
+				    <field name="no_potong" invisible="1"/>
+				    <field name="kindoffish" />
+				    <field name="size" />
+				    <field name="vessel" />
+				    <field name="voyage" />
+				    <field name="hatch" />
+				    <field name="status_pl" string="Pole Line" invisible="1" readonly="1"/> 
+					<button type="object" string="Delete" name="unlink" icon="fa-trash" />	
+ 			    </tree>
+        	</field>
+        </record>
+          
+ 	</data>
+</odoo>

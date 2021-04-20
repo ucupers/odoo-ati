@@ -1,0 +1,1396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="sis_pps_detail_add_form">
+            <field name="name">sis.pps.detail.add.form</field>
+            <field name="model">sis.pps.detail.add</field>
+            <field name="arch" type="xml">
+            	<form string="Add Item">
+            	    <script>
+        $(document).ready(function(){
+        $(".modal-footer").hide();
+        });
+    </script>
+            	<header>
+           			<button name="additem" string="Add Item" type="object" class="oe_highlight"/>           			
+            	</header>
+           		<group>
+			    	<field name="itm" />
+				    <field name="variant"  />	
+				    <field name="line_id" invisible="1" />	
+				    <field name="item_no" invisible="1"/>		    
+				</group>
+				</form>
+			</field>
+		</record>			    
+
+
+        <record model="ir.ui.view" id="sis_pps_header_tree">
+            <field name="name">sis.pps.header.tree</field>
+            <field name="model">sis.pps.header</field>
+            <field name="arch" type="xml">
+            	<tree string="Production Plan">
+			    <field name="pp_no"/>
+			    <field name="ati12"/>
+			    <field name="year"/>
+			    <field name="month"/>
+			    <field name="ul"/>
+           		<button name="open_treeview" string="Prod.Planning" type="object" class="oe_highlight"/>			    
+           		<button name="open_materialtreeview" string="Material" type="object" />			    
+           		<button name="open_fishmaterialtreeview" string="Fish" type="object" />	
+           		<button name="open_loin" string="Loin Usage" type="object" class="oe_highlight"/>             				    
+           		<button name="open_actual" string="Plan-Prod" type="object"/>             				    
+           		<button name="open_fcl" string="Actual Qty-in-FCL" type="object"/>             				    
+           		<button name="open_prodcapacity" string="Plan Prod.Cap" type="object"/>        
+           		<button name="open_actualcapacity" string="Actual Prod.Cap" type="object"/>             		     				    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_header_form">
+            <field name="name">sis.pps.header.form</field>
+            <field name="model">sis.pps.header</field>
+            <field name="arch" type="xml">
+            	<form string="Production Planning">
+            	<header>
+            		<button name="getso" string="Get Sales" type="object" class="oe_highlight"/>
+           			<button name="additem" string="Add Item" type="object" class="oe_highlight"/>
+           			<button name="countmaterial" string="Calc.Material" type="object" class="oe_highlight"/>             			
+           			<button name="countfgstock" string="Calc.FG Stock" type="object" class="oe_highlight"/>             			
+           			<button name="open_treeview" string="Prod.Planning" type="object"/>
+           			<button name="open_materialtreeview" string="Material" type="object"/>
+           			<button name="open_fishmaterialtreeview" string="Fish" type="object"/>           			
+           			<button name="open_loin" string="Loin Usage" type="object" />             				    
+           			<button name="open_actual" string="Plan-Prod" type="object"/>           			
+           			<button name="open_fcl" string="Actual Qty-in-FCL" type="object"/> 
+           			<button name="open_prodcapacity" string="Plan Prod.Cap" type="object"/>             				    
+           			<button name="open_actualcapacity" string="Actual Prod.Cap" type="object"/>             				    
+            	</header>
+           		<group col="8">
+			    	<field name="pp_no" readonly="1" colspan="2"/>
+				    <field name="ati12" colspan="2"/>			    
+			    	<field name="month" colspan="2"/>
+			    	<field name="year" colspan="2"/>
+
+			    	<field name="ul" colspan="2"/>
+			    	<label string="" colspan="4"/>
+			    	<field name="lastupdate" readonly="1" colspan="2"/>		    
+				</group>			    
+				<!-- <notebook>
+				<page name="sis_pps_detail_page" string="Prod Plan" >
+					<field name="detail2_id">
+						<tree string="Production Plan" limit="18" editable="top" create="0" decoration-info="type == 'inventory'" decoration-success="type == 'sales'" style="font-size:8px;!important">
+							<button name="open_soview" string="OBI" type="object" class="oe_highlight" />
+			    			<field name="description" readonly="1" options='{"fg_color": "white: hideline == True"}'/>							
+			    		 <field name="variant_code" readonly="1" attrs="{'invisible':[('ul','=','unlabeled')]}" options='{"fg_color": "white: hideline == True"}'/> 	
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="line_id" attrs="{'readonly':[('is_production','==',False)]}"/>										    			
+			    			<field name="type" readonly="1" />							
+			    			<field name="t0" readonly="1" />							
+			    			<field name="t1" attrs="{'readonly':['|',('is_production','==',False),('a1','==',True)]}" options='{"fg_color": "red: t1 &lt; 0","bg_color": "lightblue: a1 == True;yellow: f1 == 1;red: f1 == 2;orange: f1 == 3"}'/>							
+			    			<field name="t2" attrs="{'readonly':['|',('is_production','==',False),('a2','==',True)]}" options='{"fg_color": "red: t2 &lt; 0","bg_color": "lightblue: a2 == True;yellow: f2 == 1;red: f2 == 2"}}'/>							
+			    			<field name="t3" attrs="{'readonly':['|',('is_production','==',False),('a3','==',True)]}" options='{"fg_color": "red: t3 &lt; 0","bg_color": "lightblue: a3 == True;yellow: f3 == 1;red: f3 == 2"}}'/>							
+			    			<field name="t4" attrs="{'readonly':['|',('is_production','==',False),('a4','==',True)]}" options='{"fg_color": "red: t4 &lt; 0","bg_color": "lightblue: a4 == True;yellow: f4 == 1;red: f4 == 2"}}'/>							
+			    			<field name="t5" attrs="{'readonly':['|',('is_production','==',False),('a5','==',True)]}" options='{"fg_color": "red: t5 &lt; 0","bg_color": "lightblue: a5 == True;yellow: f5 == 1;red: f5 == 2"}}'/>							
+			    			<field name="t6" attrs="{'readonly':['|',('is_production','==',False),('a6','==',True)]}" options='{"fg_color": "red: t6 &lt; 0","bg_color": "lightblue: a6 == True;yellow: f6 == 1;red: f6 == 2"}}'/>							
+			    			<field name="t7" attrs="{'readonly':['|',('is_production','==',False),('a7','==',True)]}" options='{"fg_color": "red: t7 &lt; 0","bg_color": "lightblue: a7 == True;yellow: f7 == 1;red: f7 == 2"}}'/>							
+			    			<field name="t8" attrs="{'readonly':['|',('is_production','==',False),('a8','==',True)]}" options='{"fg_color": "red: t8 &lt; 0","bg_color": "lightblue: a8 == True;yellow: f8 == 1;red: f8 == 2"}}'/>							
+			    			<field name="t9" attrs="{'readonly':['|',('is_production','==',False),('a9','==',True)]}" options='{"fg_color": "red: t9 &lt; 0","bg_color": "lightblue: a9 == True;yellow: f9 == 1;red: f9 == 2"}}'/>							
+			    			<field name="t10" attrs="{'readonly':['|',('is_production','==',False),('a10','==',True)]}" options='{"fg_color": "red: t10 &lt; 0","bg_color": "lightblue: a10 == True;yellow: f10 == 1;red: f10 == 2"}}'/>							
+			    			<field name="t11" attrs="{'readonly':['|',('is_production','==',False),('a11','==',True)]}" options='{"fg_color": "red: t11 &lt; 0","bg_color": "lightblue: a11 == True;yellow: f11 == 1;red: f11 == 2"}}'/>							
+			    			<field name="t12" attrs="{'readonly':['|',('is_production','==',False),('a12','==',True)]}" options='{"fg_color": "red: t12 &lt; 0","bg_color": "lightblue: a12 == True;yellow: f12 == 1;red: f12 == 2"}}'/>							
+			    			<field name="t13" attrs="{'readonly':['|',('is_production','==',False),('a13','==',True)]}" options='{"fg_color": "red: t13 &lt; 0","bg_color": "lightblue: a13 == True;yellow: f13 == 1;red: f13 == 2"}}'/>							
+			    			<field name="t14" attrs="{'readonly':['|',('is_production','==',False),('a14','==',True)]}" options='{"fg_color": "red: t14 &lt; 0","bg_color": "lightblue: a14 == True;yellow: f14 == 1;red: f14 == 2"}}'/>							
+			    			<field name="t15" attrs="{'readonly':['|',('is_production','==',False),('a15','==',True)]}" options='{"fg_color": "red: t15 &lt; 0","bg_color": "lightblue: a15 == True;yellow: f15 == 1;red: f15 == 2"}}'/>							
+			    			<field name="t16" attrs="{'readonly':['|',('is_production','==',False),('a16','==',True)]}" options='{"fg_color": "red: t16 &lt; 0","bg_color": "lightblue: a16 == True;yellow: f16 == 1;red: f16 == 2"}}'/>							
+			    			<field name="t17" attrs="{'readonly':['|',('is_production','==',False),('a17','==',True)]}" options='{"fg_color": "red: t17 &lt; 0","bg_color": "lightblue: a17 == True;yellow: f17 == 1;red: f17 == 2"}}'/>							
+			    			<field name="t18" attrs="{'readonly':['|',('is_production','==',False),('a18','==',True)]}" options='{"fg_color": "red: t18 &lt; 0","bg_color": "lightblue: a18 == True;yellow: f18 == 1;red: f18 == 2"}}'/>							
+			    			<field name="t19" attrs="{'readonly':['|',('is_production','==',False),('a19','==',True)]}" options='{"fg_color": "red: t19 &lt; 0","bg_color": "lightblue: a19 == True;yellow: f19 == 1;red: f19 == 2"}}'/>							
+			    			<field name="t20" attrs="{'readonly':['|',('is_production','==',False),('a20','==',True)]}" options='{"fg_color": "red: t20 &lt; 0","bg_color": "lightblue: a20 == True;yellow: f20 == 1;red: f20 == 2"}}'/>							
+			    			<field name="t21" attrs="{'readonly':['|',('is_production','==',False),('a21','==',True)]}" options='{"fg_color": "red: t21 &lt; 0","bg_color": "lightblue: a21 == True;yellow: f21 == 1;red: f21 == 2"}}'/>							
+			    			<field name="t22" attrs="{'readonly':['|',('is_production','==',False),('a22','==',True)]}" options='{"fg_color": "red: t22 &lt; 0","bg_color": "lightblue: a22 == True;yellow: f22 == 1;red: f22 == 2"}}'/>							
+			    			<field name="t23" attrs="{'readonly':['|',('is_production','==',False),('a23','==',True)]}" options='{"fg_color": "red: t23 &lt; 0","bg_color": "lightblue: a23 == True;yellow: f23 == 1;red: f23 == 2"}}'/>							
+			    			<field name="t24" attrs="{'readonly':['|',('is_production','==',False),('a24','==',True)]}" options='{"fg_color": "red: t24 &lt; 0","bg_color": "lightblue: a24 == True;yellow: f24 == 1;red: f24 == 2"}}'/>							
+			    			<field name="t25" attrs="{'readonly':['|',('is_production','==',False),('a25','==',True)]}" options='{"fg_color": "red: t25 &lt; 0","bg_color": "lightblue: a25 == True;yellow: f25 == 1;red: f25 == 2"}}'/>							
+			    			<field name="t26" attrs="{'readonly':['|',('is_production','==',False),('a26','==',True)]}" options='{"fg_color": "red: t26 &lt; 0","bg_color": "lightblue: a26 == True;yellow: f26 == 1;red: f26 == 2"}}'/>							
+			    			<field name="t27" attrs="{'readonly':['|',('is_production','==',False),('a27','==',True)]}" options='{"fg_color": "red: t27 &lt; 0","bg_color": "lightblue: a27 == True;yellow: f27 == 1;red: f27 == 2"}}'/>							
+			    			<field name="t28" attrs="{'readonly':['|',('is_production','==',False),('a28','==',True)]}" options='{"fg_color": "red: t28 &lt; 0","bg_color": "lightblue: a28 == True;yellow: f28 == 1;red: f28 == 2"}}'/>							
+			    			<field name="t29" attrs="{'readonly':['|',('is_production','==',False),('a29','==',True)],'invisible':[('invist29','=',True)]}"  options='{"fg_color": "red: t29 &lt; 0","bg_color": "lightblue: a29 == True;yellow: f29 == 1;red: f29 == 2"}}'/>							
+			    			<field name="t30" attrs="{'readonly':['|',('is_production','==',False),('a30','==',True)],'invisible':[('invist30','=',True)]}"  options='{"fg_color": "red: t30 &lt; 0","bg_color": "lightblue: a30 == True;yellow: f30 == 1;red: f30 == 2"}}'/>							
+			    			<field name="t31" attrs="{'readonly':['|',('is_production','==',False),('a31','==',True)],'invisible':[('invist31','=',True)]}"  options='{"fg_color": "red: t31 &lt; 0","bg_color": "lightblue: a31 == True;yellow: f31 == 1;red: f31 == 2"}}'/>
+			    			<field name="type" readonly="1"/>
+			    			<field name="line_id" attrs="{'readonly':[('is_production','==',False)]}"/>										    			
+			    			<field name="uom" readonly="1" />										    			
+			    			 <field name="variant_code" readonly="1" options='{"fg_color": "white: hideline == True"}'/> 	
+			    			<field name="description" readonly="1" options='{"fg_color": "white: hideline == True"}'/>							
+							<button name="open_soview" string="OBI" type="object" class="oe_highlight" />
+			    			<field name="invist29" invisible="1"/>
+			    			<field name="invist30" invisible="1"/>
+			    			<field name="invist31" invisible="1"/>							
+			    			<field name="readonlyall" invisible="1"/>				    					
+			    			<field name="hideline" invisible="1"/>
+			    			<field name="item_no" invisible="1"/>
+			    			<field name="ul" invisible="1"/>
+			    			<field name="f1" invisible="1"/>
+			    			<field name="f2" invisible="1"/>
+			    			<field name="f3" invisible="1"/>
+			    			<field name="f4" invisible="1"/>
+			    			<field name="f5" invisible="1"/>
+			    			<field name="f6" invisible="1"/>
+			    			<field name="f7" invisible="1"/>
+			    			<field name="f8" invisible="1"/>
+			    			<field name="f9" invisible="1"/>
+			    			<field name="f10" invisible="1"/>
+			    			<field name="f11" invisible="1"/>
+			    			<field name="f12" invisible="1"/>
+			    			<field name="f13" invisible="1"/>
+			    			<field name="f14" invisible="1"/>
+			    			<field name="f15" invisible="1"/>
+			    			<field name="f16" invisible="1"/>
+			    			<field name="f17" invisible="1"/>
+			    			<field name="f18" invisible="1"/>
+			    			<field name="f19" invisible="1"/>
+			    			<field name="f20" invisible="1"/>
+			    			<field name="f21" invisible="1"/>
+			    			<field name="f22" invisible="1"/>
+			    			<field name="f23" invisible="1"/>
+			    			<field name="f24" invisible="1"/>
+			    			<field name="f25" invisible="1"/>
+			    			<field name="f26" invisible="1"/>
+			    			<field name="f27" invisible="1"/>
+			    			<field name="f28" invisible="1"/>
+			    			<field name="f29" invisible="1"/>
+			    			<field name="f30" invisible="1"/>
+			    			<field name="f31" invisible="1"/>   					
+			    			<field name="a1" invisible="1"/>
+			    			<field name="a2" invisible="1"/>
+			    			<field name="a3" invisible="1"/>
+			    			<field name="a4" invisible="1"/>
+			    			<field name="a5" invisible="1"/>
+			    			<field name="a6" invisible="1"/>
+			    			<field name="a7" invisible="1"/>
+			    			<field name="a8" invisible="1"/>
+			    			<field name="a9" invisible="1"/>
+			    			<field name="a10" invisible="1"/>
+			    			<field name="a11" invisible="1"/>
+			    			<field name="a12" invisible="1"/>
+			    			<field name="a13" invisible="1"/>
+			    			<field name="a14" invisible="1"/>
+			    			<field name="a15" invisible="1"/>
+			    			<field name="a16" invisible="1"/>
+			    			<field name="a17" invisible="1"/>
+			    			<field name="a18" invisible="1"/>
+			    			<field name="a19" invisible="1"/>
+			    			<field name="a20" invisible="1"/>
+			    			<field name="a21" invisible="1"/>
+			    			<field name="a22" invisible="1"/>
+			    			<field name="a23" invisible="1"/>
+			    			<field name="a24" invisible="1"/>
+			    			<field name="a25" invisible="1"/>
+			    			<field name="a26" invisible="1"/>
+			    			<field name="a27" invisible="1"/>
+			    			<field name="a28" invisible="1"/>
+			    			<field name="a29" invisible="1"/>
+			    			<field name="a30" invisible="1"/>
+			    			<field name="a31" invisible="1"/>   					
+
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_material_page" string="Material" >
+					<field name="material_id" >
+						<tree string="Material" limit="18" editable="0" create="0" >
+			    			<field name="item_no" readonly="1" />
+			    			<field name="description" readonly="1" />
+			    			<field name="fish" readonly="1" />			    										
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="type" readonly="1" />							
+			    			<field name="t1" readonly="1"/>							
+			    			<field name="t2" readonly="1"/>							
+			    			<field name="t3" readonly="1"/>							
+			    			<field name="t4" readonly="1"/>							
+			    			<field name="t5" readonly="1"/>							
+			    			<field name="t6" readonly="1"/>							
+			    			<field name="t7" readonly="1"/>							
+			    			<field name="t8" readonly="1"/>							
+			    			<field name="t9" readonly="1"/>							
+			    			<field name="t10" readonly="1"/>							
+			    			<field name="t11" readonly="1"/>							
+			    			<field name="t12" readonly="1"/>							
+			    			<field name="t13" readonly="1"/>							
+			    			<field name="t14" readonly="1"/>							
+			    			<field name="t15" readonly="1"/>							
+			    			<field name="t16" readonly="1"/>							
+			    			<field name="t17" readonly="1"/>							
+			    			<field name="t18" readonly="1"/>							
+			    			<field name="t19" readonly="1"/>							
+			    			<field name="t20" readonly="1"/>							
+			    			<field name="t21" readonly="1"/>							
+			    			<field name="t22" readonly="1"/>							
+			    			<field name="t23" readonly="1"/>							
+			    			<field name="t24" readonly="1"/>							
+			    			<field name="t25" readonly="1"/>							
+			    			<field name="t26" readonly="1"/>							
+			    			<field name="t27" readonly="1"/>							
+			    			<field name="t28" readonly="1"/>							
+			    			<field name="t29" readonly="1"/>							
+			    			<field name="t30" readonly="1"/>							
+			    			<field name="t31" readonly="1"/>
+			    			<field name="type" readonly="1"/>
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="fish" readonly="1" />
+			    			<field name="description" readonly="1" />							
+
+			    			<field name="invist29" invisible="1"/>
+			    			<field name="invist30" invisible="1"/>
+			    			<field name="invist31" invisible="1"/>							
+			    			<field name="item_no" invisible="1"/>
+   					
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_fishmaterial_page" string="Fish" >
+					<field name="fishmaterial_id" >
+						<tree string="Fish" limit="15" editable="0" create="0" decoration-bf="type=='TOTAL'" decoration-info="type=='TOTAL'">
+			    			<field name="type" readonly="1" />			    										
+			    			<field name="fish" readonly="1" />			    										
+			    			<field name="pgc" readonly="1" />			    										
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="t1" readonly="1" options='{"bg_color": "yellow: f1 == 1"}}'/>							
+			    			<field name="t2" readonly="1" options='{"bg_color": "yellow: f2 == 1"}}'/>							
+			    			<field name="t3" readonly="1" options='{"bg_color": "yellow: f3 == 1"}}'/>							
+			    			<field name="t4" readonly="1" options='{"bg_color": "yellow: f4 == 1"}}'/>							
+			    			<field name="t5" readonly="1" options='{"bg_color": "yellow: f5 == 1"}}'/>							
+			    			<field name="t6" readonly="1" options='{"bg_color": "yellow: f6 == 1"}}'/>							
+			    			<field name="t7" readonly="1" options='{"bg_color": "yellow: f7 == 1"}}'/>							
+			    			<field name="t8" readonly="1" options='{"bg_color": "yellow: f8 == 1"}}'/>							
+			    			<field name="t9" readonly="1" options='{"bg_color": "yellow: f9 == 1"}}'/>							
+			    			<field name="t10" readonly="1" options='{"bg_color": "yellow: f10 == 1"}}'/>							
+			    			<field name="t11" readonly="1" options='{"bg_color": "yellow: f11 == 1"}}'/>							
+			    			<field name="t12" readonly="1" options='{"bg_color": "yellow: f12 == 1"}}'/>							
+			    			<field name="t13" readonly="1" options='{"bg_color": "yellow: f13 == 1"}}'/>							
+			    			<field name="t14" readonly="1" options='{"bg_color": "yellow: f14 == 1"}}'/>							
+			    			<field name="t15" readonly="1" options='{"bg_color": "yellow: f15 == 1"}}'/>							
+			    			<field name="t16" readonly="1" options='{"bg_color": "yellow: f16 == 1"}}'/>							
+			    			<field name="t17" readonly="1" options='{"bg_color": "yellow: f17 == 1"}}'/>							
+			    			<field name="t18" readonly="1" options='{"bg_color": "yellow: f18 == 1"}}'/>							
+			    			<field name="t19" readonly="1" options='{"bg_color": "yellow: f19 == 1"}}'/>							
+			    			<field name="t20" readonly="1" options='{"bg_color": "yellow: f20 == 1"}}'/>							
+			    			<field name="t21" readonly="1" options='{"bg_color": "yellow: f21 == 1"}}'/>							
+			    			<field name="t22" readonly="1" options='{"bg_color": "yellow: f22 == 1"}}'/>							
+			    			<field name="t23" readonly="1" options='{"bg_color": "yellow: f23 == 1"}}'/>							
+			    			<field name="t24" readonly="1" options='{"bg_color": "yellow: f24 == 1"}}'/>							
+			    			<field name="t25" readonly="1" options='{"bg_color": "yellow: f25 == 1"}}'/>							
+			    			<field name="t26" readonly="1" options='{"bg_color": "yellow: f26 == 1"}}'/>							
+			    			<field name="t27" readonly="1" options='{"bg_color": "yellow: f27 == 1"}}'/>							
+			    			<field name="t28" readonly="1" options='{"bg_color": "yellow: f28 == 1"}}'/>							
+			    			<field name="t29" readonly="1" options='{"bg_color": "yellow: f29 == 1"}}'/>							
+			    			<field name="t30" readonly="1" options='{"bg_color": "yellow: f30 == 1"}}'/>							
+			    			<field name="t31" readonly="1" options='{"bg_color": "yellow: f31 == 1"}}'/>
+			    			<field name="uom" readonly="1"/>										    			
+			    			<field name="fish" readonly="1"/>
+
+			    			<field name="invist29" invisible="1"/>
+			    			<field name="invist30" invisible="1"/>
+			    			<field name="invist31" invisible="1"/>							
+
+			    			<field name="f1" invisible="1"/>
+			    			<field name="f2" invisible="1"/>
+			    			<field name="f3" invisible="1"/>
+			    			<field name="f4" invisible="1"/>
+			    			<field name="f5" invisible="1"/>
+			    			<field name="f6" invisible="1"/>
+			    			<field name="f7" invisible="1"/>
+			    			<field name="f8" invisible="1"/>
+			    			<field name="f9" invisible="1"/>
+			    			<field name="f10" invisible="1"/>
+			    			<field name="f11" invisible="1"/>
+			    			<field name="f12" invisible="1"/>
+			    			<field name="f13" invisible="1"/>
+			    			<field name="f14" invisible="1"/>
+			    			<field name="f15" invisible="1"/>
+			    			<field name="f16" invisible="1"/>
+			    			<field name="f17" invisible="1"/>
+			    			<field name="f18" invisible="1"/>
+			    			<field name="f19" invisible="1"/>
+			    			<field name="f20" invisible="1"/>
+			    			<field name="f21" invisible="1"/>
+			    			<field name="f22" invisible="1"/>
+			    			<field name="f23" invisible="1"/>
+			    			<field name="f24" invisible="1"/>
+			    			<field name="f25" invisible="1"/>
+			    			<field name="f26" invisible="1"/>
+			    			<field name="f27" invisible="1"/>
+			    			<field name="f28" invisible="1"/>
+			    			<field name="f29" invisible="1"/>
+			    			<field name="f30" invisible="1"/>
+			    			<field name="f31" invisible="1"/>  
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_actual_page" string="Prod-Actual" >
+					<field name="actual_id" >
+						<tree string="Prod-Actual" limit="15" editable="0" create="0" decoration-success="type == 'plan'">
+			    			<field name="description" readonly="1" />							
+			    			<field name="variant_code" readonly="1" />	
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="line_id" readonly="1"/>										    			
+			    			<field name="type" readonly="1" />							
+			    			<field name="t1" readonly="1" options='{"fg_color": "red: t1 &lt; 0","bg_color": "lightblue: a1 == True;yellow: f1 == 1;red: f1 == 2"}'/>							
+			    			<field name="t2" readonly="1" options='{"fg_color": "red: t2 &lt; 0","bg_color": "lightblue: a2 == True;yellow: f2 == 1;red: f2 == 2"}}'/>							
+			    			<field name="t3" readonly="1" options='{"fg_color": "red: t3 &lt; 0","bg_color": "lightblue: a3 == True;yellow: f3 == 1;red: f3 == 2"}}'/>							
+			    			<field name="t4" readonly="1" options='{"fg_color": "red: t4 &lt; 0","bg_color": "lightblue: a4 == True;yellow: f4 == 1;red: f4 == 2"}}'/>							
+			    			<field name="t5" readonly="1" options='{"fg_color": "red: t5 &lt; 0","bg_color": "lightblue: a5 == True;yellow: f5 == 1;red: f5 == 2"}}'/>							
+			    			<field name="t6" readonly="1" options='{"fg_color": "red: t6 &lt; 0","bg_color": "lightblue: a6 == True;yellow: f6 == 1;red: f6 == 2"}}'/>							
+			    			<field name="t7" readonly="1" options='{"fg_color": "red: t7 &lt; 0","bg_color": "lightblue: a7 == True;yellow: f7 == 1;red: f7 == 2"}}'/>							
+			    			<field name="t8" readonly="1" options='{"fg_color": "red: t8 &lt; 0","bg_color": "lightblue: a8 == True;yellow: f8 == 1;red: f8 == 2"}}'/>							
+			    			<field name="t9" readonly="1" options='{"fg_color": "red: t9 &lt; 0","bg_color": "lightblue: a9 == True;yellow: f9 == 1;red: f9 == 2"}}'/>							
+			    			<field name="t10" readonly="1" options='{"fg_color": "red: t10 &lt; 0","bg_color": "lightblue: a10 == True;yellow: f10 == 1;red: f10 == 2"}}'/>							
+			    			<field name="t11" readonly="1" options='{"fg_color": "red: t11 &lt; 0","bg_color": "lightblue: a11 == True;yellow: f11 == 1;red: f11 == 2"}}'/>							
+			    			<field name="t12" readonly="1" options='{"fg_color": "red: t12 &lt; 0","bg_color": "lightblue: a12 == True;yellow: f12 == 1;red: f12 == 2"}}'/>							
+			    			<field name="t13" readonly="1" options='{"fg_color": "red: t13 &lt; 0","bg_color": "lightblue: a13 == True;yellow: f13 == 1;red: f13 == 2"}}'/>							
+			    			<field name="t14" readonly="1" options='{"fg_color": "red: t14 &lt; 0","bg_color": "lightblue: a14 == True;yellow: f14 == 1;red: f14 == 2"}}'/>							
+			    			<field name="t15" readonly="1" options='{"fg_color": "red: t15 &lt; 0","bg_color": "lightblue: a15 == True;yellow: f15 == 1;red: f15 == 2"}}'/>							
+			    			<field name="t16" readonly="1" options='{"fg_color": "red: t16 &lt; 0","bg_color": "lightblue: a16 == True;yellow: f16 == 1;red: f16 == 2"}}'/>							
+			    			<field name="t17" readonly="1" options='{"fg_color": "red: t17 &lt; 0","bg_color": "lightblue: a17 == True;yellow: f17 == 1;red: f17 == 2"}}'/>							
+			    			<field name="t18" readonly="1" options='{"fg_color": "red: t18 &lt; 0","bg_color": "lightblue: a18 == True;yellow: f18 == 1;red: f18 == 2"}}'/>							
+			    			<field name="t19" readonly="1" options='{"fg_color": "red: t19 &lt; 0","bg_color": "lightblue: a19 == True;yellow: f19 == 1;red: f19 == 2"}}'/>							
+			    			<field name="t20" readonly="1" options='{"fg_color": "red: t20 &lt; 0","bg_color": "lightblue: a20 == True;yellow: f20 == 1;red: f20 == 2"}}'/>							
+			    			<field name="t21" readonly="1" options='{"fg_color": "red: t21 &lt; 0","bg_color": "lightblue: a21 == True;yellow: f21 == 1;red: f21 == 2"}}'/>							
+			    			<field name="t22" readonly="1" options='{"fg_color": "red: t22 &lt; 0","bg_color": "lightblue: a22 == True;yellow: f22 == 1;red: f22 == 2"}}'/>							
+			    			<field name="t23" readonly="1" options='{"fg_color": "red: t23 &lt; 0","bg_color": "lightblue: a23 == True;yellow: f23 == 1;red: f23 == 2"}}'/>							
+			    			<field name="t24" readonly="1" options='{"fg_color": "red: t24 &lt; 0","bg_color": "lightblue: a24 == True;yellow: f24 == 1;red: f24 == 2"}}'/>							
+			    			<field name="t25" readonly="1" options='{"fg_color": "red: t25 &lt; 0","bg_color": "lightblue: a25 == True;yellow: f25 == 1;red: f25 == 2"}}'/>							
+			    			<field name="t26" readonly="1" options='{"fg_color": "red: t26 &lt; 0","bg_color": "lightblue: a26 == True;yellow: f26 == 1;red: f26 == 2"}}'/>							
+			    			<field name="t27" readonly="1" options='{"fg_color": "red: t27 &lt; 0","bg_color": "lightblue: a27 == True;yellow: f27 == 1;red: f27 == 2"}}'/>							
+			    			<field name="t28" readonly="1" options='{"fg_color": "red: t28 &lt; 0","bg_color": "lightblue: a28 == True;yellow: f28 == 1;red: f28 == 2"}}'/>							
+			    			<field name="t29" readonly="1" attrs="{'invisible':[('invist29','=',True)]}"  options='{"fg_color": "red: t29 &lt; 0","bg_color": "lightblue: a29 == True;yellow: f29 == 1;red: f29 == 2"}}'/>							
+			    			<field name="t30" readonly="1" attrs="{'invisible':[('invist30','=',True)]}"  options='{"fg_color": "red: t30 &lt; 0","bg_color": "lightblue: a30 == True;yellow: f30 == 1;red: f30 == 2"}}'/>							
+			    			<field name="t31" readonly="1" attrs="{'invisible':[('invist31','=',True)]}"  options='{"fg_color": "red: t31 &lt; 0","bg_color": "lightblue: a31 == True;yellow: f31 == 1;red: f31 == 2"}}'/>
+			    			<field name="type" readonly="1"/>
+			    			<field name="line_id" readonly="1"/>										    			
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="variant_code" readonly="1" options='{"fg_color": "white: hideline == True"}'/>	
+			    			<field name="description" readonly="1" options='{"fg_color": "white: hideline == True"}'/>							
+							<button name="open_soview" string="OBI" type="object" class="oe_highlight" />
+			    			<field name="invist29" invisible="1"/>
+			    			<field name="invist30" invisible="1"/>
+			    			<field name="invist31" invisible="1"/>							
+			    			<field name="readonlyall" invisible="1"/>				    					
+			    			<field name="hideline" invisible="1"/>
+			    			<field name="item_no" invisible="1"/>
+			    			<field name="f1" invisible="1"/>
+			    			<field name="f2" invisible="1"/>
+			    			<field name="f3" invisible="1"/>
+			    			<field name="f4" invisible="1"/>
+			    			<field name="f5" invisible="1"/>
+			    			<field name="f6" invisible="1"/>
+			    			<field name="f7" invisible="1"/>
+			    			<field name="f8" invisible="1"/>
+			    			<field name="f9" invisible="1"/>
+			    			<field name="f10" invisible="1"/>
+			    			<field name="f11" invisible="1"/>
+			    			<field name="f12" invisible="1"/>
+			    			<field name="f13" invisible="1"/>
+			    			<field name="f14" invisible="1"/>
+			    			<field name="f15" invisible="1"/>
+			    			<field name="f16" invisible="1"/>
+			    			<field name="f17" invisible="1"/>
+			    			<field name="f18" invisible="1"/>
+			    			<field name="f19" invisible="1"/>
+			    			<field name="f20" invisible="1"/>
+			    			<field name="f21" invisible="1"/>
+			    			<field name="f22" invisible="1"/>
+			    			<field name="f23" invisible="1"/>
+			    			<field name="f24" invisible="1"/>
+			    			<field name="f25" invisible="1"/>
+			    			<field name="f26" invisible="1"/>
+			    			<field name="f27" invisible="1"/>
+			    			<field name="f28" invisible="1"/>
+			    			<field name="f29" invisible="1"/>
+			    			<field name="f30" invisible="1"/>
+			    			<field name="f31" invisible="1"/>   					
+			    			<field name="a1" invisible="1"/>
+			    			<field name="a2" invisible="1"/>
+			    			<field name="a3" invisible="1"/>
+			    			<field name="a4" invisible="1"/>
+			    			<field name="a5" invisible="1"/>
+			    			<field name="a6" invisible="1"/>
+			    			<field name="a7" invisible="1"/>
+			    			<field name="a8" invisible="1"/>
+			    			<field name="a9" invisible="1"/>
+			    			<field name="a10" invisible="1"/>
+			    			<field name="a11" invisible="1"/>
+			    			<field name="a12" invisible="1"/>
+			    			<field name="a13" invisible="1"/>
+			    			<field name="a14" invisible="1"/>
+			    			<field name="a15" invisible="1"/>
+			    			<field name="a16" invisible="1"/>
+			    			<field name="a17" invisible="1"/>
+			    			<field name="a18" invisible="1"/>
+			    			<field name="a19" invisible="1"/>
+			    			<field name="a20" invisible="1"/>
+			    			<field name="a21" invisible="1"/>
+			    			<field name="a22" invisible="1"/>
+			    			<field name="a23" invisible="1"/>
+			    			<field name="a24" invisible="1"/>
+			    			<field name="a25" invisible="1"/>
+			    			<field name="a26" invisible="1"/>
+			    			<field name="a27" invisible="1"/>
+			    			<field name="a28" invisible="1"/>
+			    			<field name="a29" invisible="1"/>
+			    			<field name="a30" invisible="1"/>
+			    			<field name="a31" invisible="1"/>   					
+						</tree>
+					</field>
+				</page>
+
+				</notebook> -->
+
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_detail_tree">
+            <field name="name">sis.pps.detail.tree</field>
+            <field name="model">sis.pps.detail</field>
+            <field name="arch" type="xml">
+						<tree string="Production Plan" default_order="sequence" limit="18" editable="top" create="0" decoration-info="type == 'inventory'" decoration-success="type == 'sales'">
+							<button name="open_soview" string="OBI" type="object" class="oe_highlight" />
+							<button name="open_note" string="NL" type="object" attrs="{'invisible':[('type','==','inventory')]}"/>
+			    			<field name="description" readonly="1" options='{"fg_color": "white: hideline == True"}'/>							
+			    			<!-- <field name="variant_code" readonly="1" attrs="{'invisible':[('ul','=','unlabeled')]}" options='{"fg_color": "white: hideline == True"}'/> -->	
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="line_id" attrs="{'readonly':[('is_production','==',False)]}"/>										    			
+			    			<field name="type" readonly="1" />							
+			    			<field name="t0" readonly="1" />							
+			    			<field name="t1" attrs="{'readonly':['|',('is_production','==',False),('a1','==',True)]}" options='{"fg_color": "red: t1 &lt; 0","bg_color": "yellow: f1 == 1;lightblue: a1 == True;red: f1 == 2;orange: f1 == 3"}'/>							
+			    			<field name="t2" attrs="{'readonly':['|',('is_production','==',False),('a2','==',True)]}" options='{"fg_color": "red: t2 &lt; 0","bg_color": "yellow: f2 == 1;lightblue: a2 == True;red: f2 == 2;orange: f2 == 3"}}'/>							
+			    			<field name="t3" attrs="{'readonly':['|',('is_production','==',False),('a3','==',True)]}" options='{"fg_color": "red: t3 &lt; 0","bg_color": "yellow: f3 == 1;lightblue: a3 == True;red: f3 == 2;orange: f3 == 3"}}'/>							
+			    			<field name="t4" attrs="{'readonly':['|',('is_production','==',False),('a4','==',True)]}" options='{"fg_color": "red: t4 &lt; 0","bg_color": "yellow: f4 == 1;lightblue: a4 == True;red: f4 == 2;orange: f4 == 3"}}'/>							
+			    			<field name="t5" attrs="{'readonly':['|',('is_production','==',False),('a5','==',True)]}" options='{"fg_color": "red: t5 &lt; 0","bg_color": "yellow: f5 == 1;lightblue: a5 == True;red: f5 == 2;orange: f5 == 3"}}'/>							
+			    			<field name="t6" attrs="{'readonly':['|',('is_production','==',False),('a6','==',True)]}" options='{"fg_color": "red: t6 &lt; 0","bg_color": "yellow: f6 == 1;lightblue: a6 == True;red: f6 == 2;orange: f6 == 3"}}'/>							
+			    			<field name="t7" attrs="{'readonly':['|',('is_production','==',False),('a7','==',True)]}" options='{"fg_color": "red: t7 &lt; 0","bg_color": "yellow: f7 == 1;lightblue: a7 == True;red: f7 == 2;orange: f7 == 3"}}'/>							
+			    			<field name="t8" attrs="{'readonly':['|',('is_production','==',False),('a8','==',True)]}" options='{"fg_color": "red: t8 &lt; 0","bg_color": "yellow: f8 == 1;lightblue: a8 == True;red: f8 == 2;orange: f8 == 3"}}'/>							
+			    			<field name="t9" attrs="{'readonly':['|',('is_production','==',False),('a9','==',True)]}" options='{"fg_color": "red: t9 &lt; 0","bg_color": "yellow: f9 == 1;lightblue: a9 == True;red: f9 == 2;orange: f9 == 3"}}'/>							
+			    			<field name="t10" attrs="{'readonly':['|',('is_production','==',False),('a10','==',True)]}" options='{"fg_color": "red: t10 &lt; 0","bg_color": "yellow: f10 == 1;lightblue: a10 == True;red: f10 == 2;orange: f10 == 3"}}'/>							
+			    			<field name="t11" attrs="{'readonly':['|',('is_production','==',False),('a11','==',True)]}" options='{"fg_color": "red: t11 &lt; 0","bg_color": "yellow: f11 == 1;lightblue: a11 == True;red: f11 == 2;orange: f11 == 3"}}'/>							
+			    			<field name="t12" attrs="{'readonly':['|',('is_production','==',False),('a12','==',True)]}" options='{"fg_color": "red: t12 &lt; 0","bg_color": "yellow: f12 == 1;lightblue: a12 == True;red: f12 == 2;orange: f12 == 3"}}'/>							
+			    			<field name="t13" attrs="{'readonly':['|',('is_production','==',False),('a13','==',True)]}" options='{"fg_color": "red: t13 &lt; 0","bg_color": "yellow: f13 == 1;lightblue: a13 == True;red: f13 == 2;orange: f13 == 3"}}'/>							
+			    			<field name="t14" attrs="{'readonly':['|',('is_production','==',False),('a14','==',True)]}" options='{"fg_color": "red: t14 &lt; 0","bg_color": "yellow: f14 == 1;lightblue: a14 == True;red: f14 == 2;orange: f14 == 3"}}'/>							
+			    			<field name="t15" attrs="{'readonly':['|',('is_production','==',False),('a15','==',True)]}" options='{"fg_color": "red: t15 &lt; 0","bg_color": "yellow: f15 == 1;lightblue: a15 == True;red: f15 == 2;orange: f15 == 3"}}'/>							
+			    			<field name="t16" attrs="{'readonly':['|',('is_production','==',False),('a16','==',True)]}" options='{"fg_color": "red: t16 &lt; 0","bg_color": "yellow: f16 == 1;lightblue: a16 == True;red: f16 == 2;orange: f16 == 3"}}'/>							
+			    			<field name="t17" attrs="{'readonly':['|',('is_production','==',False),('a17','==',True)]}" options='{"fg_color": "red: t17 &lt; 0","bg_color": "yellow: f17 == 1;lightblue: a17 == True;red: f17 == 2;orange: f17 == 3"}}'/>							
+			    			<field name="t18" attrs="{'readonly':['|',('is_production','==',False),('a18','==',True)]}" options='{"fg_color": "red: t18 &lt; 0","bg_color": "yellow: f18 == 1;lightblue: a18 == True;red: f18 == 2;orange: f18 == 3"}}'/>							
+			    			<field name="t19" attrs="{'readonly':['|',('is_production','==',False),('a19','==',True)]}" options='{"fg_color": "red: t19 &lt; 0","bg_color": "yellow: f19 == 1;lightblue: a19 == True;red: f19 == 2;orange: f19 == 3"}}'/>							
+			    			<field name="t20" attrs="{'readonly':['|',('is_production','==',False),('a20','==',True)]}" options='{"fg_color": "red: t20 &lt; 0","bg_color": "yellow: f20 == 1;lightblue: a20 == True;red: f20 == 2;orange: f20 == 3"}}'/>							
+			    			<field name="t21" attrs="{'readonly':['|',('is_production','==',False),('a21','==',True)]}" options='{"fg_color": "red: t21 &lt; 0","bg_color": "yellow: f21 == 1;lightblue: a21 == True;red: f21 == 2;orange: f21 == 3"}}'/>							
+			    			<field name="t22" attrs="{'readonly':['|',('is_production','==',False),('a22','==',True)]}" options='{"fg_color": "red: t22 &lt; 0","bg_color": "yellow: f22 == 1;lightblue: a22 == True;red: f22 == 2;orange: f22 == 3"}}'/>							
+			    			<field name="t23" attrs="{'readonly':['|',('is_production','==',False),('a23','==',True)]}" options='{"fg_color": "red: t23 &lt; 0","bg_color": "yellow: f23 == 1;lightblue: a23 == True;red: f23 == 2;orange: f23 == 3"}}'/>							
+			    			<field name="t24" attrs="{'readonly':['|',('is_production','==',False),('a24','==',True)]}" options='{"fg_color": "red: t24 &lt; 0","bg_color": "yellow: f24 == 1;lightblue: a24 == True;red: f24 == 2;orange: f24 == 3"}}'/>							
+			    			<field name="t25" attrs="{'readonly':['|',('is_production','==',False),('a25','==',True)]}" options='{"fg_color": "red: t25 &lt; 0","bg_color": "yellow: f25 == 1;lightblue: a25 == True;red: f25 == 2;orange: f25 == 3"}}'/>							
+			    			<field name="t26" attrs="{'readonly':['|',('is_production','==',False),('a26','==',True)]}" options='{"fg_color": "red: t26 &lt; 0","bg_color": "yellow: f26 == 1;lightblue: a26 == True;red: f26 == 2;orange: f26 == 3"}}'/>							
+			    			<field name="t27" attrs="{'readonly':['|',('is_production','==',False),('a27','==',True)]}" options='{"fg_color": "red: t27 &lt; 0","bg_color": "yellow: f27 == 1;lightblue: a27 == True;red: f27 == 2;orange: f27 == 3"}}'/>							
+			    			<field name="t28" attrs="{'readonly':['|',('is_production','==',False),('a28','==',True)]}" options='{"fg_color": "red: t28 &lt; 0","bg_color": "yellow: f28 == 1;lightblue: a28 == True;red: f28 == 2;orange: f28 == 3"}}'/>							
+			    			<field name="t29" attrs="{'readonly':['|',('is_production','==',False),('a29','==',True)],'invisible':[('invist29','=',True)]}"  options='{"fg_color": "red: t29 &lt; 0","bg_color": "yellow: f29 == 1;lightblue: a29 == True;red: f29 == 2;orange: f29 == 3"}}'/>							
+			    			<field name="t30" attrs="{'readonly':['|',('is_production','==',False),('a30','==',True)],'invisible':[('invist30','=',True)]}"  options='{"fg_color": "red: t30 &lt; 0","bg_color": "yellow: f30 == 1;lightblue: a30 == True;red: f30 == 2;orange: f30 == 3"}}'/>							
+			    			<field name="t31" attrs="{'readonly':['|',('is_production','==',False),('a31','==',True)],'invisible':[('invist31','=',True)]}"  options='{"fg_color": "red: t31 &lt; 0","bg_color": "yellow: f31 == 1;lightblue: a31 == True;red: f31 == 2;orange: f31 == 3"}}'/>
+			    			<field name="total" readonly="1"/>
+			    			<field name="type" readonly="1"/>
+			    			<field name="line_id" attrs="{'readonly':[('is_production','==',False)]}"/>										    			
+			    			<field name="uom" readonly="1" />										    			
+			    			<!-- <field name="variant_code" readonly="1" attrs="{'invisible':[('ul','=','unlabeled')]}" options='{"fg_color": "white: hideline == True"}'/> -->	
+			    			<field name="description" readonly="1" options='{"fg_color": "white: hideline == True"}'/>							
+							<button name="open_note" string="NL" type="object" attrs="{'invisible':[('type','==','inventory')]}"/>
+							<button name="open_soview" string="OBI" type="object" class="oe_highlight" />
+			    			<field name="is_production" invisible="1"/>
+			    			<field name="invist29" invisible="1"/>
+			    			<field name="invist30" invisible="1"/>
+			    			<field name="invist31" invisible="1"/>							
+			    			<field name="readonlyall" invisible="1"/>				    					
+			    			<field name="hideline" invisible="1"/>
+			    			<field name="active_production" invisible="1"/>
+			    			<field name="item_no" invisible="1"/>
+			    			<field name="ul" invisible="1"/>
+			    			<field name="f1" invisible="1"/>
+			    			<field name="f2" invisible="1"/>
+			    			<field name="f3" invisible="1"/>
+			    			<field name="f4" invisible="1"/>
+			    			<field name="f5" invisible="1"/>
+			    			<field name="f6" invisible="1"/>
+			    			<field name="f7" invisible="1"/>
+			    			<field name="f8" invisible="1"/>
+			    			<field name="f9" invisible="1"/>
+			    			<field name="f10" invisible="1"/>
+			    			<field name="f11" invisible="1"/>
+			    			<field name="f12" invisible="1"/>
+			    			<field name="f13" invisible="1"/>
+			    			<field name="f14" invisible="1"/>
+			    			<field name="f15" invisible="1"/>
+			    			<field name="f16" invisible="1"/>
+			    			<field name="f17" invisible="1"/>
+			    			<field name="f18" invisible="1"/>
+			    			<field name="f19" invisible="1"/>
+			    			<field name="f20" invisible="1"/>
+			    			<field name="f21" invisible="1"/>
+			    			<field name="f22" invisible="1"/>
+			    			<field name="f23" invisible="1"/>
+			    			<field name="f24" invisible="1"/>
+			    			<field name="f25" invisible="1"/>
+			    			<field name="f26" invisible="1"/>
+			    			<field name="f27" invisible="1"/>
+			    			<field name="f28" invisible="1"/>
+			    			<field name="f29" invisible="1"/>
+			    			<field name="f30" invisible="1"/>
+			    			<field name="f31" invisible="1"/>   					
+			    			<field name="a1" invisible="1"/>
+			    			<field name="a2" invisible="1"/>
+			    			<field name="a3" invisible="1"/>
+			    			<field name="a4" invisible="1"/>
+			    			<field name="a5" invisible="1"/>
+			    			<field name="a6" invisible="1"/>
+			    			<field name="a7" invisible="1"/>
+			    			<field name="a8" invisible="1"/>
+			    			<field name="a9" invisible="1"/>
+			    			<field name="a10" invisible="1"/>
+			    			<field name="a11" invisible="1"/>
+			    			<field name="a12" invisible="1"/>
+			    			<field name="a13" invisible="1"/>
+			    			<field name="a14" invisible="1"/>
+			    			<field name="a15" invisible="1"/>
+			    			<field name="a16" invisible="1"/>
+			    			<field name="a17" invisible="1"/>
+			    			<field name="a18" invisible="1"/>
+			    			<field name="a19" invisible="1"/>
+			    			<field name="a20" invisible="1"/>
+			    			<field name="a21" invisible="1"/>
+			    			<field name="a22" invisible="1"/>
+			    			<field name="a23" invisible="1"/>
+			    			<field name="a24" invisible="1"/>
+			    			<field name="a25" invisible="1"/>
+			    			<field name="a26" invisible="1"/>
+			    			<field name="a27" invisible="1"/>
+			    			<field name="a28" invisible="1"/>
+			    			<field name="a29" invisible="1"/>
+			    			<field name="a30" invisible="1"/>
+			    			<field name="a31" invisible="1"/>   					
+						</tree>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_material_tree">
+            <field name="name">sis.pps.material.tree</field>
+            <field name="model">sis.pps.material</field>
+            <field name="arch" type="xml">
+						<tree string="Material" default_order="sequence" limit="18" editable="top" create="0" decoration-success="type == 'order'">
+							<button name="open_detmaterial" string="D" type="object" class="oe_highlight" />						
+							<button name="open_etcmaterial" string="N" type="object" attrs="{'invisible':[('type','!=','material')]}"/>						
+			    			<field name="item_no" readonly="1" options='{"fg_color": "white: hideline == True"}'/>							
+			    			<field name="description" readonly="1" options='{"fg_color": "white: hideline == True"}'/>							
+			    			<field name="fish" readonly="1" />	
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="type" readonly="1" />							
+			    			<field name="t0" readonly="1"/>							
+			    			<field name="t1" options='{"fg_color": "red: t1 &lt; 0","bg_color": "lightblue: a1 == True;"}' readonly="1"/>							
+			    			<field name="t2" options='{"fg_color": "red: t2 &lt; 0","bg_color": "lightblue: a2 == True;"}' readonly="1"/>							
+			    			<field name="t3" options='{"fg_color": "red: t3 &lt; 0","bg_color": "lightblue: a3 == True;"}' readonly="1"/>							
+			    			<field name="t4" options='{"fg_color": "red: t4 &lt; 0","bg_color": "lightblue: a4 == True;"}' readonly="1"/>							
+			    			<field name="t5" options='{"fg_color": "red: t5 &lt; 0","bg_color": "lightblue: a5 == True;"}' readonly="1"/>							
+			    			<field name="t6" options='{"fg_color": "red: t6 &lt; 0","bg_color": "lightblue: a6 == True;"}' readonly="1"/>							
+			    			<field name="t7" options='{"fg_color": "red: t7 &lt; 0","bg_color": "lightblue: a7 == True;"}' readonly="1"/>							
+			    			<field name="t8" options='{"fg_color": "red: t8 &lt; 0","bg_color": "lightblue: a8 == True;"}' readonly="1"/>							
+			    			<field name="t9" options='{"fg_color": "red: t9 &lt; 0","bg_color": "lightblue: a9 == True;"}' readonly="1"/>							
+			    			<field name="t10" options='{"fg_color": "red: t10 &lt; 0","bg_color": "lightblue: a10 == True;"}' readonly="1"/>							
+			    			<field name="t11" options='{"fg_color": "red: t11 &lt; 0","bg_color": "lightblue: a11 == True;"}' readonly="1"/>							
+			    			<field name="t12" options='{"fg_color": "red: t12 &lt; 0","bg_color": "lightblue: a12 == True;"}' readonly="1"/>							
+			    			<field name="t13" options='{"fg_color": "red: t13 &lt; 0","bg_color": "lightblue: a13 == True;"}' readonly="1"/>							
+			    			<field name="t14" options='{"fg_color": "red: t14 &lt; 0","bg_color": "lightblue: a14 == True;"}' readonly="1"/>							
+			    			<field name="t15" options='{"fg_color": "red: t15 &lt; 0","bg_color": "lightblue: a15 == True;"}' readonly="1"/>							
+			    			<field name="t16" options='{"fg_color": "red: t16 &lt; 0","bg_color": "lightblue: a16 == True;"}' readonly="1"/>							
+			    			<field name="t17" options='{"fg_color": "red: t17 &lt; 0","bg_color": "lightblue: a17 == True;"}' readonly="1"/>							
+			    			<field name="t18" options='{"fg_color": "red: t18 &lt; 0","bg_color": "lightblue: a18 == True;"}' readonly="1"/>							
+			    			<field name="t19" options='{"fg_color": "red: t19 &lt; 0","bg_color": "lightblue: a19 == True;"}' readonly="1"/>							
+			    			<field name="t20" options='{"fg_color": "red: t20 &lt; 0","bg_color": "lightblue: a20 == True;"}' readonly="1"/>							
+			    			<field name="t21" options='{"fg_color": "red: t21 &lt; 0","bg_color": "lightblue: a21 == True;"}' readonly="1"/>							
+			    			<field name="t22" options='{"fg_color": "red: t22 &lt; 0","bg_color": "lightblue: a22 == True;"}' readonly="1"/>							
+			    			<field name="t23" options='{"fg_color": "red: t23 &lt; 0","bg_color": "lightblue: a23 == True;"}' readonly="1"/>							
+			    			<field name="t24" options='{"fg_color": "red: t24 &lt; 0","bg_color": "lightblue: a24 == True;"}' readonly="1"/>							
+			    			<field name="t25" options='{"fg_color": "red: t25 &lt; 0","bg_color": "lightblue: a25 == True;"}' readonly="1"/>							
+			    			<field name="t26" options='{"fg_color": "red: t26 &lt; 0","bg_color": "lightblue: a26 == True;"}' readonly="1"/>							
+			    			<field name="t27" options='{"fg_color": "red: t27 &lt; 0","bg_color": "lightblue: a27 == True;"}' readonly="1"/>							
+			    			<field name="t28" options='{"fg_color": "red: t28 &lt; 0","bg_color": "lightblue: a28 == True;"}' readonly="1"/>							
+			    			<field name="t29" options='{"fg_color": "red: t29 &lt; 0","bg_color": "lightblue: a29 == True;"}' readonly="1"/>							
+			    			<field name="t30" options='{"fg_color": "red: t30 &lt; 0","bg_color": "lightblue: a30 == True;"}' readonly="1"/>							
+			    			<field name="t31" options='{"fg_color": "red: t31 &lt; 0","bg_color": "lightblue: a31 == True;"}' readonly="1"/>
+			    			<field name="total" options='{"fg_color": "red: t31 &lt; 0"}' readonly="1"/>
+			    			<field name="type" readonly="1"/>
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="fish" readonly="1" />	
+			    			<field name="description" readonly="1" />							
+							<button name="open_detmaterial" string="D" type="object" class="oe_highlight" />						
+							
+			    			<field name="invist29" invisible="1"/>
+			    			<field name="invist30" invisible="1"/>
+			    			<field name="invist31" invisible="1"/>
+			    			<field name="hideline" invisible="1"/>											
+			    			<field name="a1" invisible="1"/>
+			    			<field name="a2" invisible="1"/>
+			    			<field name="a3" invisible="1"/>
+			    			<field name="a4" invisible="1"/>
+			    			<field name="a5" invisible="1"/>
+			    			<field name="a6" invisible="1"/>
+			    			<field name="a7" invisible="1"/>
+			    			<field name="a8" invisible="1"/>
+			    			<field name="a9" invisible="1"/>
+			    			<field name="a10" invisible="1"/>
+			    			<field name="a11" invisible="1"/>
+			    			<field name="a12" invisible="1"/>
+			    			<field name="a13" invisible="1"/>
+			    			<field name="a14" invisible="1"/>
+			    			<field name="a15" invisible="1"/>
+			    			<field name="a16" invisible="1"/>
+			    			<field name="a17" invisible="1"/>
+			    			<field name="a18" invisible="1"/>
+			    			<field name="a19" invisible="1"/>
+			    			<field name="a20" invisible="1"/>
+			    			<field name="a21" invisible="1"/>
+			    			<field name="a22" invisible="1"/>
+			    			<field name="a23" invisible="1"/>
+			    			<field name="a24" invisible="1"/>
+			    			<field name="a25" invisible="1"/>
+			    			<field name="a26" invisible="1"/>
+			    			<field name="a27" invisible="1"/>
+			    			<field name="a28" invisible="1"/>
+			    			<field name="a29" invisible="1"/>
+			    			<field name="a30" invisible="1"/>
+			    			<field name="a31" invisible="1"/> 
+						</tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_fishmaterial_tree">
+            <field name="name">sis.pps.fishmaterial.tree</field>
+            <field name="model">sis.pps.fishmaterial</field>
+            <field name="arch" type="xml">
+						<tree string="Fish Material" limit="15" editable="top" create="0" decoration-bf="type=='TOTAL'" decoration-info="type=='TOTAL'">
+			    			<field name="type" readonly="1" />	
+			    			<field name="fish" readonly="1" />	
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="t1" readonly="1" options='{"bg_color": "yellow: f1 == 1"}'/>							
+			    			<field name="t2" readonly="1" options='{"bg_color": "yellow: f2 == 1"}'/>							
+			    			<field name="t3" readonly="1" options='{"bg_color": "yellow: f3 == 1"}'/>							
+			    			<field name="t4" readonly="1" options='{"bg_color": "yellow: f4 == 1"}'/>							
+			    			<field name="t5" readonly="1" options='{"bg_color": "yellow: f5 == 1"}'/>							
+			    			<field name="t6" readonly="1" options='{"bg_color": "yellow: f6 == 1"}'/>							
+			    			<field name="t7" readonly="1" options='{"bg_color": "yellow: f7 == 1"}'/>							
+			    			<field name="t8" readonly="1" options='{"bg_color": "yellow: f8 == 1"}'/>							
+			    			<field name="t9" readonly="1" options='{"bg_color": "yellow: f9 == 1"}'/>							
+			    			<field name="t10" readonly="1" options='{"bg_color": "yellow: f10 == 1"}'/>							
+			    			<field name="t11" readonly="1" options='{"bg_color": "yellow: f11 == 1"}'/>							
+			    			<field name="t12" readonly="1" options='{"bg_color": "yellow: f12 == 1"}'/>							
+			    			<field name="t13" readonly="1" options='{"bg_color": "yellow: f13 == 1"}'/>							
+			    			<field name="t14" readonly="1" options='{"bg_color": "yellow: f14 == 1"}'/>							
+			    			<field name="t15" readonly="1" options='{"bg_color": "yellow: f15 == 1"}'/>							
+			    			<field name="t16" readonly="1" options='{"bg_color": "yellow: f16 == 1"}'/>							
+			    			<field name="t17" readonly="1" options='{"bg_color": "yellow: f17 == 1"}'/>							
+			    			<field name="t18" readonly="1" options='{"bg_color": "yellow: f18 == 1"}'/>							
+			    			<field name="t19" readonly="1" options='{"bg_color": "yellow: f19 == 1"}'/>							
+			    			<field name="t20" readonly="1" options='{"bg_color": "yellow: f20 == 1"}'/>							
+			    			<field name="t21" readonly="1" options='{"bg_color": "yellow: f21 == 1"}'/>							
+			    			<field name="t22" readonly="1" options='{"bg_color": "yellow: f22 == 1"}'/>							
+			    			<field name="t23" readonly="1" options='{"bg_color": "yellow: f23 == 1"}'/>							
+			    			<field name="t24" readonly="1" options='{"bg_color": "yellow: f24 == 1"}'/>							
+			    			<field name="t25" readonly="1" options='{"bg_color": "yellow: f25 == 1"}'/>							
+			    			<field name="t26" readonly="1" options='{"bg_color": "yellow: f26 == 1"}'/>							
+			    			<field name="t27" readonly="1" options='{"bg_color": "yellow: f27 == 1"}'/>							
+			    			<field name="t28" readonly="1" options='{"bg_color": "yellow: f28 == 1"}'/>							
+			    			<field name="t29" readonly="1" options='{"bg_color": "yellow: f29 == 1"}'/>							
+			    			<field name="t30" readonly="1" options='{"bg_color": "yellow: f30 == 1"}'/>							
+			    			<field name="t31" readonly="1" options='{"bg_color": "yellow: f31 == 1"}'/>
+			    			<field name="total" readonly="1" />										    			
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="fish" readonly="1" />	
+
+			    			<field name="invist29" invisible="1"/>
+			    			<field name="invist30" invisible="1"/>
+			    			<field name="invist31" invisible="1"/>											
+			    			<field name="f1" invisible="1"/>
+			    			<field name="f2" invisible="1"/>
+			    			<field name="f3" invisible="1"/>
+			    			<field name="f4" invisible="1"/>
+			    			<field name="f5" invisible="1"/>
+			    			<field name="f6" invisible="1"/>
+			    			<field name="f7" invisible="1"/>
+			    			<field name="f8" invisible="1"/>
+			    			<field name="f9" invisible="1"/>
+			    			<field name="f10" invisible="1"/>
+			    			<field name="f11" invisible="1"/>
+			    			<field name="f12" invisible="1"/>
+			    			<field name="f13" invisible="1"/>
+			    			<field name="f14" invisible="1"/>
+			    			<field name="f15" invisible="1"/>
+			    			<field name="f16" invisible="1"/>
+			    			<field name="f17" invisible="1"/>
+			    			<field name="f18" invisible="1"/>
+			    			<field name="f19" invisible="1"/>
+			    			<field name="f20" invisible="1"/>
+			    			<field name="f21" invisible="1"/>
+			    			<field name="f22" invisible="1"/>
+			    			<field name="f23" invisible="1"/>
+			    			<field name="f24" invisible="1"/>
+			    			<field name="f25" invisible="1"/>
+			    			<field name="f26" invisible="1"/>
+			    			<field name="f27" invisible="1"/>
+			    			<field name="f28" invisible="1"/>
+			    			<field name="f29" invisible="1"/>
+			    			<field name="f30" invisible="1"/>
+			    			<field name="f31" invisible="1"/>  
+						</tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_loin_tree">
+            <field name="name">sis.pps.loin.tree</field>
+            <field name="model">sis.pps.loin</field>
+            <field name="arch" type="xml">
+						<tree string="Loin Usage" limit="18"  editable="top">
+							<button name="open_fish" string="F" type="object" class="oe_highlight" />
+			    			<field name="description" readonly="1" />
+			    			<field name="variant_code" readonly="1" />
+			    			<field name="type" readonly="1" />
+			    			<field name="t1" />							
+			    			<field name="t2" />							
+			    			<field name="t3" />							
+			    			<field name="t4" />							
+			    			<field name="t5" />							
+			    			<field name="t6" />							
+			    			<field name="t7" />							
+			    			<field name="t8" />							
+			    			<field name="t9" />							
+			    			<field name="t10" />							
+			    			<field name="t11" />							
+			    			<field name="t12" />							
+			    			<field name="t13" />							
+			    			<field name="t14" />							
+			    			<field name="t15" />							
+			    			<field name="t16" />							
+			    			<field name="t17" />							
+			    			<field name="t18" />							
+			    			<field name="t19" />							
+			    			<field name="t20" />							
+			    			<field name="t21" />							
+			    			<field name="t22" />							
+			    			<field name="t23" />							
+			    			<field name="t24" />							
+			    			<field name="t25" />							
+			    			<field name="t26" />							
+			    			<field name="t27" />							
+			    			<field name="t28" />							
+			    			<field name="t29" />							
+			    			<field name="t30" />							
+			    			<field name="t31" />
+			    			<field name="type" readonly="1" />			    			
+			    			<field name="variant_code" readonly="1" />			    			
+			    			<field name="description" readonly="1" />
+							<button name="open_fish" string="F" type="object" class="oe_highlight" />
+						</tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sis_pps_inv_detail_tree">
+            <field name="name">sis.pps.inv.detail.tree</field>
+            <field name="model">sis.pps.inv.detail</field>
+            <field name="arch" type="xml">
+						<tree string="Inventory Detail" limit="15"  >
+			    			<field name="description" readonly="1" />
+			    			<field name="variant" readonly="1" />
+			    			<field name="entrytype" readonly="1" />	
+			    			<field name="t1" readonly="1" />							
+			    			<field name="t2" readonly="1" />							
+			    			<field name="t3" readonly="1" />							
+			    			<field name="t4" readonly="1" />							
+			    			<field name="t5" readonly="1" />							
+			    			<field name="t6" readonly="1" />							
+			    			<field name="t7" readonly="1" />							
+			    			<field name="t8" readonly="1" />							
+			    			<field name="t9" readonly="1" />							
+			    			<field name="t10" readonly="1" />							
+			    			<field name="t11" readonly="1" />							
+			    			<field name="t12" readonly="1" />							
+			    			<field name="t13" readonly="1" />							
+			    			<field name="t14" readonly="1" />							
+			    			<field name="t15" readonly="1" />							
+			    			<field name="t16" readonly="1" />							
+			    			<field name="t17" readonly="1" />							
+			    			<field name="t18" readonly="1" />							
+			    			<field name="t19" readonly="1" />							
+			    			<field name="t20" readonly="1" />							
+			    			<field name="t21" readonly="1" />							
+			    			<field name="t22" readonly="1" />							
+			    			<field name="t23" readonly="1" />							
+			    			<field name="t24" readonly="1" />							
+			    			<field name="t25" readonly="1" />							
+			    			<field name="t26" readonly="1" />							
+			    			<field name="t27" readonly="1" />							
+			    			<field name="t28" readonly="1" />							
+			    			<field name="t29" readonly="1" />							
+			    			<field name="t30" readonly="1" />							
+			    			<field name="t31" readonly="1" />
+			    			<field name="entrytype" readonly="1" />	
+			    			<field name="variant" readonly="1" />			    			
+			    			<field name="description" readonly="1" />
+						</tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_actual_tree">
+            <field name="name">sis.pps.actual.tree</field>
+            <field name="model">sis.pps.detail</field>
+            <field name="arch" type="xml">
+						<tree string="Production Plan" limit="15" editable="top" create="0" decoration-success="type == 'plan'">
+			    			<field name="description" readonly="1" />							
+			    			<field name="variant_code" readonly="1" />	
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="line_id" readonly="1"/>								    			
+			    			<field name="type" readonly="1" />							
+			    			<field name="t1" readonly="1" options='{"fg_color": "red: t1 &lt; 0","bg_color": "yellow: f1 == 1;lightblue: a1 == True;red: f1 == 2"}'/>							
+			    			<field name="t2" readonly="1" options='{"fg_color": "red: t2 &lt; 0","bg_color": "yellow: f2 == 1;lightblue: a2 == True;red: f2 == 2"}}'/>							
+			    			<field name="t3" readonly="1" options='{"fg_color": "red: t3 &lt; 0","bg_color": "yellow: f3 == 1;lightblue: a3 == True;red: f3 == 2"}}'/>							
+			    			<field name="t4" readonly="1" options='{"fg_color": "red: t4 &lt; 0","bg_color": "yellow: f4 == 1;lightblue: a4 == True;red: f4 == 2"}}'/>							
+			    			<field name="t5" readonly="1" options='{"fg_color": "red: t5 &lt; 0","bg_color": "yellow: f5 == 1;lightblue: a5 == True;red: f5 == 2"}}'/>							
+			    			<field name="t6" readonly="1" options='{"fg_color": "red: t6 &lt; 0","bg_color": "yellow: f6 == 1;lightblue: a6 == True;red: f6 == 2"}}'/>							
+			    			<field name="t7" readonly="1" options='{"fg_color": "red: t7 &lt; 0","bg_color": "yellow: f7 == 1;lightblue: a7 == True;red: f7 == 2"}}'/>							
+			    			<field name="t8" readonly="1" options='{"fg_color": "red: t8 &lt; 0","bg_color": "yellow: f8 == 1;lightblue: a8 == True;red: f8 == 2"}}'/>							
+			    			<field name="t9" readonly="1" options='{"fg_color": "red: t9 &lt; 0","bg_color": "yellow: f9 == 1;lightblue: a9 == True;red: f9 == 2"}}'/>							
+			    			<field name="t10" readonly="1" options='{"fg_color": "red: t10 &lt; 0","bg_color": "yellow: f10 == 1;lightblue: a10 == True;red: f10 == 2"}}'/>							
+			    			<field name="t11" readonly="1" options='{"fg_color": "red: t11 &lt; 0","bg_color": "yellow: f11 == 1;lightblue: a11 == True;red: f11 == 2"}}'/>							
+			    			<field name="t12" readonly="1" options='{"fg_color": "red: t12 &lt; 0","bg_color": "yellow: f12 == 1;lightblue: a12 == True;red: f12 == 2"}}'/>							
+			    			<field name="t13" readonly="1" options='{"fg_color": "red: t13 &lt; 0","bg_color": "yellow: f13 == 1;lightblue: a13 == True;red: f13 == 2"}}'/>							
+			    			<field name="t14" readonly="1" options='{"fg_color": "red: t14 &lt; 0","bg_color": "yellow: f14 == 1;lightblue: a14 == True;red: f14 == 2"}}'/>							
+			    			<field name="t15" readonly="1" options='{"fg_color": "red: t15 &lt; 0","bg_color": "yellow: f15 == 1;lightblue: a15 == True;red: f15 == 2"}}'/>							
+			    			<field name="t16" readonly="1" options='{"fg_color": "red: t16 &lt; 0","bg_color": "yellow: f16 == 1;lightblue: a16 == True;red: f16 == 2"}}'/>							
+			    			<field name="t17" readonly="1" options='{"fg_color": "red: t17 &lt; 0","bg_color": "yellow: f17 == 1;lightblue: a17 == True;red: f17 == 2"}}'/>							
+			    			<field name="t18" readonly="1" options='{"fg_color": "red: t18 &lt; 0","bg_color": "yellow: f18 == 1;lightblue: a18 == True;red: f18 == 2"}}'/>							
+			    			<field name="t19" readonly="1" options='{"fg_color": "red: t19 &lt; 0","bg_color": "yellow: f19 == 1;lightblue: a19 == True;red: f19 == 2"}}'/>							
+			    			<field name="t20" readonly="1" options='{"fg_color": "red: t20 &lt; 0","bg_color": "yellow: f20 == 1;lightblue: a20 == True;red: f20 == 2"}}'/>							
+			    			<field name="t21" readonly="1" options='{"fg_color": "red: t21 &lt; 0","bg_color": "yellow: f21 == 1;lightblue: a21 == True;red: f21 == 2"}}'/>							
+			    			<field name="t22" readonly="1" options='{"fg_color": "red: t22 &lt; 0","bg_color": "yellow: f22 == 1;lightblue: a22 == True;red: f22 == 2"}}'/>							
+			    			<field name="t23" readonly="1" options='{"fg_color": "red: t23 &lt; 0","bg_color": "yellow: f23 == 1;lightblue: a23 == True;red: f23 == 2"}}'/>							
+			    			<field name="t24" readonly="1" options='{"fg_color": "red: t24 &lt; 0","bg_color": "yellow: f24 == 1;lightblue: a24 == True;red: f24 == 2"}}'/>							
+			    			<field name="t25" readonly="1" options='{"fg_color": "red: t25 &lt; 0","bg_color": "yellow: f25 == 1;lightblue: a25 == True;red: f25 == 2"}}'/>							
+			    			<field name="t26" readonly="1" options='{"fg_color": "red: t26 &lt; 0","bg_color": "yellow: f26 == 1;lightblue: a26 == True;red: f26 == 2"}}'/>							
+			    			<field name="t27" readonly="1" options='{"fg_color": "red: t27 &lt; 0","bg_color": "yellow: f27 == 1;lightblue: a27 == True;red: f27 == 2"}}'/>							
+			    			<field name="t28" readonly="1" options='{"fg_color": "red: t28 &lt; 0","bg_color": "yellow: f28 == 1;lightblue: a28 == True;red: f28 == 2"}}'/>							
+			    			<field name="t29" readonly="1" attrs="{'invisible':[('invist29','=',True)]}"  options='{"fg_color": "red: t29 &lt; 0","bg_color": "yellow: f29 == 1;lightblue: a29 == True;red: f29 == 2"}}'/>							
+			    			<field name="t30" readonly="1" attrs="{'invisible':[('invist30','=',True)]}"  options='{"fg_color": "red: t30 &lt; 0","bg_color": "yellow: f30 == 1;lightblue: a30 == True;red: f30 == 2"}}'/>							
+			    			<field name="t31" readonly="1" attrs="{'invisible':[('invist31','=',True)]}"  options='{"fg_color": "red: t31 &lt; 0","bg_color": "yellow: f31 == 1;lightblue: a31 == True;red: f31 == 2"}}'/>
+			    			<field name="type" readonly="1"/>
+			    			<field name="line_id" readonly="1"/>										    			
+			    			<field name="uom" readonly="1" />										    			
+			    			<field name="variant_code" readonly="1" options='{"fg_color": "white: hideline == True"}'/>	
+			    			<field name="description" readonly="1" options='{"fg_color": "white: hideline == True"}'/>							
+							<button name="open_soview" string="OBI" type="object" class="oe_highlight" />
+			    			<field name="invist29" invisible="1"/>
+			    			<field name="invist30" invisible="1"/>
+			    			<field name="invist31" invisible="1"/>							
+			    			<field name="readonlyall" invisible="1"/>				    					
+			    			<field name="hideline" invisible="1"/>
+			    			<field name="item_no" invisible="1"/>
+			    			<field name="f1" invisible="1"/>
+			    			<field name="f2" invisible="1"/>
+			    			<field name="f3" invisible="1"/>
+			    			<field name="f4" invisible="1"/>
+			    			<field name="f5" invisible="1"/>
+			    			<field name="f6" invisible="1"/>
+			    			<field name="f7" invisible="1"/>
+			    			<field name="f8" invisible="1"/>
+			    			<field name="f9" invisible="1"/>
+			    			<field name="f10" invisible="1"/>
+			    			<field name="f11" invisible="1"/>
+			    			<field name="f12" invisible="1"/>
+			    			<field name="f13" invisible="1"/>
+			    			<field name="f14" invisible="1"/>
+			    			<field name="f15" invisible="1"/>
+			    			<field name="f16" invisible="1"/>
+			    			<field name="f17" invisible="1"/>
+			    			<field name="f18" invisible="1"/>
+			    			<field name="f19" invisible="1"/>
+			    			<field name="f20" invisible="1"/>
+			    			<field name="f21" invisible="1"/>
+			    			<field name="f22" invisible="1"/>
+			    			<field name="f23" invisible="1"/>
+			    			<field name="f24" invisible="1"/>
+			    			<field name="f25" invisible="1"/>
+			    			<field name="f26" invisible="1"/>
+			    			<field name="f27" invisible="1"/>
+			    			<field name="f28" invisible="1"/>
+			    			<field name="f29" invisible="1"/>
+			    			<field name="f30" invisible="1"/>
+			    			<field name="f31" invisible="1"/>   					
+			    			<field name="a1" invisible="1"/>
+			    			<field name="a2" invisible="1"/>
+			    			<field name="a3" invisible="1"/>
+			    			<field name="a4" invisible="1"/>
+			    			<field name="a5" invisible="1"/>
+			    			<field name="a6" invisible="1"/>
+			    			<field name="a7" invisible="1"/>
+			    			<field name="a8" invisible="1"/>
+			    			<field name="a9" invisible="1"/>
+			    			<field name="a10" invisible="1"/>
+			    			<field name="a11" invisible="1"/>
+			    			<field name="a12" invisible="1"/>
+			    			<field name="a13" invisible="1"/>
+			    			<field name="a14" invisible="1"/>
+			    			<field name="a15" invisible="1"/>
+			    			<field name="a16" invisible="1"/>
+			    			<field name="a17" invisible="1"/>
+			    			<field name="a18" invisible="1"/>
+			    			<field name="a19" invisible="1"/>
+			    			<field name="a20" invisible="1"/>
+			    			<field name="a21" invisible="1"/>
+			    			<field name="a22" invisible="1"/>
+			    			<field name="a23" invisible="1"/>
+			    			<field name="a24" invisible="1"/>
+			    			<field name="a25" invisible="1"/>
+			    			<field name="a26" invisible="1"/>
+			    			<field name="a27" invisible="1"/>
+			    			<field name="a28" invisible="1"/>
+			    			<field name="a29" invisible="1"/>
+			    			<field name="a30" invisible="1"/>
+			    			<field name="a31" invisible="1"/>   					
+						</tree>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_fcl_tree">
+            <field name="name">sis.pps.fcl.tree</field>
+            <field name="model">sis.pps.fcl</field>
+            <field name="arch" type="xml">
+						<tree string="Production Qty in FCL" limit="18" decoration-bf="description=='TOTAL'" decoration-info="description=='TOTAL'" >
+           					<button name="open_fclinfo" string="I" type="object" class="oe_highlight"/> 
+			    			<field name="description" readonly="1" />
+			    			<field name="variant_code" readonly="1" />
+			    			<field name="t1" readonly="1" />							
+			    			<field name="t2" readonly="1" />							
+			    			<field name="t3" readonly="1" />							
+			    			<field name="t4" readonly="1" />							
+			    			<field name="t5" readonly="1" />							
+			    			<field name="t6" readonly="1" />							
+			    			<field name="t7" readonly="1" />							
+			    			<field name="t8" readonly="1" />							
+			    			<field name="t9" readonly="1" />							
+			    			<field name="t10" readonly="1" />							
+			    			<field name="t11" readonly="1" />							
+			    			<field name="t12" readonly="1" />							
+			    			<field name="t13" readonly="1" />							
+			    			<field name="t14" readonly="1" />							
+			    			<field name="t15" readonly="1" />							
+			    			<field name="t16" readonly="1" />							
+			    			<field name="t17" readonly="1" />							
+			    			<field name="t18" readonly="1" />							
+			    			<field name="t19" readonly="1" />							
+			    			<field name="t20" readonly="1" />							
+			    			<field name="t21" readonly="1" />							
+			    			<field name="t22" readonly="1" />							
+			    			<field name="t23" readonly="1" />							
+			    			<field name="t24" readonly="1" />							
+			    			<field name="t25" readonly="1" />							
+			    			<field name="t26" readonly="1" />							
+			    			<field name="t27" readonly="1" />							
+			    			<field name="t28" readonly="1" />							
+			    			<field name="t29" readonly="1" />							
+			    			<field name="t30" readonly="1" />							
+			    			<field name="t31" readonly="1" />
+			    			<field name="total" readonly="1" />
+			    			<field name="variant_code" readonly="1" />			    			
+			    			<field name="description" readonly="1" />
+           					<button name="open_fclinfo" string="I" type="object" class="oe_highlight"/> 
+						</tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_prodcapacity_tree">
+            <field name="name">sis.pps.prod.capacity.tree</field>
+            <field name="model">sis.pps.prod.capacity</field>
+            <field name="arch" type="xml">
+						<tree string="Plan Production Capacity" limit="18" >
+			    			<field name="line" readonly="1" />
+			    			<field name="t1" readonly="1" />							
+			    			<field name="t2" readonly="1" />							
+			    			<field name="t3" readonly="1" />							
+			    			<field name="t4" readonly="1" />							
+			    			<field name="t5" readonly="1" />							
+			    			<field name="t6" readonly="1" />							
+			    			<field name="t7" readonly="1" />							
+			    			<field name="t8" readonly="1" />							
+			    			<field name="t9" readonly="1" />							
+			    			<field name="t10" readonly="1" />							
+			    			<field name="t11" readonly="1" />							
+			    			<field name="t12" readonly="1" />							
+			    			<field name="t13" readonly="1" />							
+			    			<field name="t14" readonly="1" />							
+			    			<field name="t15" readonly="1" />							
+			    			<field name="t16" readonly="1" />							
+			    			<field name="t17" readonly="1" />							
+			    			<field name="t18" readonly="1" />							
+			    			<field name="t19" readonly="1" />							
+			    			<field name="t20" readonly="1" />							
+			    			<field name="t21" readonly="1" />							
+			    			<field name="t22" readonly="1" />							
+			    			<field name="t23" readonly="1" />							
+			    			<field name="t24" readonly="1" />							
+			    			<field name="t25" readonly="1" />							
+			    			<field name="t26" readonly="1" />							
+			    			<field name="t27" readonly="1" />							
+			    			<field name="t28" readonly="1" />							
+			    			<field name="t29" readonly="1" />							
+			    			<field name="t30" readonly="1" />							
+			    			<field name="t31" readonly="1" />
+			    			<field name="avg" readonly="1" />			    			
+			    			<field name="line" readonly="1" />
+						</tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_actualcapacity_tree">
+            <field name="name">sis.pps.actual.capacity.tree</field>
+            <field name="model">sis.pps.actual.capacity</field>
+            <field name="arch" type="xml">
+						<tree string="Actual Production Capacity" limit="18" >
+			    			<field name="line" readonly="1" />
+			    			<field name="t1" readonly="1" />							
+			    			<field name="t2" readonly="1" />							
+			    			<field name="t3" readonly="1" />							
+			    			<field name="t4" readonly="1" />							
+			    			<field name="t5" readonly="1" />							
+			    			<field name="t6" readonly="1" />							
+			    			<field name="t7" readonly="1" />							
+			    			<field name="t8" readonly="1" />							
+			    			<field name="t9" readonly="1" />							
+			    			<field name="t10" readonly="1" />							
+			    			<field name="t11" readonly="1" />							
+			    			<field name="t12" readonly="1" />							
+			    			<field name="t13" readonly="1" />							
+			    			<field name="t14" readonly="1" />							
+			    			<field name="t15" readonly="1" />							
+			    			<field name="t16" readonly="1" />							
+			    			<field name="t17" readonly="1" />							
+			    			<field name="t18" readonly="1" />							
+			    			<field name="t19" readonly="1" />							
+			    			<field name="t20" readonly="1" />							
+			    			<field name="t21" readonly="1" />							
+			    			<field name="t22" readonly="1" />							
+			    			<field name="t23" readonly="1" />							
+			    			<field name="t24" readonly="1" />							
+			    			<field name="t25" readonly="1" />							
+			    			<field name="t26" readonly="1" />							
+			    			<field name="t27" readonly="1" />							
+			    			<field name="t28" readonly="1" />							
+			    			<field name="t29" readonly="1" />							
+			    			<field name="t30" readonly="1" />							
+			    			<field name="t31" readonly="1" />
+			    			<field name="avg" readonly="1" />			    			
+			    			<field name="line" readonly="1" />
+						</tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_detmaterial_tree">
+            <field name="name">sis.pps.detmaterial.tree</field>
+            <field name="model">sis.pps.detmaterial</field>
+            <field name="arch" type="xml">
+						<tree string="Detail Material" limit="18" >
+			    			<field name="item_no" readonly="1" />
+			    			<field name="description" readonly="1" />
+			    			<field name="variant_code" readonly="1" />
+			    			<field name="t1" readonly="1" />							
+			    			<field name="t2" readonly="1" />							
+			    			<field name="t3" readonly="1" />							
+			    			<field name="t4" readonly="1" />							
+			    			<field name="t5" readonly="1" />							
+			    			<field name="t6" readonly="1" />							
+			    			<field name="t7" readonly="1" />							
+			    			<field name="t8" readonly="1" />							
+			    			<field name="t9" readonly="1" />							
+			    			<field name="t10" readonly="1" />							
+			    			<field name="t11" readonly="1" />							
+			    			<field name="t12" readonly="1" />							
+			    			<field name="t13" readonly="1" />							
+			    			<field name="t14" readonly="1" />							
+			    			<field name="t15" readonly="1" />							
+			    			<field name="t16" readonly="1" />							
+			    			<field name="t17" readonly="1" />							
+			    			<field name="t18" readonly="1" />							
+			    			<field name="t19" readonly="1" />							
+			    			<field name="t20" readonly="1" />							
+			    			<field name="t21" readonly="1" />							
+			    			<field name="t22" readonly="1" />							
+			    			<field name="t23" readonly="1" />							
+			    			<field name="t24" readonly="1" />							
+			    			<field name="t25" readonly="1" />							
+			    			<field name="t26" readonly="1" />							
+			    			<field name="t27" readonly="1" />							
+			    			<field name="t28" readonly="1" />							
+			    			<field name="t29" readonly="1" />							
+			    			<field name="t30" readonly="1" />							
+			    			<field name="t31" readonly="1" />
+			    			<field name="variant_code" readonly="1" />
+			    			<field name="description" readonly="1" />
+			    			<field name="item_no" readonly="1" />
+						</tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_material_detail_tree">
+            <field name="name">sis.pps.material_detail.tree</field>
+            <field name="model">sis.pps.material.detail</field>
+            <field name="arch" type="xml">
+						<tree string="Transactions" limit="18"  editable="top">
+			    			<field name="entrytype" readonly="1" />
+			    			<field name="t1" readonly="1"/>							
+			    			<field name="t2" readonly="1"/>							
+			    			<field name="t3" readonly="1"/>							
+			    			<field name="t4" readonly="1"/>							
+			    			<field name="t5" readonly="1"/>							
+			    			<field name="t6" readonly="1"/>							
+			    			<field name="t7" readonly="1"/>							
+			    			<field name="t8" readonly="1"/>							
+			    			<field name="t9" readonly="1"/>							
+			    			<field name="t10" readonly="1"/>							
+			    			<field name="t11" readonly="1"/>							
+			    			<field name="t12" readonly="1"/>							
+			    			<field name="t13" readonly="1"/>							
+			    			<field name="t14" readonly="1"/>							
+			    			<field name="t15" readonly="1"/>							
+			    			<field name="t16" readonly="1"/>							
+			    			<field name="t17" readonly="1"/>							
+			    			<field name="t18" readonly="1"/>							
+			    			<field name="t19" readonly="1"/>							
+			    			<field name="t20" readonly="1"/>							
+			    			<field name="t21" readonly="1"/>							
+			    			<field name="t22" readonly="1"/>							
+			    			<field name="t23" readonly="1"/>							
+			    			<field name="t24" readonly="1"/>							
+			    			<field name="t25" readonly="1"/>							
+			    			<field name="t26" readonly="1"/>							
+			    			<field name="t27" readonly="1"/>							
+			    			<field name="t28" readonly="1"/>							
+			    			<field name="t29" readonly="1"/>							
+			    			<field name="t30" readonly="1"/>							
+			    			<field name="t31" readonly="1"/>
+			    			<field name="entrytype" readonly="1" />			    			
+						</tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_material_order_tree">
+            <field name="name">sis.pps.material.order.tree</field>
+            <field name="model">sis.pps.material.order</field>
+            <field name="arch" type="xml">
+						<tree string="Transactions" limit="18"  editable="top">
+			    			<field name="write_date" readonly="1" />
+			    			<field name="ati12" readonly="1" />
+			    			<field name="year" readonly="1" />
+			    			<field name="month" readonly="1" />
+			    			<field name="ul" readonly="1" />
+			    			<field name="pono" readonly="1" />
+			    			<field name="posting_date" readonly="1"/>							
+			    			<field name="purchasercode" readonly="1"/>							
+			    			<field name="bg" readonly="1"/>							
+			    			<field name="line_no" readonly="1"/>							
+			    			<field name="location_code" readonly="1"/>							
+			    			<field name="expected_receipt_date" readonly="1" options='{"bg_color": "red: date_warning == 1"}'/>							
+			    			<field name="request_date"/>							
+			    			<field name="remark"/>							
+			    			<field name="quantity" readonly="1"/>							
+			    			<field name="outstanding_quantity" readonly="1"/>							
+			    			<field name="uom" readonly="1"/>							
+			    			<field name="date_warning" invisible="1"/>							
+						</tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sis_pps_note_form">
+            <field name="name">sis.pps.note.form</field>
+            <field name="model">sis.pps.note</field>
+            <field name="arch" type="xml">
+            	<form string="Note"  create="false">
+           		<group>
+			    	<field name="note" />
+				    <field name="header_id" invisible="1" />	
+				</group>
+				</form>
+			</field>
+		</record>			    
+
+        <record model="ir.ui.view" id="sis_pps_material_note_form">
+            <field name="name">sis.pps.material.note.form</field>
+            <field name="model">sis.pps.material.note</field>
+            <field name="arch" type="xml">
+            	<form string="Note"  create="false">
+           		<group>
+			    	<field name="note" />
+				    <field name="header_id" invisible="1" />	
+				</group>
+				</form>
+			</field>
+		</record>			    
+
+
+        <record model="ir.ui.view" id="sis_pps_fcl1_form">
+            <field name="name">sis.pps.fcl1.form</field>
+            <field name="model">sis.pps.fcl</field>
+            <field name="arch" type="xml">
+            	<form string="Info">
+            	    <script>
+        $(document).ready(function(){
+        $(".modal-footer").hide();
+        });
+    </script>
+           		<group>
+			    	<field name="uomppic" readonly="1"/>
+			    	<field name="qtyinfcl" readonly="1"/>
+			    	<field name="uomsales" readonly="1"/>			    	
+				</group>
+				</form>
+			</field>
+		</record>			    
+
+
+
+		<record id="sis_pps_detail_search" model="ir.ui.view">
+			<field name="name">sis.pps.detail.search</field>
+			<field name="model">sis.pps.detail</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+					<field name="create_uid"/>
+					<filter name="refresh" string="Refresh" domain="[('create_uid','!=',None)]"
+						help="To refresh view" />
+				</search>
+			</field>
+		</record>
+
+        <record id="sis_pps_action" model="ir.actions.act_window">
+            <field name="name">Prod. Plan</field>
+            <field name="res_model">sis.pps.header</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="sis_pps_material1_action" model="ir.actions.act_window">
+            <field name="name">Material Order</field>
+            <field name="res_model">sis.pps.material.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- <record id="sis_pps_detail_add_action" model="ir.actions.act_window">
+            <field name="name">Add Item</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sis.pps.detail.add</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sis_pps_detail_add_form"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record> -->
+
+        
+		<act_window id="sis_pps_detail_add_more"
+    		name="Add Item"
+    		src_model="sis.pps.detail"
+    		res_model="sis.pps.detail.add"
+    		view_type="form" view_mode="form"
+    		key2="client_action_multi" target="new"
+		/>
+
+		<record id="sis_pps_material_action" model="ir.actions.server">
+    		<field name="name">Material to Item</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_material" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_material" />
+    		<field name="state">code</field>
+    		<field name="code">model.open_detmaterial()</field>
+		</record>
+
+		<record id="sis_pps_detail_get_sales_action" model="ir.actions.server">
+    		<field name="name">Get Sales</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="state">code</field>
+    		<field name="code">model.getso()</field>
+		</record>
+
+		<record id="sis_pps_detail_calc_material_action" model="ir.actions.server">
+    		<field name="name">Calc.Material</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="state">code</field>
+    		<field name="code">model.calcmaterial()</field>
+		</record>
+
+		<record id="sis_pps_detail_calc_fgstock_action" model="ir.actions.server">
+    		<field name="name">Calc.FG Stock</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="state">code</field>
+    		<field name="code">model.calcfgstock()</field>
+		</record>
+
+		<record id="sis_pps_detail_add_alternative_action" model="ir.actions.server">
+    		<field name="name">Add Alt.Prod</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="state">code</field>
+    		<field name="code">model.addalternative()</field>
+		</record>
+
+		<record id="sis_pps_loin_add_alternative_action" model="ir.actions.server">
+    		<field name="name">Calc.Material</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_loin" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_loin" />
+    		<field name="state">code</field>
+    		<field name="code">model.calc_material()</field>
+		</record>
+
+		<record id="sis_pps_detail_update_items_action" model="ir.actions.server">
+    		<field name="name">Update Items</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_detail" />
+    		<field name="state">code</field>
+    		<field name="code">model.update_items()</field>
+		</record>
+
+
+		<!-- <act_window id="sis_pps_detail_get_sales_more"
+    		name="Get Sales"
+    		src_model="sis.pps.detail"
+    		res_model="sis.pps.header"
+    		view_type="form" view_mode="form"
+    		key2="client_action_multi" target="new"
+		/> -->
+		
+        <!-- <record model="ir.values" id="sis_pps_detail_add_more">
+            <field name="model_id" ref="sale.model_sis_pps_detail" />
+            <field name="name">Add Item</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('sis_pps_detail_add_action'))" />
+            <field name="key">action</field>
+            <field name="model">sis.pps.detail</field>
+        </record> -->
+
+        <menuitem id="menu_sis_ppic" name="PPIC"/>
+        <menuitem id="menu_sis_ppic_pps" name="Prod. Plan" action="sis_pps_action" parent="menu_sis_ppic"/> 
+        <menuitem id="menu_sis_material_pps" name="Material Order" action="sis_pps_material1_action" parent="menu_sis_ppic"/> 
+</odoo>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_packing_tree">
+			<field name="name">sis.packing.tree</field>
+			<field name="model">sis.packing</field>
+			<field name="arch" type="xml">
+				<tree string="Packing">
+					<field name="productiondate" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="status_xray" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="kind_of_product" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="line" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="shift" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="pic" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_packing_form">
+			<field name="name">sis.packing.form</field>
+			<field name="model">sis.packing</field>
+			<field name="arch" type="xml">
+				<form string="Packing">
+					<header>
+						<button name="get_master_product" string="Refresh Master Product" type="object" class="oe_highlight" invisible="1" />
+					</header>
+					<group col="8">
+						<field name="productiondate" colspan="4" />
+						<field name="location" colspan="4" />
+						<field name="rel_line_pack" string="Line Packing" colspan="4" widget="many2many_tags" options="{'no_open': True, 'no_create': True}" />
+						<field name="shift" colspan="4" />
+						<field name="rel_product" colspan="4" options="{'no_open': True, 'no_create': True}" />
+						<field name="pic" colspan="4" />
+						<field name="status_xray" colspan="4" readonly="1" />
+						<field name="kind_of_product" colspan="4" invisible="1" />
+						<field name="line" colspan="4" invisible="1" />
+					</group>
+					<notebook>
+						<page name="sis_packing_detail_page" string="Packing Detail">
+							<field name="packing_detail">
+								<tree string="Packing Detail" editable="bottom" limit="500">
+									<button name="simpanan_pack" string="Simpanan" type="object" icon="fa-calendar" invisible="0" />
+									<field name="line_group_cl" />
+									<field name="jam_cl" widget="float_time" />
+									<field name="jam_packing" widget="float_time" />
+									<field name="rel_pre" widget="many2many_tags" string="Basket Fish" options="{'no_open': True, 'no_create': True}" />
+									<field name="fish" invisible="1" />
+									<field name="jumlah_ikan" />
+									<field name="kode_loin" style="text-align: center;" />
+									<field name="rel_pack_unpack" widget="many2many_tags" string="Basket Loin" options="{'no_open': True, 'no_create': True}" />
+									<!-- <field name="rel_pack_unpack2"/> -->
+									<field name="loin" invisible="1" />
+									<field name="jumlah" />
+									<field name="rel_supply" widget="many2many_tags" string="Basket Shreded" options="{'no_open': True, 'no_create': True}" />
+									<field name="shreded" invisible="1" />
+									<field name="total" invisible="1" />
+									<field name="item" string="Material" widget="many2many_tags" options="{'no_open': True, 'no_create': True, 'no_edit': True}" />
+									<field name="jenisikan" string="Jenis Ikan" widget="many2many_tags" options="{'no_open': True, 'no_create': True, 'no_edit': True}" />
+									<field name="remark" />
+									<field name="itemss" invisible="1" />
+									<field name="jenis_ikan" invisible="1" />
+									<field name="productiondate" invisible="1" />
+									<field name="materialdate" invisible="1" string="materialdate" />
+									<field name="location" invisible="1" />
+									<field name="jam_cl_real" invisible="1" />
+									<field name="jam_packing_real" invisible="1" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="materialdate_pack_wizard_form">
+			<field name="name">Tanggal Produksi Simpanan</field>
+			<field name="model">materialdate.pack.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="pack_id" invisible="1" />
+						<field name="old_date" string="Tanggal Produksi" />
+						<field name="new_date" string="Tanggal Produksi Bahan" />
+					</group>
+					<footer>
+						<button name="change_date_pack" type="object" string="Simpan" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="change_date_pack_wizard">
+			<field name="name">Simpanan Wizard</field>
+			<field name="res_model">materialdate.pack.wizard</field>
+			<field name="src_model">sis.packing.detail</field>
+			<field name="view_mode">form</field>
+			<field name="view_type">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<record id="sis_packing_action" model="ir.actions.act_window">
+			<field name="name">Packing</field>
+			<field name="res_model">sis.packing</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="sis_packing_tree" />
+		</record>
+
+		<menuitem id="menu_sis_packing" name="Packing" />
+		<menuitem id="menu_sis_trace_packing" name="Packing" action="sis_packing_action" parent="menu_sis_packing" />
+	</data>
+</odoo>

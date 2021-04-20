@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	
+	    <record model="ir.ui.view" id="sis_spec_prod_tree">
+            <field name="name">sis.spec.prod.tree</field>
+            <field name="model">sis.spec.prod</field>
+            <field name="arch" type="xml">
+            	<tree string="Master Product Spec">
+	               	<field name="item_desc2" string="Kode Produk"/>
+	               	<field name="buyer_name"/>
+	               	<field name="no_doc"/>
+	               	<field name="no_rev"/>
+	               	<field name="tgl_efektif"/>
+	               	<field name="creator_name"/>
+	               	<field name="spec_state" readonly="1"/>
+			    </tree>
+            </field>
+        </record>
+	
+	    <record model="ir.ui.view" id="sis_spec_prod_view_tree">
+            <field name="name">sis.spec.prod.view.tree</field>
+            <field name="model">sis.spec.prod</field>
+            <field name="arch" type="xml">
+            	<tree string="View Product Spec" create="false" delete="false">
+	               	<field name="item_desc2" string="Kode Produk"/>
+	               	<field name="buyer_name"/>
+	               	<field name="no_doc"/>
+	               	<field name="no_rev"/>
+	               	<field name="tgl_efektif"/>
+	               	<field name="creator_name"/><button string="View" name="view_spec" type="object"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_spec_prod_form">
+            <field name="name">sis.spec.prod.form</field>
+            <field name="model">sis.spec.prod</field>
+            <field name="arch" type="xml">
+            	<form string="Master Product Spec">
+                    <header>
+						<field name="user_checker" invisible='1' readonly='1'/>
+						<field name="user_unchecker" invisible='1' readonly='1'/>
+                        
+ 						<button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('spec_state','!=','draft'),('user_checker','=',False)]}"/>
+                        <button name="action_unconfirm" string="Un-Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('spec_state','!=','confirm'),('user_unchecker','=',False)]}"/>
+                        <button name="action_draft" string="Set As Draft" type="object" class="oe_highlight" attrs="{'invisible': ['|',('spec_state','!=','obselete'),('user_unchecker','=',False)]}"/>
+                        <field name="spec_state" widget="statusbar" statusbar_visible="draft,confirm,obselete"/>
+                    </header>
+	            	<sheet>
+<!-- 	            		<div class="oe_button_box" name="button_box">
+		            		<button name="set_status" type="object" class="oe_stat_button" icon="fa-archive">
+		            			<field name="status_spec" widget="boolean_button"/>
+		            		</button>
+	            		</div> -->
+						<button class="oe_highlight" string="  View" icon="fa-search" name="view_spec" type="object"/>
+	            		<font color="white">_</font>
+						<button name="%(report_spec)d" class="oe_highlight" icon="fa-print" string="  Print" type="action"/>
+						<!-- <button name="write_xlsx" string="   Excel" type="object" class="oe_highlight" icon="fa-save"/> -->
+						
+		           		<group col="8">
+					    	<field name="no_doc" string="1. Nomor Seri / Serial Number" colspan="5"/><button name="" icon="fa-magnet" type="object" invisible="1"/>
+					    	<field name="tgl_efektif" string="Tanggal Efektif" colspan="5"/>
+					    	<field name="tgl_mulai" string="Tanggal Mulai / Starting Date" colspan="5"/>
+					    	<field name="no_rev" colspan="5" readonly="0"/>
+					    	<field name="creator_name" readonly="0" colspan="5"/>
+					    	<field name="signature_id" readonly="0" colspan="5"/>
+						</group>
+						<button name="copy_spec" class="oe_highlight" string="  Create Revision" icon="fa-undo" type="object" attrs="{'invisible': [('spec_state','=','draft')]}"/>
+                       	<group col="8">
+					    	<field name="item_desc" string="3. Kode Produk / Product Code" colspan="5" readonly="0"/><button name="get_product_bom" icon="fa-magnet" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+					    	<field name="buyer_produk" string="Kode Produk Buyer / Buyer Product Code" colspan="5" readonly="0"/>
+					    	<field name="buyer_name" string="4. Nama Pembeli / Buyer Name" colspan="5" readonly="0"/><button name="get_buyer"  icon="fa-users" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+					    	<field name="buyer_brand" string="   Nama Brand / Brand Name" colspan="5" readonly="0"/>
+                        	<field name="nama_produk" string="5. Nama Produk / Product Name" colspan="5" readonly="0"/><button name="get_nama_produk" icon="fa-undo" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+                        	<field name="can_size" string="6. Ukuran Kaleng / Can Size" colspan="5" readonly="0"/><button name="get_ukuran_kaleng" icon="fa-undo" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+                        	<field name="lid" colspan="5" string="7. Tutup Kaleng / Lid" readonly="0"/><button name="get_lid" icon="fa-undo" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+                        	<field name="jenis_ikan" string="8. Jenis Ikan / Kind of Fish" colspan="5" readonly="0"/><button name="get_fish" icon="fa-undo" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+                        	<field name="ukuran_ikan" string="9. Ukuran Ikan / Fish Size" colspan="5"/>
+                        	<field name="netto" string="10. Berat Netto / Net Weight" colspan="5"/>
+                        	<field name="hampa_udara" string="11. Hampa Udara / Vacuum" colspan="5"/>
+                        	<field name="sisa_udara" string="12. Sisa Udara / Residual Air" colspan="5"/>
+                        	<field name="komposisi" string="13. Komposisi / Ingredient" colspan="5"/><button name="get_komposisi" icon="fa-undo" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+                        	<field name="formulasi" string="14. Formulasi / Filling Weight" colspan="5"/><button name="get_formulasi" icon="fa-undo" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+                        	<field name="jenis_minyak" string="15. Jenis Minyak / Kind of Oil" colspan="5"/><button name="get_jenis_minyak" icon="fa-undo" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+                        	<field name="bumbu" string="16. Bumbu / Seasoning" colspan="5"/><button name="get_bumbu" icon="fa-undo" type="object" attrs="{'invisible': ['|',('spec_state','!=','draft')]}"/>
+                        	<field name="rasio_air" string="17. Rasio Air : Liquid / Aqueous Component" colspan="5"/>
+                        	<field name="berat_tekan" string="18. Berat Tekan / Press Weight" colspan="5"/>
+                        	<field name="berat_tuntas" string="19. Berat Tuntas / Drain Weight" colspan="5"/>
+                        	<field name="tingkat_bersih" string="20. Tingkat Pembersihan / Level Cleaning" colspan="5"/>
+                        	<field name="serpihan" string="21. Serpihan / Flakes" colspan="5"/>
+                        	<field name="ukuran_serpihan" string="22. Ukuran Serpihan / Flakes Size" colspan="5"/>
+                        	<field name="jenis_packing" string="23. Jenis Packing / Pack Style" colspan="5"/>
+                        	<field name="kebersihan_produk" string="24. Kebersihan Produk / Cleaning Defect" colspan="5"/>
+                        	<field name="ph_produk_air" string="25. pH Produk Akhir / pH End Product" colspan="5"/>
+                        	<field name="kadar_garam" string="26. Kadar Garam / Salt Content" colspan="5"/>
+                        	<field name="histamin" string="27. Histamin / Histamine" colspan="5"/>
+                        	<field name="analisa_proximat" string="28. Analisa Proximat / Proximate Analysis" colspan="5"/>
+                        	<field name="proses_produksi" string="29. Proses Produksi / Processing Method" colspan="5"/>
+                        	<field name="sterilisasi" string="30. Sterilisasi / Sterilization" colspan="5"/>
+                        	<field name="pendinginan" string="31. Pendinginan / Cooling" colspan="5"/>
+                        	<field name="kode_kaleng" string="32. Kode di Kaleng / Can Code" colspan="5"/>
+                        	<field name="kadaluarsa" string="33. Kadaluarsa / Expiry" colspan="5"/>
+                        	<field name="etiket" string="34. Etiket / Label" colspan="5"/>
+                        	<field name="kaleng_dus" string="35. Jumlah Produk Perdus / Qty Product Per Case" colspan="5"/>
+                        	<field name="keterangan" string="36. Keterangan / Remark" colspan="5"/>
+					    	<field name="item_no" invisible="1" colspan="5"/>
+			               	<field name="tgl_buat" invisible="1" colspan="5"/>
+			               	<field name="temp_id" invisible="1" colspan="5"/>
+                       	</group>
+                        <notebook>
+                            <page string="Catatan Revisi">
+                                <field name="spec_line_id">
+                                     <tree string="Revisi" editable="bottom">
+                                        <field name="no_item" string="No___"/>
+                                        <field name="no_rev" string="_Rev_" readonly="1"/>
+									    <field name="tgl_efektif" string="Tgl Efektif" readonly="1"/>
+									    <field name="keterangan"/>
+									    <field name="alasan"/>
+                                     </tree>
+                                </field>
+                            </page>
+                            <page string="Audit Trail">
+                                <group>
+                                    <group>
+                                        <field name="create_uid" readonly="1"/>
+                                        <field name="create_date" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="write_uid" readonly="1"/>
+                                        <field name="write_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                       	
+ 					</sheet>			    
+					<div class="oe_chatter">
+                    	<field name="message_follower_ids" widget="mail_followers"/>
+
+                    	<field name="message_ids" widget="mail_thread"/>
+                	</div>
+			    </form>
+            </field>
+        </record>
+
+        <record id="sis_master_spec_action" model="ir.actions.act_window">
+            <field name="name">Master Spec</field>
+            <field name="res_model">sis.spec.prod</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sis_spec_prod_tree" />
+        </record>
+
+        <record id="sis_view_spec_action" model="ir.actions.act_window">
+            <field name="name">Spec Product</field>
+            <field name="res_model">sis.spec.prod</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sis_spec_prod_view_tree"/>
+			<field name="domain">[('spec_state', '=', 'confirm')]</field>            
+<!-- 			<field name="domain">[('status_spec', '=', 'True')]</field> -->            
+        </record>
+
+
+        <menuitem id="menu_sis_spec_prod" name="Product Specification"/>
+        <menuitem id="menu_sub_sis_spec_akses" name="Master Akses" action="sis_master_akses_action" parent="menu_sis_spec_prod" sequence="40" groups="group_admin"/>  
+        <menuitem id="menu_sub_sis_spec_prod" name="Master Spec" action="sis_master_spec_action" parent="menu_sis_spec_prod" sequence="20" groups="group_admin"/>  
+        <menuitem id="menu_sub_sis_spec_signature" name="Master Signature" action="sis_master_signature_action" parent="menu_sis_spec_prod" sequence="30" groups="group_admin"/>  
+        <menuitem id="menu_sub_sis_spec_prod_view" name="Spec Product" action="sis_view_spec_action" parent="menu_sis_spec_prod" sequence="10"/>  
+	</data>
+</odoo>

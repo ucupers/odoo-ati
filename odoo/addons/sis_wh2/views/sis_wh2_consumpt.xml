@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_move_line_form">
+            <field name="name">sis.move.line.form</field>
+            <field name="model">sis.move.line</field>
+            <field name="arch" type="xml">
+            	<form string="Move Line">
+            	    <script>
+        $(document).ready(function(){
+        $(".modal-footer").hide();
+        });
+    </script>
+            	<header>
+           			<button name="move" string="Move" type="object" class="oe_highlight"/>           			
+            	</header>
+           		<group>
+			    	<field name="lineno" />
+				</group>
+				</form>
+			</field>
+		</record>		
+
+	
+        <record model="ir.ui.view" id="sis_shipment_header_form">
+            <field name="name">sis.shipment.header.form</field>
+            <field name="model">sis.shipment.header</field>
+            <field name="arch" type="xml">
+            	<form string="Picking List">
+           		<header>
+			    	<button name="release" string="Release" type="object" class="oe_highlight"  />   
+			    	<button name="check" string="Check" type="object" />   
+			    	<button name="confirm" string="Confirm" type="object" class="oe_highlight"  />   
+			    	<button name="cancel" string="Cancel" type="object" confirm="Are you sure you want to cancel this?" />
+			    	<button name="back_to_release" string="Back to release" type="object" confirm="Are you sure you want to do this?" />
+			    	        
+			    	<field name="status" widget="statusbar" />
+           		</header>
+           		<group col="8">
+			    	<field name="sono"  colspan="2"/>
+			    	<field name="containerno"  colspan="2"/>
+			    	<field name="extdocno" readonly="1" colspan="2" force_save = "1"/>			    	
+			    	<field name="postingdate" readonly="1" colspan="2" force_save = "1"/>
+			    	<field name="solineno"  colspan="2"/>
+			    	<label string="" colspan="4"/>
+			    	<field name="actualdate" colspan="2"/>			    				    	
+			    	<field name="selltono" readonly="1" colspan="2" force_save = "1"/>			    	
+			    	<field name="selltoname" readonly="1" colspan="2" force_save = "1"/>			    	
+			    	<field name="shiptoname" readonly="1" colspan="2" force_save = "1"/>			    	
+			    	<field name="discharging_port" readonly="1" colspan="2" force_save = "1"/>			    	
+			    	<field name="shipmentno" readonly="1" colspan="2" force_save = "1"/>			    	
+			    	<field name="error" readonly="1" colspan="6"/>			    	
+			    	<field name="remark" colspan="8"/>			    			    				    				    	
+			    	<field name="uploadremark" colspan="8"/>			    			    				    				    	
+			    	<field name="no" invisible="1"/>			    				    				    	
+			    	<field name="totalplanincase" invisible="1"/>			    				    				    	
+			    	<field name="totalactincase" invisible="1"/>			    				    				    	
+				</group>			    
+				<notebook>
+				<page name="sis_shipment_detail_page" string="Details" >
+					<field name="detail_id">
+						<tree string="Details" limit="50" editable="top">
+							<field name="lineno" readonly="1"/>
+							<field name="planlotno" readonly="1"/>
+							<field name="nodata" readonly="1"/>							
+							<field name="actlotno" readonly="1"/>
+							<field name="stuffed" readonly="1"/>							
+							<field name="newlotno"/>													
+							<field name="itemno" readonly="1"/>
+							<field name="description" readonly="1"/>
+							<field name="bin" readonly="1"/>
+							<field name="quantity"/>
+							<field name="qtyincase" readonly="1"/>							
+							<field name="qtyact" readonly="1"/>
+							<field name="qtyactincase" readonly="1"/>							
+							<field name="remaining_quantity" readonly="1"/>
+							<field name="remqtyact" readonly="1"/>							
+							<field name="proddate" readonly="1"/>
+							<field name="nocontract" readonly="1"/>
+			    			<button name="move" string=">>" type="object" class="oe_highlight"  /> 							
+							<field name="warning" readonly="1"/>						
+						</tree>
+					</field>
+				</page>
+				</notebook>
+			    </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="sis_shipment_header_tree">
+            <field name="name">sis.shipment.header.tree</field>
+            <field name="model">sis.shipment.header</field>
+            <field name="arch" type="xml">
+            	<tree string="Picking List">
+			    	<field name="no" readonly="1"/>			    	
+			    	<field name="sono" readonly="1"/>
+			    	<field name="solineno" />
+			    	<field name="shipmentno" readonly="1"/>		
+			    	<field name="newsh" readonly="1"/>					    		    				    	
+			    	<field name="containerno" readonly="1"/>
+			    	<field name="extdocno" readonly="1"/>			    	
+			    	<field name="postingdate" readonly="1"/>			    	
+			    	<field name="actualdate" readonly="1"/>			    				    	
+			    	<field name="selltono" readonly="1"/>			    	
+			    	<field name="selltoname" readonly="1"/>			    	
+			    	<field name="shiptoname" readonly="1"/>			    	
+			    	<field name="discharging_port" readonly="1"/>			    	
+			    	<field name="status" readonly="1"/>			    	
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_forklift_scan_form">
+            <field name="name">sis.forklift.scan.form</field>
+            <field name="model">sis.forklift.scan</field>
+            <field name="arch" type="xml">
+            	<form string="Pick Scan">
+            	<header>
+			    	<button name="complete" string="Complete" type="object" class="oe_highlight"/>   
+            	</header>
+           		<group>
+			    	<field name="plno" />
+			    	<field name="lotno" />			    	
+			    	<field name="qtyact" />			    	
+				    <field name="valid" readonly="1"/>
+				    <field name="numscan" readonly="1"/>				    
+				    <field name="qtyperuom"/>
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_stuffing_scan_form">
+            <field name="name">sis.stuffing.scan.form</field>
+            <field name="model">sis.stuffing.scan</field>
+            <field name="arch" type="xml">
+            	<form string="Stuffing Scan">
+            	<header>
+			    	<button name="complete" string="Complete" type="object" class="oe_highlight"  />   
+            	</header>
+           		<group>
+			    	<field name="plno" />
+			    	<field name="lotno" />			    	
+			    	<field name="qtyact" readonly="1"/>		
+				    <field name="valid" readonly="1"/>
+				    <field name="numscan" readonly="1"/>
+				    <field name="numline" readonly="1"/>				    				    
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+
+        <record id="sis_shipment_header_action" model="ir.actions.act_window">
+            <field name="name">Picking List</field>
+            <field name="res_model">sis.shipment.header</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="sis_pick_scan_action" model="ir.actions.act_window">
+            <field name="name">Pick Scan</field>
+            <field name="res_model">sis.forklift.scan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record id="sis_stuffing_scan_action" model="ir.actions.act_window">
+            <field name="name">Stuffing Scan</field>
+            <field name="res_model">sis.stuffing.scan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <menuitem id="menu_shipment_header_bin" name="Picking List" action="sis_shipment_header_action" parent="menu_sis_shipment"/>         
+        <menuitem id="menu_pick_scan" name="Pick Scan" action="sis_pick_scan_action" parent="menu_sis_warehouse"/>         
+        <menuitem id="menu_stuffing_scan" name="Stuffing Scan" action="sis_stuffing_scan_action" parent="menu_sis_warehouse"/>         
+	</data>
+</openerp>

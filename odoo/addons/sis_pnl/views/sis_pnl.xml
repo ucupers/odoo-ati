@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_pnl_header_form">
+            <field name="name">sis.pnl.header.form</field>
+            <field name="model">sis.pnl.header</field>
+            <field name="arch" type="xml">
+            	<form string="Profit and Loss Estimation">
+            	<header>
+            		<button name="getnav" string="Get from NAV" type="object" class="oe_highlight"/>
+            		<button name="compute" string="Compute" type="object" class="oe_highlight"/>
+            		<button name="update" string="Update" type="object" class="oe_highlight"/>
+            	</header>
+           		<group col="8">
+			    	<field name="no" readonly="1" colspan="2"/>
+				    <field name="date" colspan="2"/>			    
+				    
+				    <field name="ati12" colspan="2"/>			    
+				    <field name="exchangerate" colspan="2"/>			    
+
+			    	<field name="month" colspan="2"/>
+			    	<field name="year" colspan="2"/>
+			    	<field name="sourcemonth" colspan="2"/>
+			    	<field name="sourceyear" colspan="2"/>
+		    
+			    	<label string="" colspan="4"/>
+				</group>			    
+				<notebook>
+				<page name="sis_pps_detail_page" string="Prod Plan" >
+					<field name="detail_id">
+						<tree string="Detail" editable="top" decoration-bf="bold==True">
+			    			<field name="description" readonly="1" />										    			
+			    			<field name="amount" readonly="1" />
+			    			<field name="changepercent" />
+			    			<field name="changeamount" />			    						    			
+			    			<field name="finalamount" readonly="1" />
+			    			<field name="estimation" readonly="1" />
+			    			<field name="actual" readonly="1" />
+			    			<field name="bold" invisible="1"/>
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_sales_page" string="Sales" >
+					<field name="sales_id">
+						<tree string="Sales" >
+			    			<field name="no_" readonly="1" />										    			
+			    			<field name="sino" readonly="1" />										    			
+			    			<field name="postingdate" readonly="1" />
+			    			<field name="selltono" readonly="1" />
+			    			<field name="selltoname" readonly="1" />
+			    			<field name="shiptoname" readonly="1" />
+			    			<field name="lineno" readonly="1" />
+			    			<field name="itemno" readonly="1" />
+			    			<field name="description" readonly="1" />
+			    			<field name="variant" readonly="1" />
+			    			<field name="qtyest" readonly="1" />
+			    			<field name="uom" readonly="1" />			    			
+			    			<field name="unitpriceest" readonly="1" />
+			    			<field name="unitcostest" readonly="1" />			    						    						    			  
+			    			<field name="qtyact" readonly="1" />
+			    			<field name="uomact" readonly="1" />			    			
+			    			<field name="unitpriceact" readonly="1" />
+			    			<field name="unitcostact" readonly="1" />			    						    						    			  
+
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_bom_page" string="BOM" >
+					<field name="ucused_id">
+						<tree string="BOM" >
+			    			<field name="fgitemno" readonly="1" />										    			
+			    			<field name="fgdescription" readonly="1" />
+			    			<field name="fgvariant" readonly="1" />
+			    			<field name="itemno" readonly="1" />			    						    			
+			    			<field name="description" readonly="1" />
+			    			<field name="variant" readonly="1" />
+			    			<field name="unitcostest" readonly="1" />
+			    			<field name="uom" readonly="1" />
+			    			<field name="itc" readonly="1" />
+			    			<field name="pgc" readonly="1"/>
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_fg_page" string="FG U.Cost" >
+					<field name="prod_id">
+						<tree string="FG" >
+			    			<field name="date" readonly="1" />										    			
+			    			<field name="itemno" readonly="1" />										    			
+			    			<field name="description" readonly="1" />
+			    			<field name="variant" readonly="1"/>
+			    			<field name="unitcostest" readonly="1"/>			    						    			
+			    			<field name="unitcostact" readonly="1" />
+			    			<field name="itc" readonly="1" />
+			    			<field name="pgc" readonly="1" />
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_component_page" string="Components" >
+					<field name="component_id">
+						<tree string="Component" >
+			    			<field name="itemno" readonly="1" />										    			
+			    			<field name="description" readonly="1" />
+			    			<field name="variant" readonly="1" />
+			    			<field name="unitcostest" readonly="1" />			    						    			
+			    			<field name="itc" readonly="1" />
+			    			<field name="pgc" readonly="1" />
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_cogs_page" string="COGS Other" >
+					<field name="cogs_id">
+						<tree string="COGS Other" editable="top">
+			    			<field name="name" readonly="1" />										    			
+			    			<field name="amount"/>										    			
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_selling_page" string="Selling Exp." >
+					<field name="selling_id">
+						<tree string="Detail" editable="top">
+			    			<field name="name" readonly="1" />
+			    			<field name="amount" />			    			
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_expense_page" string="Gen/Adm Exp." >
+					<field name="expense_id">
+						<tree string="Gen/Adm Exp." editable="top">
+			    			<field name="name" readonly="1" />
+			    			<field name="amount" />			    			
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_forex_page" string="ForEx" >
+					<field name="forex_id">
+						<tree string="Detail" editable="top">
+			    			<field name="name" readonly="1" />
+			    			<field name="amount" />			    			
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_otherinex_page" string="Other In/Ex" >
+					<field name="otherinex_id">
+						<tree string="Other In/Ex" editable="top">
+			    			<field name="name" readonly="1" />
+			    			<field name="amount" />			    			
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_financialinex_page" string="Financial In/Ex" >
+					<field name="financialinex_id">
+						<tree string="Financial Income/Expense" editable="top">
+			    			<field name="name" readonly="1" />
+			    			<field name="amount" />			    			
+						</tree>
+					</field>
+				</page>
+				<page name="sis_pps_provision_page" string="Provision" >
+					<field name="provision_id">
+						<tree string="Provision" editable="top">
+			    			<field name="name" readonly="1" />
+			    			<field name="amount" />			    			
+						</tree>
+					</field>
+				</page>
+
+				</notebook>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_cogs_tree">
+            <field name="name">sis.cogs.tree</field>
+            <field name="model">sis.cogs</field>
+            <field name="arch" type="xml">
+            	<tree string="COGS Setting" editable="top">
+			    <field name="name"/>
+			    <field name="startwith"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_account_setting_tree">
+            <field name="name">sis.account.setting.tree</field>
+            <field name="model">sis.account.setting</field>
+            <field name="arch" type="xml">
+            	<tree string="Account Setting" default_order='account' editable="top">
+			    <field name="account"/>
+			    <field name="sum"/>			    
+			    <field name="start_id"/>
+			    <field name="end_id"/>
+			    <field name="opposite"/>			    			    			    
+			    <field name="bold"/>			    			    			    
+			    </tree>
+            </field>
+        </record>
+
+
+        <record id="sis_pnl_action" model="ir.actions.act_window">
+            <field name="name">PnL</field>
+            <field name="res_model">sis.pnl.header</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="sis_cogs_action" model="ir.actions.act_window">
+            <field name="name">COGS Setting</field>
+            <field name="res_model">sis.cogs</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_account_action" model="ir.actions.act_window">
+            <field name="name">Account Setting</field>
+            <field name="res_model">sis.account.setting</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <menuitem id="menu_sis_pnl" name="Profit/Loss"/>
+        <menuitem id="menu_sis_pnl_header" name="PnL" action="sis_pnl_action" parent="menu_sis_pnl"/> 
+        <menuitem id="menu_sis_setting" name="Setting" parent="menu_sis_pnl"/> 
+        <menuitem id="menu_sis_cogs" name="COGS" action="sis_cogs_action" parent="menu_sis_setting"/> 
+        <menuitem id="menu_sis_account" name="Account" action="sis_account_action" parent="menu_sis_setting"/>                         
+	</data>
+</openerp>

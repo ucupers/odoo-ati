@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_laporan_bc_20_form">
+            <field name="name">sis.laporan.bc.20.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 2.0">
+<!--             	    <script>
+				        $(document).ready(function(){
+				        $(".modal-footer").hide();
+				        });
+				    </script>            	
+ -->				
+<!--                     <header>
+                        <button name="kembali" string="Back" type="object" class="oe_highlight" />
+                    </header>
+ --> 	
+ 					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="tempat_asal" readonly="1" />
+							<field name="pelabuhan_bongkar" string="Pelabuhan_Bongkar" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="tempat_tujuan" readonly="1" />
+							<field name="berat_kotor" readonly="1"/>
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="tujuan_pengiriman" string="Tujuan_Pengiriman" readonly="1" />
+							<field name="nilai_pabean" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 2.0" readonly="1" />
+							<field name="kantor_asal" readonly="1" />
+							<field name="bm" readonly="1" />
+							<field name="vendor_nama" readonly="1" />
+							<field name="invoice_no" readonly="1" />
+							<field name="ppn" readonly="1" />
+							<field name="vendor_alamat" readonly="1" />
+							<field name="invoice_tgl" readonly="1" />
+							<field name="pph" readonly="1" />
+							<field name="no_beacukai" readonly="1" />
+							<field name="bl_no" readonly="1" />
+							<field name="total" readonly="1" />
+							<field name="tgl_beacukai" readonly="1" />
+							<field name="bl_tgl" readonly="1" />
+							<field name="jumlah_container" readonly="1" />
+							<field name="cara_pengangkut" readonly="1" />
+							<field name="tempat_muat" readonly="1" />
+							<field name="eta_sub" readonly="1" />
+							<field name="nama_angkut" readonly="1" />
+							<field name="jenis_barang" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 2.0 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+										<field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1"/>
+        	                            <field name="eta_ati" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+	
+        <record model="ir.ui.view" id="sis_laporan_bc_21_form">
+            <field name="name">sis.laporan.bc.21.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 2.1">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="tempat_asal" readonly="1" />
+							<field name="pelabuhan_bongkar" string="Pelabuhan_Bongkar" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="tempat_tujuan" readonly="1" />
+							<field name="berat_kotor" readonly="1"/>
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="tujuan_pengiriman" string="Tujuan Pengiriman" readonly="1" />
+							<field name="nilai_pabean" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 2.1" readonly="1" />
+							<field name="invoice_no" readonly="1" />
+							<field name="nilai_pabean_usd" string="Nilai Pabean(USD)" readonly="1" />
+							<field name="vendor_kode" readonly="1" />
+							<field name="invoice_tgl" readonly="1" />
+							<field name="bm" readonly="1" />
+							<field name="vendor_nama" readonly="1" />
+							<field name="bl_no" readonly="1" />
+							<field name="ppn" readonly="1" />
+							<field name="vendor_alamat" readonly="1" />
+							<field name="bl_tgl" readonly="1" />
+							<field name="pph" readonly="1" />
+							<field name="no_beacukai" string="No Bea Cukai" readonly="1" />
+							<field name="tempat_muat" readonly="1" />
+							<field name="total" readonly="1" />
+							<field name="tgl_beacukai" string="Tgl Bea Cukai" readonly="1" />
+							<field name="sarana_pengangkut" string="Sarana_Pengangkut" readonly="1" />
+							<field name="jumlah_container" readonly="1" />
+							<field name="no_contract" readonly="1" />
+							<field name="satuan" readonly="1" />
+							<field name="eta_sub" readonly="1" />
+							<field name="nama_kapal" readonly="1" />
+							<field name="fcl" readonly="1" />
+							<field name="eta_ati" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 2.1 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+										<field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="penerima" invisible="0" readonly="1"/>
+        	                            <field name="pengirim" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="mata_uang" string="___Mata Uang" style="text-align: center;" invisible="0" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1" />
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="sis_laporan_bc_23_form">
+            <field name="name">sis.laporan.bc.23.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 2.3">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="tempat_asal" readonly="1" />
+							<field name="pelabuhan_bongkar" string="Pelabuhan_Bongkar" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="tempat_tujuan" readonly="1" />
+							<field name="berat_kotor" readonly="1"/>
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="tujuan_pengiriman" string="Tujuan_Pengiriman" readonly="1" />
+							<field name="nilai_pabean" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 2.3" readonly="1" />
+							<field name="kantor_asal" readonly="1" />
+							<field name="bm" readonly="1" />
+							<field name="vendor_nama" readonly="1" />
+							<field name="invoice_no" readonly="1" />
+							<field name="ppn" readonly="1" />
+							<field name="vendor_alamat" readonly="1" />
+							<field name="invoice_tgl" readonly="1" />
+							<field name="pph" readonly="1" />
+							<field name="no_beacukai" readonly="1" />
+							<field name="bl_no" readonly="1" />
+							<field name="total" readonly="1" />
+							<field name="tgl_beacukai" readonly="1" />
+							<field name="bl_tgl" readonly="1" />
+							<field name="jumlah_container" readonly="1" />
+							<field name="cara_pengangkut" readonly="1" />
+							<field name="tempat_muat" readonly="1" />
+							<field name="eta_sub" readonly="1" />
+							<field name="nama_angkut" readonly="1" />
+							<field name="jenis_barang" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 2.3 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+										<field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1"/>
+        	                            <field name="eta_ati" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_bc_25_form">
+            <field name="name">sis.laporan.bc.25.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 2.5">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 2.5" readonly="1" />
+							<field name="customer_nama" readonly="1" />
+							<field name="merk_kemasan" readonly="1" />
+							<field name="jenis_kemasan" readonly="1" />
+							<field name="ndpdm" readonly="1" />
+							<field name="bm" readonly="1" />
+							<field name="ppn" readonly="1" />
+							<field name="pph" readonly="1" />
+							<field name="total" readonly="1" />
+							<field name="invoice_no" readonly="1" />
+							<field name="invoice_tgl" readonly="1" />
+							<field name="packing_list_no" readonly="1" />
+							<field name="packing_list_tgl" readonly="1" />
+							<field name="nilai_cif" readonly="1" />
+							<field name="harga_penyerahan" string="Harga_Penyerahan" readonly="1" />
+							<field name="jumlah_kemasan" readonly="1" />
+							<field name="kondisi_barang" readonly="1" />
+							<field name="berat_kotor" string="Berat Kotor (Kg)" readonly="1"/>
+							<field name="berat_bersih" string="Berat Bersih (Kg)" readonly="1"/>
+							<field name="ntptn_no" readonly="1"/>
+							<field name="ntptn_tgl" readonly="1"/>
+							<field name="no_beacukai" readonly="1" />
+							<field name="tgl_beacukai" readonly="1" />
+							<field name="tgl_pengeluaran" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 2.5 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+										<field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="berat_bersih" readonly="1"/>
+        	                            <field name="nilai_cif" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_bc_261_form">
+            <field name="name">sis.laporan.bc.261.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 2.6.1">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 2.6.1" readonly="1" />
+							<field name="no_beacukai" string="No Pendaftaran" readonly="1" />
+							<field name="tgl_beacukai" string="Tgl Pendaftaran" readonly="1" />
+							<field name="tpb_asal_nama" readonly="1" />
+							<field name="tpb_asal_npwp" readonly="1" />
+							<field name="tpb_asal_alamat" readonly="1" />
+							<field name="tpb_asal_no_ijin" readonly="1" />
+							<field name="tpb_asal_tgl_ijin" readonly="1" />
+							<field name="tpb_asal_api" readonly="1" />
+							<field name="vendor_npwp" string="NPWP Penerima Barang" readonly="1" />
+							<field name="vendor_nama" string="Nama Penerima Barang" readonly="1" />
+							<field name="vendor_alamat" string="Alamat_Penerima_Barang" readonly="1" />
+							<field name="no_bukti_penerima_jaminan" string="No_Bukti_Penerima_Jaminan" readonly="1" />
+							<field name="tgl_bukti_penerima_jaminan" string="Tgl_Bukti_Penerima_Jaminan" readonly="1" />
+							<field name="no_barang_garansi" readonly="1" />
+							<field name="tgl_barang_garansi" readonly="1" />
+							<field name="skep_no" string="No SK" readonly="1" />
+							<field name="skep_tgl" string="Tgl SK" readonly="1"/>
+							<field name="ndpdm" readonly="1" />
+							<field name="bm" readonly="1" />
+							<field name="ppn" readonly="1" />
+							<field name="pph" readonly="1" />
+							<field name="total" readonly="1" />
+							<field name="valuta" readonly="1" />
+							<field name="nilai_cif" readonly="1" />
+							<field name="negara_asal_barang" readonly="1" />
+							<field name="berat_kotor" string="Berat Kotor (Kg)" readonly="1" />
+							<field name="berat_bersih" string="Berat Bersih (Kg)" readonly="1" />
+							<field name="jenis_kemasan" string="Kemasan" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 2.6.2 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_bc_262_form">
+            <field name="name">sis.laporan.bc.262.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 2.6.2">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="vendor_npwp" string="NPWP Penerima Barang" readonly="1" />
+							<field name="berat_kotor" string="Berat Kotor (Kg)" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="vendor_nama" string="Nama Penerima Barang" readonly="1" />
+							<field name="berat_bersih" string="Berat Bersih (Kg)" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="vendor_alamat" string="Alamat_Penerima Barang" readonly="1" />
+							<field name="ndpdm" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 2.6.2" readonly="1" />
+							<field name="no_beacukai" string="No Pendaftaran" readonly="1" />
+							<field name="bm" readonly="1" />
+							<field name="bc_nomer_asal" string="No. Pengajuan BC 2.6.1" readonly="1" />
+							<field name="tgl_beacukai" string="Tgl Pendaftaran" readonly="1" />
+							<field name="ppn" readonly="1" />
+							<field name="bc_tanggal_asal" string="Tgl BC 2.6.1" readonly="1" />
+							<field name="no_bukti_penerima_jaminan" string="No_Bukti_Penerima_Jaminan" readonly="1" />
+							<field name="pph" readonly="1" />
+							<field name="tpb_asal_no_ijin" string="Ijin Pengusaha TPB" readonly="1" />
+							<field name="tgl_bukti_penerima_jaminan" readonly="1" />
+							<field name="total" readonly="1" />
+							<field name="tpb_asal_tgl_ijin" string="Tanggal_Ijin_Pengusaha_TPB" readonly="1" />
+							<field name="no_barang_garansi" readonly="1" />
+							<field name="nilai_cif" readonly="1" />
+							<field name="tpb_asal_api" string="API Pengusaha TPB" readonly="1" />
+							<field name="tgl_barang_garansi" readonly="1" />
+							<field name="valuta" readonly="1" />
+							<field name="tpb_asal_nama" string="Nama Pengusaha TPB" readonly="1" />
+							<field name="skep_no" string="No SK" readonly="1" />
+							<field name="negara_asal_barang" string="Negara_Asal_Barang" readonly="1" />
+							<field name="tpb_asal_npwp" string="NPWP Pengusaha TPB" readonly="1" />
+							<field name="skep_tgl" string="Tgl SK" readonly="1"/>
+							<field name="jenis_kemasan" string="Kemasan" readonly="1" />
+							<field name="tpb_asal_alamat" string="Alamat Pengusaha TPB" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 2.6.2 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonle="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_bc_27_form">
+            <field name="name">sis.laporan.bc.27.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 2.7">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 2.7" readonly="1" />
+							<field name="kantor_asal" readonly="1" />
+							<field name="kantor_tujuan" readonly="1" />
+							<field name="no_beacukai" readonly="1" />
+							<field name="tgl_beacukai" readonly="1" />
+							<field name="tpb_asal_nama" readonly="1" />
+							<field name="tpb_asal_alamat" readonly="1" />
+							<field name="tpb_asal_no_ijin" readonly="1" />
+							<field name="tpb_tujuan_nama" readonly="1" />
+							<field name="tpb_tujuan_alamat" string="Alamat_TPB_Tujuan" readonly="1" />
+							<field name="tpb_tujuan_no_ijin" readonly="1" />
+							<field name="invoice_no" readonly="1" />
+							<field name="invoice_tgl" readonly="1" />
+							<field name="packing_list_no" readonly="1" />
+							<field name="packing_list_tgl" readonly="1" />
+							<field name="skep_no" readonly="1" />
+							<field name="skep_tgl" readonly="1" />
+							<field name="jenis_kemasan" readonly="1" />
+							<field name="jumlah_kemasan" readonly="1" />
+							<field name="berat_kotor" string="Berat Kotor (Kg)" readonly="1" />
+							<field name="berat_bersih" string="Berat Bersih (Kg)" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 2.7 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+        	                            <field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_bc_30_form">
+            <field name="name">sis.laporan.bc.30.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 3.0">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 3.0" readonly="1" />
+							<field name="customer_kode" readonly="1" />
+							<field name="customer_nama" readonly="1" />
+<!-- 							<field name="npe_no" readonly="1" />
+ -->							<field name="pelabuhan_muat" readonly="1" />
+							<field name="no_container" string="No. PEB" readonly="1" />
+							<field name="jumlah_container" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 3.0 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+        	                            <field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="negara_tujuan" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="berat_bersih" invisible="0" readonly="1"/>
+        	                            <field name="berat_kotor" invisible="0" readonly="1"/>
+        	                            <field name="harga_fob" invisible="0" readonly="1"/>
+        	                            <field name="harga_cnf" invisible="0" readonly="1"/>
+        	                            <field name="keterangan" invisible="0" readonly="1"/>
+        	                            <field name="segel" string="No Segel" invisible="0" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_bc_33_form">
+            <field name="name">sis.laporan.bc.33.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 3.0">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 3.3" readonly="1" />
+							<field name="customer_kode" readonly="1" />
+							<field name="customer_nama" readonly="1" />
+<!-- 							<field name="npe_no" readonly="1" />
+ -->							<field name="pelabuhan_muat" readonly="1" />
+							<field name="no_container" string="No. PEB" readonly="1" />
+							<field name="jumlah_container" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 3.3 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+        	                            <field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="negara_tujuan" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="berat_bersih" invisible="0" readonly="1"/>
+        	                            <field name="berat_kotor" invisible="0" readonly="1"/>
+        	                            <field name="harga_fob" invisible="0" readonly="1"/>
+        	                            <field name="harga_cnf" invisible="0" readonly="1"/>
+        	                            <field name="keterangan" invisible="0" readonly="1"/>
+        	                            <field name="segel" string="No Segel" invisible="0" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_bc_40_form">
+            <field name="name">sis.laporan.bc.40.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 4.0">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 4.0" readonly="1" />
+							<field name="vendor_npwp" readonly="1" />
+							<field name="vendor_nama" readonly="1" />
+							<field name="vendor_alamat" readonly="1" />
+							<field name="no_beacukai" readonly="1" />
+							<field name="tgl_beacukai" readonly="1" />
+							<field name="jenis_kemasan" readonly="1" />
+							<field name="jumlah_kemasan" readonly="1" />
+							<field name="tgl_selesai_masuk" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 4.0 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+        	                            <field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_bc_41_form">
+            <field name="name">sis.laporan.bc.41.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan BC 4.1">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="bc_tanggal" string="Tgl BC 4.1" readonly="1" />
+							<field name="vendor_nama" string="Penerima Barang" readonly="1" />
+							<field name="vendor_alamat" string="Alamat_Penerima_Barang" readonly="1" />
+							<field name="no_beacukai" readonly="1" />
+							<field name="tgl_beacukai" readonly="1" />
+							<field name="tujuan_pengiriman" readonly="1" />
+							<field name="jenis_kemasan" readonly="1" />
+							<field name="jumlah_kemasan" readonly="1" />
+							<field name="skep_no" readonly="1" />
+							<field name="skep_tgl" readonly="1" />
+							<field name="tgl_pengeluaran" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="BC 4.1 Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+        	                            <field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+        	                            <field name="nilai_barang" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_laporan_ppbkb_form">
+            <field name="name">sis.laporan.ppbkb.form</field>
+            <field name="model">sis.bc.doc.view</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan PPBKB">
+					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group col="6">
+							<field name="bc_jenis" string="Dokumen" readonly="1" />
+							<field name="factory" readonly="1" />
+							<field name="kode_pengajuan" string="No. Pengajuan" readonly="1" />
+							<field name="bc_tanggal" string="Tgl Pengajuan" readonly="1" />
+<!-- 							<field name="no_beacukai" string="No Pendaftaran" readonly="1" /> -->
+							<field name="tpb_asal_alamat" readonly="1" />
+							<field name="tpb_asal_no" readonly="1" />
+							<field name="tpb_tujuan_alamat" string="Alamat_TPB_Tujuan" readonly="1" />
+							<field name="tpb_tujuan_no_ijin" string="No TPB Tujuan" readonly="1" />
+							<field name="no_beacukai" string="No Pendaftaran" readonly="1" />
+							<field name="tgl_beacukai" string="Tgl Pendaftaran" readonly="1" />
+							<field name="temp_id" invisible="1" />
+						</group>
+                        <notebook>
+                           <page string="PPBKB Line">
+                               <field name="view_doc_line">
+                                   <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+        	                            <field name="no_dok" invisible="0" readonly="1"/>
+        	                            <field name="kode_barang" invisible="0" readonly="1"/>
+        	                            <field name="description" invisible="0" readonly="1"/>
+        	                            <field name="jumlah" invisible="0" readonly="1"/>
+        	                            <field name="satuan" invisible="0" readonly="1"/>
+                                   </tree>
+                               </field>
+                           </page>
+                       </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+
+ </data>
+</odoo>

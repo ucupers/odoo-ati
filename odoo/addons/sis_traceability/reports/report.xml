@@ -1,0 +1,136 @@
+<odoo>
+	<data>
+		<record model="report.paperformat" id="paperformat_check_recap_report">
+			<field name="name">paperformat.check.recap.report</field>
+			<field name="default" eval="True" />
+			<field name="format">A4</field>
+			<field name="page_width">0</field>
+			<field name="page_width">0</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">30</field>
+			<field name="margin_right">5</field>
+			<field name="margin_bottom">10</field>
+			<field name="margin_left">5</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">20</field>
+			<field name="dpi">90</field>
+		</record>
+
+		<report 
+			id="report_check"
+			string="Check Cutting"
+			model="sis.crosscheck.cutting"
+			report_type="qweb-pdf"
+			paperformat="paperformat_check_recap_report"
+			file="sis_traceability.report_check_card"
+			name="sis_traceability.report_check_card" />
+
+		<record model="report.paperformat" id="paperformat_attendance_recap_report">
+			<field name="name">paperformat.attendance.recap.report</field>
+			<field name="default" eval="True" />
+			<field name="format">A4</field>
+			<field name="page_width">0</field>
+			<field name="page_width">0</field>
+			<field name="orientation">Landscape</field>
+			<field name="margin_top">30</field>
+			<field name="margin_right">5</field>
+			<field name="margin_bottom">10</field>
+			<field name="margin_left">5</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">20</field>
+			<field name="dpi">90</field>
+		</record>
+
+		<report id="report_traceability" string="Traceability" model="sis.trace.view" report_type="qweb-pdf" paperformat="paperformat_attendance_recap_report"
+			file="sis_traceability.report_traceability_card" name="sis_traceability.report_traceability_card" />
+			
+			<record model="report.paperformat" id="cs_outgoing_paperformat">
+			<field name="name">cs_outgoing.paperformat</field>
+			<field name="default" eval="True" />
+			<field name="format">A4</field>
+			<field name="page_width">0</field>
+			<field name="page_width">0</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">5</field>
+			<field name="margin_right">5</field>
+			<field name="margin_bottom">10</field>
+			<field name="margin_left">5</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">20</field>
+			<field name="dpi">90</field>
+		</record>
+
+		<report id="cs_outgoing_report" string="CS Outgoing" model="sis.cs.header" report_type="qweb-pdf" paperformat="cs_outgoing_paperformat" file="sis_traceability.cs_outgoing_report_card"
+			name="sis_traceability.cs_outgoing_report_card" />
+			
+			<report
+			    id="cs_outgoing_xlsx"
+			    model="sis.cs.header"
+			    string="CS Outgoing Excel"
+			    report_type="xlsx"
+			    name="sis_traceability.cs_outgoing_xls"
+			    file="sis_traceability.cs_outgoing_xls"
+			    attachment_use="False"
+			/>			
+			
+			<report
+			    id="fish_thawing_control_xlsx"
+			    model="sis.defrost.header"
+			    string="Fish Thawing Excel"
+			    report_type="xlsx"
+			    name="sis_traceability.fish_thawing_control_xls"
+			    file="sis_traceability.fish_thawing_control_xls"
+			    attachment_use="False"
+			/>
+			
+			<report
+			    id="quality_control_cutting_xlsx"
+			    model="sis.cutting"
+			    string="Cutting Excel"
+			    report_type="xlsx"
+			    name="sis_traceability.quality_control_cutting_xls"
+			    file="sis_traceability.quality_control_cutting_xls"
+			    attachment_use="False"
+			/>
+			
+			<report
+			    id="rm_cookingnshowering_xlsx"
+			    model="sis.cooker"
+			    string="Cooker Excel"
+			    report_type="xlsx"
+			    name="sis_traceability.rm_cookingnshowering_xls"
+			    file="sis_traceability.rm_cookingnshowering_xls"
+			    attachment_use="False"
+			/>
+			
+			<report
+			    id="pcl_bongkar_ikan_xls"
+			    model="sis.pre.cleaning"
+			    string="PCL Excel"
+			    report_type="xlsx"
+			    name="sis_traceability.pcl_bongkar_ikan_xls"
+			    file="sis_traceability.pcl_bongkar_ikan_xls"
+			    attachment_use="False"
+			/>
+			
+			<report
+			    id="pelelehan_loin_xls"
+			    model="sis.cleaning"
+			    string="CLN Excel"
+			    report_type="xlsx"
+			    name="sis_traceability.pelelehan_loin_xls"
+			    file="sis_traceability.pelelehan_loin_xls"
+			    attachment_use="False"
+			/>
+			
+			<report
+			    id="unpacking_defrost_loin_xls"
+			    model="sis.unpacking.defrost.loin"
+			    string="Unpacking Defrost Excel"
+			    report_type="xlsx"
+			    name="sis_traceability.unpacking_defrost_loin_xls"
+			    file="sis_traceability.unpacking_defrost_loin_xls"
+			    attachment_use="False"
+			/>
+	</data>
+</odoo>

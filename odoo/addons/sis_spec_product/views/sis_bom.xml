@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_bom_filter">
+            <field name="name">sis.bom</field>
+            <field name="model">sis.bom</field>
+            <field name="arch" type="xml">
+            	<form string="B O M">
+ 					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+	            		<group>
+							<field name="temp_id" string="Temp ID" invisible="1"/>
+							<field name="filter" string="Find BoM"/>
+							<field name="selected_bom" string="Selected BoM" readonly="1"/>
+ 	            		</group>
+						<button name="find_bom" string="   Find" type="object" class="oe_highlight" icon="fa-search"/>
+						<label string="    "/>
+						<button name="find_bom" string="   Reset" type="object" class="oe_highlight" icon="fa-undo"/>
+	                    <notebook>
+	                        <page string="List of BoM">
+	                            <field name="bom_line">
+	                            	<tree string="Detail BOM" limit="15" editable="none" create="false" delete="false">
+								    	<field name="item_no" readonly="0" />				    
+								    	<field name="description" readonly="0"/>
+								    	<field name="status_bom" invisible="1"/>
+										<button name="create_spec" string="Create Spec" type="object" class="oe_highlight"/>
+ 	                            	</tree>
+	                            </field>
+	                        </page>
+	                    </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+  	</data>
+</odoo>

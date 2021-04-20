@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="report_check_card">
+    <t t-call="web.html_container">
+			<t t-name="report.external_layout_header">
+			    <div class="header">
+	   			</div>
+			    <div class="footer">
+			    </div>
+			</t>
+
+	    <t t-call="web.external_layout">
+  			<div class="page">
+		        <div class="row" style="text-align:center;">
+					<h3>Cutting</h3>
+				</div>
+      			<div class="row" style="text-align:center;">
+					<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+					<hr />
+    				<hr />		
+				</div>
+					<style>
+					table {
+					  font-family: arial, sans-serif;
+					  border-collapse: collapse;
+					  width: 100%;
+					}
+					
+					td, th {
+					  border: 1px solid #dddddd;
+					  text-align: left;
+					  padding: 8px;
+					}
+					
+					tr:nth-child(even) {
+					  background-color: #dddddd;
+					}
+					</style>
+		            <table class="table table-condensed table-bordered">
+		                <thead>
+		                    <th class="text-center">Tanggal Produksi</th>
+		                    <th class="text-center">No Potong</th>
+		                    <th class="text-center">Basket ID</th>
+		                    <th class="text-center">Urut Basket</th>
+		                    <th class="text-center">Jenis Ikan</th>
+		                    <th class="text-center">Ukuran Ikan</th>
+		                    <th class="text-center">Vessel</th>
+		                    <th class="text-center">Voyage</th>
+		                    <th class="text-center">Hatch</th>
+		                </thead>
+		                <tbody>
+		                    <t t-foreach="docs" t-as="doc">
+		                        <tr>
+		                            <td>
+		                                <span t-esc="doc['productiondate']"/>
+		                            </td>
+		                            <td>
+		                                <span t-esc="doc['no_potong']"/>
+		                            </td>
+		                            <td>
+		                                <span t-esc="doc['basket_id']"/>
+		                            </td>
+		                            <td>
+		                                <span t-esc="doc['label']"/>
+		                            </td>
+		                            <td>
+		                                <span t-esc="doc['kindoffish']"/>
+		                            </td>
+		                            <td>
+		                                <span t-esc="doc['size']"/>
+		                            </td>
+		                            <td>
+		                                <span t-esc="doc['vessel']"/>
+		                            </td>
+		                            <td>
+		                                <span t-esc="doc['voyage']"/>
+		                            </td>
+		                            <td>
+		                                <span t-esc="doc['hatch']"/>
+		                            </td>
+		                        </tr>
+		                    </t>
+		                </tbody>
+		            </table>
+		        </div>
+		</t>
+    </t>
+</template>
+</odoo>

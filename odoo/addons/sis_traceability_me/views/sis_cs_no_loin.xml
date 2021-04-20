@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_cs_no_loin_tree">
+        	<field name="name">sis.cs.no.loin.tree</field>
+        	<field name="model">sis.cs.no.loin</field>
+        	<field name="arch" type="xml">
+            	<tree string="Loin" editable="top">
+				    <field name="no_urut"/>		
+				    <field name="rel_cs_detail" invisible="1"/>			
+				    <field name="qty"/>	
+				    <field name="jambongkar" string="____jambongkar____"/>		
+				    <field name="create_date" readonly="1"/>				    
+					<button type="object" string="Delete" name="unlink" icon="fa-trash" />				    
+ 			    </tree>
+        	</field>
+        </record>      
+ 	</data>
+</odoo>

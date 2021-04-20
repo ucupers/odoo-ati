@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_crosscheck_cutting_view">
+            <field name="name">sis.crosscheck.cutting</field>
+            <field name="model">sis.crosscheck.cutting</field>
+            <field name="arch" type="xml">
+            	<tree string="Traceability" create="false" import="false">
+				    <field name="productiondate" readonly="1"/>
+				    <field name="no_potong" readonly="1"/>
+				    <field name="basket_id" readonly="1"/>
+				    <field name="label" readonly="1"/>
+				    <field name="kindoffish" readonly="1"/>
+				    <field name="size" readonly="1"/>
+				    <field name="vessel" readonly="1"/>
+				    <field name="voyage" readonly="1"/>
+				    <field name="hatch" readonly="1"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_cross_action" model="ir.actions.act_window">
+            <field name="name">sis.crosscheck.cutting</field>
+            <field name="res_model">sis.crosscheck.cutting</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+	
+        <menuitem id="menu_sis_crosscheck" name="Crosscheck" action="sis_cross_action" parent="menu_sis_cooker"/>
+	</data>
+</odoo>

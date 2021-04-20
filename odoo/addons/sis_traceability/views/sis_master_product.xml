@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	    <template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+           <xpath expr="." position="inside">
+               <link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css"/>
+           </xpath>
+        </template>
+		
+        <record model="ir.ui.view" id="sis_master_product">
+        	<field name="name">sis.master.product.tree</field>
+        	<field name="model">sis.master.product</field>
+        	<field name="arch" type="xml">
+            	<tree string="Master Product" editable="top">
+				    <field name="no" invisible="1"/>
+				    <field name="description" string="Nama Product"/>
+				    <field name="kode_nav" readonly="0"/>	
+				    <field name="rel_line_material" string="Line" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>			    
+ 			    </tree>
+        	</field>
+        </record>    
+          
+        <record id="sis_master_product_action" model="ir.actions.act_window">
+            <field name="name">Master Product</field>
+            <field name="res_model">sis.master.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+	
+        <menuitem id="menu_sis_master_product_view" name="Master Product" action="sis_master_product_action" parent="menu_sis_packing"/>  
+	</data>
+</odoo>  

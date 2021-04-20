@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_ec_pouch">	
+			<field name="name">sis.ec.pouch.tree</field>
+			<field name="model">sis.ec.pouch</field>
+			<field name="arch" type="xml">
+				<tree string="Pouch" editable="top">
+					<button name="copydata" string="Copy" type="object" class="btn btn-default" />
+					<field name="pouch_id" invisible="1" />
+					<field name="productiondate" />
+					<field name="line_id" options="{'no_open': True, 'no_create': True}" />
+					<field name="line" invisible="1" />
+					<field name="nama_produk" invisible="1" />
+					<!-- <field name="pack_filt_id" invisible="0" /> -->
+					<field name="packing_id" options="{'no_open': True, 'no_create': True}" string="Nama Produk" />
+					<field name="items_ec_id" options="{'no_open': True, 'no_create': True}" string="Kode Barang" />
+					<field name="jenis_pouch" />
+					<field name="kode_barang" invisible="1" />
+					<field name="lot" />
+					<field name="tgl_kedatangan" />
+					<field name="invoice" />
+					<field name="total_kedatangan" />
+					<field name="total_pemakaian" />
+					<field name="total_reject" />
+					<field name="sisa" invisible="1" />
+					<field name="remark" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="sis_ec_pouch_action" model="ir.actions.act_window">
+			<field name="name">Pouch - Empty Can</field>
+			<field name="res_model">sis.ec.pouch</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem id="menu_sis_ec" name="Empty Can"/>
+		<menuitem id="menu_sis_ec_pouch" name="Pouch" action="sis_ec_pouch_action" parent="menu_sis_ec" sequence="50"/>
+	</data>
+</odoo>

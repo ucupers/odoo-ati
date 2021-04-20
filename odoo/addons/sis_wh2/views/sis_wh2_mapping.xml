@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		
+        <record model="ir.ui.view" id="sis_wh2_mapping_scan_form">
+            <field name="name">sis.wh2.mapping.scan.form</field>
+            <field name="model">sis.wh2.mapping.scan</field>
+            <field name="arch" type="xml">
+            	<form string="Input WH2 Mapping Scan">
+           		<group>
+			    	<field name="ile" />
+			    	<field name="description" readonly="1"/>			    	
+				    <field name="bin" />
+				    <field name="bin_no" readonly="1"/>
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_wh2_history_tree">
+            <field name="name">sis.wh2.history.tree</field>
+            <field name="model">sis.wh2.history</field>
+            <field name="arch" type="xml" >
+            	<tree string="History" default_order="write_date">
+			    <field name="bin" readonly="1"/>
+			    <field name="remaining_quantity" readonly="1"/>			    
+			    <field name="create_date" readonly="1"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_wh2_mapping_tree">
+            <field name="name">sis.wh2.mapping.tree</field>
+            <field name="model">sis.wh2.mapping</field>
+            <field name="arch" type="xml">
+            	<tree string="WH2 Mapping" editable="top">
+			    <button name="open_wh2_history" string="H>>" type="object" class="oe_highlight"/> 
+			    <field name="item_no" readonly="1"/>
+			    <field name="variant" readonly="1"/>
+			    <field name="description" readonly="1"/>
+			    <field name="posting_date" readonly="1"/>
+			    <field name="lot_no" readonly="1"/>			    
+			    <field name="proddate" readonly="1"/>
+			    <field name="remaining_quantity" readonly="1"/>			    
+			    <field name="uom" readonly="1"/>
+			    <field name="location_code" readonly="1"/>
+			    <field name="bin" attrs="{'readonly':[('lot_no','!=','')]}"/>
+			    <field name="document_no" readonly="1"/>
+			    <field name="entry_no" readonly="1"/>
+			    </tree>
+            </field>
+        </record>
+
+		<record id="sis_wh2_mapping_search" model="ir.ui.view">
+			<field name="name">sis.wh2.mapping.search</field>
+			<field name="model">sis.wh2.mapping</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+                    <field name="description" filter_domain="[('description','ilike', self)]"/>                 	
+                    <field name="variant" filter_domain="[('variant','ilike', self)]"/>                 	
+                    <field name="item_no" filter_domain="[('item_no','ilike', self)]"/>                 	
+                    <field name="lot_no" filter_domain="[('lot_no','ilike', self)]"/>                 	
+                    <field name="proddate" filter_domain="[('proddate','ilike', self)]"/>                 	
+                    <field name="bin" filter_domain="[('bin','ilike', self)]"/>                 	
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_user_form_view_inherited">
+            <field name="name">res.users.form.view.inherited</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field  name="batchno"/>
+                </xpath>                
+            </field>                               
+        </record>
+
+
+        <record model="ir.ui.view" id="sis_wh2_mapping_pivot">
+            <field name="name">sis.wh2.mapping.pivot</field>
+            <field name="model">sis.wh2.mapping</field>
+            <field name="arch" type="xml">
+                <pivot string="WH2 Mapping">
+                    <field name="description" type="row"/>
+                    <field name="remaining_quantity" type="measure"/>
+                    <field name="bin" type="col"/>                
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_wh2_bins_tree">
+            <field name="name">sis.wh2.bin.tree</field>
+            <field name="model">sis.wh2.bin</field>
+            <field name="arch" type="xml">
+            	<tree string="WH2 Bins" editable="top">
+			    <field name="location_id"/>
+			    <field name="location" readonly="1"/>			    
+			    <field name="code"/>
+			    <field name="name"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_wh2_consumpt_scan_form">
+            <field name="name">sis.wh2.consumpt.scan.form</field>
+            <field name="model">sis.wh2.consumpt.scan</field>
+            <field name="arch" type="xml">
+            	<form string="Input WH2 Consumpt Scan">
+           		<group>
+			    	<field name="ile" />
+			    	<field name="description" readonly="1"/>			    	
+				    <field name="uom" readonly="1"/>
+			    	<field name="qty" />
+				    <field name="bin" readonly="1"/>
+				    <field name="location" readonly="1"/>
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_wh2_consumpt_tree">
+            <field name="name">sis.wh2.consumpt.tree</field>
+            <field name="model">sis.wh2.consumpt</field>
+            <field name="arch" type="xml">
+            	<tree string="List WH2 Consumpt" editable="top" >
+			    <field name="rpo" attrs="{'readonly':[('status','!=','draft')]}" options="{'no_open': True, 'no_create': True}"/>
+			    <field name="releasedpo" readonly="1"/>
+			    <field name="poitem_no" readonly="1"/>
+			    <field name="podescription" readonly="1"/>
+			    <field name="poduedate" readonly="1"/>			    
+			    <field name="lineno" readonly="1"/>
+			    <field name="item_no" readonly="1"/>
+			    <field name="variant" readonly="1"/>
+			    <field name="description" readonly="1"/>			    
+			    <field name="quantity" attrs="{'readonly':[('status','!=','draft')]}"/>
+			    <field name="uom" readonly="1"/>			    
+			    <field name="ile" readonly="1"/>
+			    <field name="bin_no" readonly="1" />
+			    <field name="document_no" readonly="1"/>
+			    <field name="status" readonly="1"/>
+			    <field name="ileno" readonly="1"/>	
+			    <button name="copy_row" string="Copy" type="object" class="oe_highlight" attrs="{'invisible':[('status','!=','draft')]}"/> 
+			    <button name="open_error" string="E>>" type="object" class="oe_highlight" attrs="{'invisible':[('status','!=','error')]}"/> 
+			    <field name="error" invisible="1"/>	
+			    </tree>
+            </field>
+        </record>
+
+		<record id="sis_wh2_mapping_search" model="ir.ui.view">
+			<field name="name">sis.wh2.mapping.search</field>
+			<field name="model">sis.wh2.mapping</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+                    <field name="description" filter_domain="[('description','ilike', self)]"/>                 	
+                    <field name="variant" filter_domain="[('variant','ilike', self)]"/>                 	
+                    <field name="item_no" filter_domain="[('item_no','ilike', self)]"/>                 	
+                    <field name="lot_no" filter_domain="[('lot_no','ilike', self)]"/>                 	
+                    <field name="proddate" filter_domain="[('proddate','ilike', self)]"/>                 	
+                    <field name="bin" filter_domain="[('bin','ilike', self)]"/>                 	
+				</search>
+			</field>
+		</record>
+		
+        <record model="ir.ui.view" id="sis_wh2_consumpt_error_form">
+            <field name="name">sis.wh2.consumpt.form</field>
+            <field name="model">sis.wh2.consumpt</field>
+            <field name="arch" type="xml">
+            	<form string="Error">
+            	    <script>
+        $(document).ready(function(){
+        $(".modal-footer").hide();
+        });
+    </script>
+				</form>
+			</field>
+		</record>	
+
+
+		<record id="sis_wh2_mapping_opname_action" model="ir.actions.server">
+    		<field name="name">Opname</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_wh2.model_sis_wh2_mapping" />
+    		<field name="binding_model_id" ref="sis_wh2.model_sis_wh2_mapping" />
+    		<field name="state">code</field>
+    		<field name="code">model.opname()</field>
+		</record>
+
+		<record id="sis_wh2_consumpt_confirm_action" model="ir.actions.server">
+    		<field name="name">Confirm</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_wh2.model_sis_wh2_consumpt" />
+    		<field name="binding_model_id" ref="sis_wh2.model_sis_wh2_consumpt" />
+    		<field name="state">code</field>
+    		<field name="code">model.confirm()</field>
+		</record>
+
+		<record id="sis_wh2_consumpt_upload_action" model="ir.actions.server">
+    		<field name="name">Upload to NAV</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_wh2.model_sis_wh2_consumpt" />
+    		<field name="binding_model_id" ref="sis_wh2.model_sis_wh2_consumpt" />
+    		<field name="state">code</field>
+    		<field name="code">model.update_status_from_NAV()</field>
+		</record>
+
+        <record id="sis_wh2_mapping_input_action" model="ir.actions.act_window">
+            <field name="name">Input WH2 Mapping</field>
+            <field name="res_model">sis.wh2.mapping.scan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record id="sis_wh2_mapping_action" model="ir.actions.act_window">
+            <field name="name">List WH2 Mapping</field>
+            <field name="res_model">sis.wh2.mapping</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,pivot</field>
+        </record>
+
+        <record id="sis_wh2_consumpt_input_action" model="ir.actions.act_window">
+            <field name="name">Input WH2 Consumpt</field>
+            <field name="res_model">sis.wh2.consumpt.scan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record id="sis_wh2_consumpt_action" model="ir.actions.act_window">
+            <field name="name">List WH2 Consumpt</field>
+            <field name="res_model">sis.wh2.consumpt</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,pivot</field>
+        </record>
+
+
+        <record id="sis_wh2_bins_action" model="ir.actions.act_window">
+            <field name="name">Bins</field>
+            <field name="res_model">sis.wh2.bin</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <menuitem id="menu_sis_warehouse2" name="Warehouse2"/>
+        <menuitem id="menu_sis_wh2_consumpt_input" name="ScanConsumpt" action="sis_wh2_consumpt_input_action" parent="menu_sis_warehouse2"/> 
+        <menuitem id="menu_sis_wh2_consumpt" name="ListConsumpt" action="sis_wh2_consumpt_action" parent="menu_sis_warehouse2"/>
+        <menuitem id="menu_sis_wh2_mapping_input" name="ScanMapping" action="sis_wh2_mapping_input_action" parent="menu_sis_warehouse2"/> 
+        <menuitem id="menu_sis_wh2_mapping" name="ListMapping" action="sis_wh2_mapping_action" parent="menu_sis_warehouse2"/>
+        <menuitem id="menu_sis_wh2_mapping_bin" name="Bin" action="sis_wh2_bins_action" parent="menu_sis_warehouse2"/>
+	</data>
+</openerp>

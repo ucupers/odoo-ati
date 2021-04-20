@@ -1,0 +1,18 @@
+<odoo>
+	<data>
+	
+        <menuitem name="EPI" id="sis_epi_menu" sequence="11" parent="sis_ppic.menu_sis_ppic"/>
+
+        <!-- ================================ -->
+        <!-- SUB MENU EPI -->
+        <menuitem name="EPI" id="epi_submenu" parent="sis_epi_menu" action="sis_epi_action"/>
+        
+        <!-- SUB MENU MASTER ITEM EPI -->
+        <menuitem name="Master Item EPI" id="sis_master_item_epi" parent="sis_epi_menu" action="sis_master_item_epi_action"></menuitem>
+        
+        <!-- SUB MENU MASTER TIME EPI -->
+        <menuitem name="Master Time EPI" id="sis_master_time_epi" parent="sis_epi_menu" action="sis_master_time_epi_action"></menuitem>
+        
+		
+	</data>
+</odoo>

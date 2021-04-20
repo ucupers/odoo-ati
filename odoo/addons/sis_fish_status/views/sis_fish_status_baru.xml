@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_nav_fish_status_tree">
+            <field name="name">sis.nav.fish_status.tree</field>
+            <field name="model">sis.nav.fish.status.local</field>
+            <field name="arch" type="xml">
+            	<tree string="Fish Status" decoration-primary="status=='HOLD'" decoration-danger="status=='REJECT'">
+			    <field name="pgc" readonly="1"/>
+			    <field name="item_no" readonly="1"/>
+			    <field name="description" readonly="1"/>
+			    <field name="vessel_no" readonly="1"/>			    
+			    <field name="hatch_no" readonly="1"/>			    
+			    <field name="voyage_no" readonly="1"/>			    
+			    <field name="location_code" readonly="1"/>
+			    <field name="remaining_quantity"/>
+			    <field name="status" readonly="1"/>
+			    <field name="status_analisa" readonly="1"/>			    
+			    <field name="histamin" readonly="1"/>			    
+			    <field name="kadar_garam" readonly="1"/>
+			    <field name="pemakaian" readonly="1"/>
+			    <field name="lain2_analisa" readonly="1"/>
+			    <field name="remark_analisa" readonly="1"/>
+			    <field name="status_process" readonly="1"/>			    
+			    <field name="orange_meat" readonly="1"/>			    
+			    <field name="blackspot" readonly="1"/>
+			    <field name="kontaminasi" readonly="1"/> 
+			    <field name="lain2_process" readonly="1"/>
+			    <field name="remark_process" readonly="1"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_nav_fish_status_pivot">
+            <field name="name">sis.nav.fish.status.pivot</field>
+            <field name="model">sis.nav.fish.status.local</field>
+            <field name="arch" type="xml">
+                <pivot string="NAV Fish Status">
+                    <field name="pgc" type="row"/>
+                    <field name="remaining_quantity" type="measure"/>
+                    <field name="bg" type="col"/>                
+                </pivot>
+            </field>
+        </record>
+
+<!--         <record model="ir.ui.view" id="sis_fish_status_tree">
+            <field name="name">sis.fish_status.history.tree</field>
+            <field name="model">sis.fish.status.history</field>
+            <field name="arch" type="xml">
+            	<tree string="Fish Status" decoration-primary="status=='HOLD'" decoration-danger="status=='REJECT'" create="false" import="false">
+			    <field name="create_date" string="Created On"/>
+			    <field name="create_uid" string="Created By"/>
+			    <field name="barcode_no" string="____Barcode____"/>
+			    <field name="fish_box_no" string="_FishBox_"/>
+			    <field name="no_potong" string="No. Potong"/>
+			    <field name="quantity" string="_Qty._"/>
+			    <field name="item_no"/>
+			    <field name="description" string="___________Description___________"/>
+			    <field name="vessel_no" string="________Vessel_No.________"/>			    
+			    <field name="hatch_no" string="______Hatch_No.______"/>			    
+			    <field name="voyage_no" string="_Voyage_No._"/>			    
+			    <field name="lot_no" string="__________Lot_No.__________"/>
+			    <field name="tgl_keluar" string="__Tgl._Keluar__"/>
+			    <field name="status"/>
+			    <field name="status_analisa"/>			    
+			    <field name="status_process"/>			    
+			    <field name="histamin" string="_Histamin_"/>			    
+			    <field name="kadar_garam" string="Kadar_Garam"/>
+			    <field name="orange_meat" string="_________Orange_Meat_________"/>			    
+			    <field name="blackspot" string="__Blackspot__"/>
+			    <field name="pemakaian" string="______Pemakaian_khusus______"/>
+			    <field name="kontaminasi" string="______Kontaminasi______"/> 
+			    <field name="remark_analisa" string="_________Remark_Analisa_________"/>
+			    <field name="remark_process" string="_________Remark_Process_________"/>
+			    </tree>
+            </field>
+        </record>
+ -->
+<!--         <record model="ir.ui.view" id="sis_fish_status_form">
+            <field name="name">sis.fish.status.history.form</field>
+            <field name="model">sis.fish.status.history</field>
+            <field name="arch" type="xml">
+            	<form string="Fish Status" create="false" edit="false" delete="false">
+           		<group col="8">
+            		<field name="barcode_no" readonly="1" colspan="2"/>
+			    	<field name="fish_box_no" readonly="1" colspan="2"/>			    	
+			    	<field name="quantity" readonly="1" colspan="2"/>			    	
+			    	<field name="item_no" readonly="1" colspan="2"/>			    	
+
+			    	<field name="description" readonly="1" colspan="2"/>			    	
+			    	<field name="lot_no" readonly="1" colspan="2"/>			    	
+			    	<field name="vessel_no" readonly="1" colspan="2"/>			    	
+			    	<field name="hatch_no" readonly="1" colspan="2"/>			    	
+
+			    	<field name="voyage_no" readonly="1" colspan="2"/>
+			    	<field name="tgl_keluar" colspan="2"/>
+			    	
+					<field name="create_date" invisible="1" colspan="2"/>
+			    </group>			    	
+           		<group col="8">
+			    	<field name="status" readonly="1"  colspan="2" style="font-weight:bold;color:blue;"/>
+					<label string="" colspan="6"/>			    
+									    	
+			    	<field name="status_analisa" readonly="1" colspan="4"/>			    	
+			    	<field name="status_process" readonly="1" colspan="4"/>			    	
+
+			    	<field name="histamin" readonly="1" colspan="4"/>			    	
+			    	<field name="orange_meat" readonly="1" colspan="4"/>			    	
+			    	
+			    	<field name="kadar_garam" readonly="1" colspan="4"/>			    	
+			    	<field name="blackspot" readonly="1" colspan="4"/>			    	
+
+			    	<field name="pemakaian" readonly="1" colspan="4" string="Pemakaian Kasus Khusus" style="font-weight:bold;color:red;"/>			    	
+			    	<field name="kontaminasi" readonly="1" colspan="4"/>			    	
+
+			    	<field name="lain2_analisa" readonly="1" colspan="4"/>			    	
+			    	<field name="lain2_process" readonly="1" colspan="4"/>			    	
+
+			    	<field name="remark_analisa" readonly="1" colspan="4"/>			    	
+			    	<field name="remark_process" readonly="1" colspan="4"/>			    	
+				</group>			    
+			    </form>
+            </field>
+        </record>
+ -->
+<!--         <record model="ir.ui.view" id="sis_fish_header_tree">
+            <field name="name">sis.fish_status.header.tree</field>
+            <field name="model">sis.fish.status.header</field>
+            <field name="arch" type="xml">
+            	<tree string="Fish Status">
+			    <field name="cs_id"/>
+			    <field name="pabrik_id"/>
+			    <field name="tgl_produksi"/>
+			    <field name="create_date"/>
+			    <field name="create_uid"/>
+			    </tree>
+            </field>
+        </record>
+ -->
+<!--         <record model="ir.ui.view" id="sis_fish_header_form">
+            <field name="name">sis.fish.status.header.form</field>
+            <field name="model">sis.fish.status.header</field>
+            <field name="arch" type="xml">
+            	<form string="Fish Status">
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('cs_state','!=','draft')]}"/>
+                        <button name="action_unconfirm" string="Un-Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('cs_state','!=','confirm')]}"/>
+                        <field name="cs_state" widget="statusbar" statusbar_visible="draft,confirm" statusbar_colors="{'draft':'red','confirmed':'blue'}"/>
+                    </header>
+            	
+					<sheet>
+    	                <div class="oe_title">
+        	              <h1>
+            	              <field name="cs_id" class="oe_inline" readonly="1"/>
+                	      </h1>
+                    	</div>
+						<group col="8">
+							<field name="tgl_produksi" string="Tanggal Produksi" colspan="2"/>
+							<field name="pabrik_id" string="Lokasi" colspan="6"/>
+
+							<field name="invoice" string="Fresh Fish" colspan="2"/>
+							<label string="" colspan="6"/>			    
+							<field name="invoice_no" string="No. Invoice" colspan="2" attrs="{'invisible':[('invoice','=', False)]}"/>
+							<label string="" colspan="6"/>			    
+	                		<button name="get_data_fresh_fish" string="Get Data Fresh Fish" type="object" class="oe_highlight" attrs="{'invisible':[('invoice', '=', False)]}"/>
+						</group>
+						
+                        <notebook>
+                            <page string="Detail Fish">
+                                <field name="fish_status_detail">
+                                    <tree string="Detail Fish" editable="bottom">
+                                        <field name="barcode_no" string="__Barcode / Invoice No.__"/>
+									    <field name="tgl_produksi" string="Tgl. Produksi" invisible="1"/>
+									    <field name="fresh_fish" string="Fresh Fish" invisible="1"/>
+									    <field name="tgl_keluar" string="____Tgl._Keluar____"/>
+									    <field name="no_potong" string="No. Potong"/>
+									    <field name="quantity" string="__Qty.__"/>
+									    <field name="lot_no" string="_________Lot_No._________" readonly="1"/>
+									    <field name="fish_box_no" string="FishBox" readonly="1" style="text-align: center;"/>
+									    <field name="item_no" string="_Item_No._" readonly="1" style="text-align: center;"/>
+									    <field name="description" string="________Description________" readonly="1"/>
+									    <field name="vessel_no" string="______Vessel_No.______" readonly="1"/>			    
+									    <field name="hatch_no" string="__Hatch_No.__" readonly="1"/>			    
+									    <field name="voyage_no" string="Voyage No." readonly="1" style="text-align: center;"/>			    
+									    <field name="status" string="Status" readonly="1"/>
+									    <field name="status_analisa" string="Status Analisa" invisible="1" readonly="1"/>			    
+									    <field name="status_process" string="Status Process" invisible="1" readonly="1"/>			    
+									    <field name="histamin" string="____Histamin____" invisible="1" readonly="1"/>			    
+									    <field name="kadar_garam" string="___Kadar Garam___" invisible="1" readonly="1"/>
+									    <field name="orange_meat" string="___Orange Meat___" invisible="1" readonly="1"/>			    
+									    <field name="blackspot" string="___Blackspot___" invisible="1" readonly="1"/>
+									    <field name="pemakaian" string="___Kasus_Khusus___" invisible="1" readonly="1"/>
+									    <field name="kontaminasi" string="______Kontaminasi______" invisible="1" readonly="1"/> 
+									    <field name="lain2_analisa" string="_Lain-lain_Analisa_" invisible="1" readonly="1"/>
+									    <field name="lain2_process" string="_Lain-lain_Process_" invisible="1" readonly="1"/>
+									    <field name="remark_analisa" string="__Remark_Analisa__" invisible="1" readonly="1"/>
+									    <field name="remark_process" string="_Remark_Process_" invisible="1" readonly="1"/>
+									    <field name="status_def" string="Status" invisible="1" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Audit Trail">
+                                <group>
+                                    <group>
+                                        <field name="create_uid" readonly="1"/>
+                                        <field name="create_date" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="write_uid" readonly="1"/>
+                                        <field name="write_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+					</sheet>
+					<div class="oe_chatter">
+                    	<field name="message_follower_ids" widget="mail_followers"/>
+
+                    	<field name="message_ids" widget="mail_thread"/>
+                	</div>
+			    </form>
+            </field>
+        </record>
+ -->
+<!-- 
+        <record id="sis_fish_status_action" model="ir.actions.act_window">
+            <field name="name">Fish status</field>
+            <field name="res_model">sis.fish.status.history</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="sis_fish_status2_action" model="ir.actions.act_window">
+            <field name="name">Fish Status new</field>
+            <field name="res_model">sis.fish.status.header</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+ -->        <record id="sis_nav_fish_status_action" model="ir.actions.act_window">
+            <field name="name">NAV Fish status</field>
+            <field name="res_model">sis.nav.fish.status.local</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,tree</field>
+        </record>
+
+        <menuitem id="menu_sis_cs" name="CS"/>
+<!--         <menuitem id="menu_sis_cs_fish_status" name="Fish Status" action="sis_fish_status_action" parent="menu_sis_cs"/>  -->
+        <menuitem id="menu_sis_cs_nav_fish_status" name="NAV Fish Status" action="sis_nav_fish_status_action" parent="menu_sis_cs"/> 
+<!--         <menuitem id="menu_sis_cs_fish_status2" name="Fish Status new" action="sis_fish_status2_action" parent="menu_sis_cs"/>  -->
+                
+	</data>
+</openerp>

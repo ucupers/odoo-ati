@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	    <template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+           <xpath expr="." position="inside">
+               <link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css"/>
+           </xpath>
+        </template>
+
+        <record model="ir.ui.view" id="sis_cutting_tree">
+            <field name="name">sis.cutting.tree</field>
+            <field name="model">sis.cutting</field>
+            <field name="arch" type="xml">
+            	<tree string="Cutting" editable="top" >
+            		<button name="sis_traceability.sis_bbtstandard_action" string="Help" type="action" icon="fa-question-circle"/>
+            		<field name="productiondate"/>
+				    <field name="location" readonly='1'/>
+				    <field name="no_potong"/>
+				    <field name="list_tangki" string="____Tangki____"/>
+				    <field name="list_basket" string="_____Label_____"/>
+            		<button name="open_notangki" string="No. Tangki" type="object" class="btn" />
+            		<button name="open_nobasket" string="No. Basket" type="object" class="btn btn-default" /> 
+				    <field name="data_ok"/>
+				    <field name="jam_potong" string="Jam_Potong"/>
+				    <field name="suhu" string="___Suhu___"/>
+				    <field name="qty_reject" string="Qty. Reject"/>
+				    <field name="eyes"/>
+				    <field name="gill"/>
+				    <field name="skin"/>
+				    <field name="physical_damage"/>
+				    <field name="texture"/>
+				    <field name="belly_cavity"/>
+				    <field name="odour"/>
+				    <field name="grade_assigned"/>
+				    <field name="parasite"/>
+				    <field name="pic" string="Title_Holder"/>
+<!-- 				    <field name="pic" string="________Title_Holder________" widget="radio" options="{'horizontal': true}"/>
+ -->				    <field name="remark" string="__Remark_"/>
+<!-- 				    <field name="tangki" string="Tangki"/> -->
+				</tree>
+            </field>
+        </record>
+
+<!--         <record model="ir.ui.view" id="sis_cutting_tree">
+            <field name="name">sis.cutting.tree</field>
+            <field name="model">sis.cutting</field>
+            <field name="arch" type="xml">
+            	<tree string="Cutting" editable="bottom" >
+            		<button name="copydata" string="C" type="object" class="oe_highlight"/> 
+            		<button name="sis_traceability.sis_bbtstandard_action" string="?" type="action" class="oe_highlight" /> 
+				    <field name="productiondate"/>
+				    <field name="location" readonly='1'/>
+				    <field name="notangki_id" context="{'notangki': 0}" options="{'no_open': True, 'no_create': True}"/>
+				    <field name="notangki" invisible='1'/>
+				    <field name="basket_id"/>
+				    <field name="no_urut_basket"/>
+				    <field name="no_potong" readonly='1'/>
+				    <field name="kindoffish" readonly='1'/>
+				    <field name="size" readonly='1'/>
+				    <field name="vessel"/>
+				    <field name="voyage"/>
+				    <field name="hatch"/>
+				    <field name="jam_potong" string="Jam_Potong"/>
+				    <field name="durasi_jam"/>
+				    <field name="suhu"/>
+				    <field name="qty_reject"/>
+				    <field name="eyes"/>
+				    <field name="gill"/>
+				    <field name="skin"/>
+				    <field name="physical_damage"/>
+				    <field name="texture"/>
+				    <field name="belly_cavity"/>
+				    <field name="odour"/>
+				    <field name="grade_assigned"/>
+				    <field name="parasite"/>
+				    <field name="remark"/>
+				    <field name="pic"/>
+					</tree>
+            </field>
+        </record>
+ -->          
+        <record id="sis_cutting_action" model="ir.actions.act_window">
+            <field name="name">Cutting</field>
+            <field name="res_model">sis.cutting</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_cutting" name="Cutting"/>
+        <menuitem id="menu_sis_trace_cutting" name="Cutting" action="sis_cutting_action" parent="menu_sis_cutting"/>  
+<!--         <menuitem id="menu_sis_trace_cutting2" name="Cutting2" action="sis_cutting2_action" parent="menu_sis_cutting"/>   -->
+	</data>
+</odoo>

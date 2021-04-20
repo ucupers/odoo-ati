@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_pre_cleaning_tree">
+			<field name="name">sis.pre.cleaning.tree</field>
+			<field name="model">sis.pre.cleaning</field>
+			<field name="arch" type="xml">
+				<tree string="Pre-Cleaning" editable="bottom" decoration-danger="status_pnl==True" decoration-bf="status_pnl==True">
+					<!-- <button type="action" name="%(pre.change_date_wizard)" string="Change Name" context="{'default_pre_id':id}" /> -->
+					<!-- <button type="object" name="simpanan" string="Change Name context" /> -->
+					<button name="simpanan_pre" string="Simpanan" type="object" icon="fa-calendar" invisible="0" />
+					<button name="copydata" string="Copy" type="object" icon="fa-copy" invisible="0" />
+					<field name="productiondate" />
+					<field name="location" readonly="1" />
+					<field name="shift" string="__shift__" readonly="1" />
+					<field name="line_pre" invisible="1" />
+					<field name="pcl" />
+					<!-- <button name="open_noLineCleaning" string="Line Cleaning" type="object" class="btn" /> -->
+					<field name="line_cleaning" />
+					<field name="basket" string="Label" options="{'no_open': True, 'no_create': True}" domain="[('productiondate','=', materialdate),('location','=', location)]" />
+					<field name="basket_no" string="Label" invisible="1" />
+					<field name="basket_id" string="Basket ID" invisible="0" />
+					<field name="rel_supply_pre" invisible="1" />
+					<field name="kindoffish" />
+					<field name="size" />
+					<field name="start" widget="float_time" />
+					<field name="finish" widget="float_time" />
+					<field name="jml_tray" />
+					<field name="jamstart" invisible="1" readonly="0" />
+					<field name="jamfinish" invisible="1" readonly="0" />
+					<field name="nkl" />
+					<field name="hc" />
+					<field name="pm" />
+					<field name="om" />
+					<field name="bm" />
+					<field name="other" />
+					<field name="remark" />
+					<field name="materialdate" invisible="1" />
+					<field name="status_pnl" invisible="1"  />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_pre_view_alert_tree">
+			<field name="name">sis.pre.view.alert.tree</field>
+			<field name="model">sis.pre.view.alert</field>
+			<field name="arch" type="xml">
+				<tree string="Data Basket Cooker"  create="false" import="false" delete="false">					
+					<field name="productiondate" />
+					<field name="location" />
+					<field name="label" />
+					<field name="basket_id" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="materialdate_wizard_form">
+			<field name="name">Tanggal Produksi Simpanan</field>
+			<field name="model">materialdate.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="pre_id" invisible="1"/>
+						<field name="old_date" string="Tanggal Produksi"/>
+						<field name="new_date" string="Tanggal Produksi Bahan"/>
+					</group>
+					<footer>
+						<button name="change_date_pre" type="object" string="Simpan" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="change_date_wizard">
+			<field name="name">Simpanan Wizard</field>
+			<field name="res_model">materialdate.wizard</field>
+			<field name="src_model">sis.pre.cleaning</field>
+			<field name="view_mode">form</field>
+			<field name="view_type">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<record id="sis_pre_cleaning_action" model="ir.actions.act_window">
+			<field name="name">Pre Cleaning</field>
+			<field name="res_model">sis.pre.cleaning</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<record id="sis_pre_view_alert_action" model="ir.actions.act_window">
+			<field name="name">Data Cooker</field>
+			<field name="res_model">sis.pre.view.alert</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="domain">[('location','=','ATI1')]</field>
+		</record>
+
+
+		<menuitem id="menu_sis_pre_cleaning" name="Pre Cleaning" />
+		<menuitem id="menu_sis_trace_pre_cleaning" name="Pre Cleaning" action="sis_pre_cleaning_action" parent="menu_sis_pre_cleaning" />
+		<menuitem id="sis_pre_view_alert_menu" name="Basket Cooker" action="sis_pre_view_alert_action" parent="menu_sis_pre_cleaning" />
+	</data>
+</odoo>

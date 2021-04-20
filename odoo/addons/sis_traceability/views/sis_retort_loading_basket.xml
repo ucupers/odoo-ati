@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_retort_loading_basket_tree">
+			<field name="name">sis.retort.loading.basket.tree</field>
+			<field name="model">sis.retort.loading.basket</field>
+			<field name="arch" type="xml">
+				<tree string="Muat Produk ke dalam Basket">
+					<field name="productiondate" />
+					<field name="produk" />
+					<field name="line" />
+					<field name="status_take_retort" invisible="1" />
+					<field name="create_date" />
+					<field name="create_uid" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_retort_loading_basket_view_tree">
+			<field name="name">sis.retort.loading.basket.view.tree</field>
+			<field name="model">sis.retort.loading.basket</field>
+			<field name="arch" type="xml">
+				<tree string="Muat Produk ke dalam Basket" editable="top">
+					<field name="productiondate" readonly="1" />
+					<field name="produk" />
+					<field name="status_take_retort" />
+				</tree>
+			</field>
+		</record>
+
+
+		<!-- <record model="ir.ui.view" id="tran_tes_tree"> <field name="name">tran.tes.tree</field> <field name="model">tran.tes</field> <field name="arch" type="xml"> <tree string="Transient Tes" editable="top"> 
+			<field name="productiondate"/> <field name="produk" /> <field name="status_take_retort" /> </tree> </field> </record> -->
+
+		<record model="ir.ui.view" id="sis_retort_loading_basket_form">
+			<field name="name">sis.retort.loading.basket.form</field>
+			<field name="model">sis.retort.loading.basket</field>
+			<field name="arch" type="xml">
+				<form string="Retort" duplicate="0">
+					<header>
+					</header>
+					<group col="8">
+						<field name="productiondate" colspan="4" />
+						<field name="packing_id" colspan="4" string='Jenis Produk' />
+						<field name="location" colspan="4" />
+						<field name="line_id" colspan="4" string='Line' />
+						<field name="pcs_layer" colspan="4" />
+						<field name="ttl_rjct" colspan="4" />
+						<field name="line" colspan="4" invisible="1" />
+						<field name="produk" colspan="4" invisible="1" />
+					</group>
+					<notebook>
+						<page name="sis_retort_loading_basket_page" string="Retort Detail">
+							<field name="detail_ids">
+								<tree string="Retort Detail" editable="top" create="false" limit="400">
+									<field name="status_button_new" invisible="1" />
+									<field name="basket_no" />
+									<field name="basket_retort_ids" invisible="1" />
+									<field name="basket_line" invisible="1" />
+									<field name="jam_mulai" widget="float_time" />
+									<field name="jam_selesai" widget="float_time" />
+									<button name="copydata" string="New" type="object" class="btn btn-default" attrs="{'invisible':[('status_button_new', '=', True)]}" />
+									<field name="jml_layer" />
+									<field name="jml_pcs" />
+									<field name="total_pcs" />
+									<field name="rjct" />
+									<field name="rjct_remark" />
+									<field name="remark" />									
+									<field name="jam_mulai_real" invisible="1" />
+									<field name="jam_selesai_real" invisible="1" />
+									<field name="produk" invisible="1" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="sis_pro_hd_form">
+			<field name="name">sis.pro.hd.form</field>
+			<field name="model">sis.pro.hd</field>
+			<field name="arch" type="xml">
+				<form string="Pilih Produk" create="false">
+					<header>
+					</header>
+					<group col="8">
+						<field name="retort_detail_id"/>
+					</group>
+					<notebook>
+						<page name="sis_pro_hd_page">
+							<field name="prod_ids">
+								<tree editable="top" delete="false" create="false">
+								<field name="productiondate"/>
+								<field name="produk" /> 
+								<field name="status_take_retort" /> 
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="sis_retort_cek_basket_tree">
+			<field name="name">sis.retort.cek.basket.tree</field>
+			<field name="model">sis.retort.cek.basket</field>
+			<field name="arch" type="xml">
+				<tree string="Daftar basket belum sterilisasi" create="false" import="false" delete="false">
+					<field name="productiondate" />
+					<field name="location" />
+					<field name="produk" />
+					<field name="basket_line"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="sis_retort_cek_basket_action" model="ir.actions.act_window">
+			<field name="name">Cek Basket</field>
+			<field name="res_model">sis.retort.cek.basket</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+		
+		<record id="sis_loading_action" model="ir.actions.act_window">
+			<field name="name">Loading Basket</field>
+			<field name="res_model">sis.retort.loading.basket</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="sis_retort_loading_basket_tree" />
+		</record>
+
+		<record id="sis_loading_view_action" model="ir.actions.act_window">
+			<field name="name">Loading Basket</field>
+			<field name="res_model">sis.retort.loading.basket</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="sis_retort_loading_basket_view_tree" />
+		</record>
+
+		<record id="sis_pro_hd_action" model="ir.actions.act_window">
+			<field name="name">Loading Basket</field>
+			<field name="res_model">sis.pro.hd</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+		</record>
+
+		<!-- <record id="tran_tes_action" model="ir.actions.act_window"> <field name="name">Transient Tes</field> <field name="res_model">tran.tes</field> <field name="view_type">form</field> <field name="view_mode">tree</field> 
+			</record> -->
+
+		<menuitem id="menu_sis_trace_loading_retort" name="Muat Produk ke Basket" action="sis_loading_action" parent="menu_sis_retort" />
+		<menuitem id="sis_retort_cek_basket_menu" name="Cek Basket" action="sis_retort_cek_basket_action" parent="menu_sis_retort" />
+		<!-- <menuitem id="menu_sis_trace_loading_view_retort" name="Produk" action="sis_loading_view_action" parent="menu_sis_retort" /> -->
+	</data>
+</odoo>

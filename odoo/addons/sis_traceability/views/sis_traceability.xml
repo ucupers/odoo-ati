@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="sis_trace_view">
+			<field name="name">sis.trace.view</field>
+			<field name="model">sis.trace.view</field>
+			<field name="arch" type="xml">
+				<tree string="Traceability" create="false" import="false" decoration-danger="status_pl==True" decoration-bf="status_pl==True">
+					<field name="pabrik_id" readonly="1" />
+					<field name="tgl_produksi" readonly="1" />
+					<field name="no_potong" readonly="1" />
+					<field name="fresh_fish" readonly="1" />
+					<field name="barcode_no" readonly="1" />
+					<field name="fish_box_no" readonly="1" />
+					<field name="quantity" readonly="1" />
+					<field name="fish_type" readonly="1" />
+					<field name="fish_size" readonly="1" />
+					<field name="no_tangki" readonly="1" />
+					<field name="no_line" readonly="1" />
+					<field name="basket_id" readonly="1" />
+					<field name="label" readonly="1" />
+					<field name="tespek" readonly="1" />
+					<field name="nocooking" readonly="1" />
+					<field name="nocooker" readonly="1" />
+					<field name="steamon" readonly="1" />
+					<field name="steamoff" readonly="1" />
+					<field name="startshowertime" readonly="1" />
+					<field name="stopshowertime" readonly="1" />
+					<field name="showerline" readonly="1" />
+					<field name="coolingroomline" readonly="1" />
+					<field name="po" readonly="1" />
+					<field name="status" readonly="1" />
+					<field name="tgl_keluar" readonly="1" />
+					<field name="tgl_start" readonly="1" />
+					<field name="tgl_finish" readonly="1" />
+					<field name="tgl_tuang" readonly="1" />
+					<field name="suhu_before" readonly="1" />
+					<field name="suhu_after" readonly="1" />
+					<field name="remark" readonly="1" />
+					<field name="item_no" readonly="1" />
+					<field name="description" readonly="1" />
+					<field name="vessel_no" readonly="1" />
+					<field name="hatch_no" readonly="1" />
+					<field name="pcl" readonly="1" />
+					<field name="jamstart" readonly="1" />
+					<field name="jamfinish" readonly="1" />
+<!-- 					<field name="line_group_cl" readonly="1" />
+					<field name="line" readonly="1" />
+					<field name="kind_of_product" readonly="1" />
+					<field name="jam_cl" readonly="1" widget="float_time" />
+					<field name="fish" readonly="1" />
+					<field name="loin" readonly="1" />
+					<field name="shreded" readonly="1" /> -->
+					<field name="status_pl" invisible="1" readonly="1" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_trace_backward_form">
+			<field name="name">sis.trace.backward.form</field>
+			<field name="model">sis.trace.backward</field>
+			<field name="arch" type="xml">
+				<form string="Retort">
+					<sheet>
+						<group col="8">
+							<field name="productiondate" colspan="4" />
+							<field name="produk" colspan="4" />
+							<field name="jam_mulai_bongkar" colspan="4" widget="float_time" />
+							<field name="line" colspan="4" />
+							<button name="caridata" string="Cari Data" type="object" class="oe_highlight" />
+						</group>
+						<notebook>
+							<page name="sis_trace_backward_detail_page" string="Hasil Trace">
+								<field name="detail_id">
+									<tree string="Retort Detail">
+										<field name="head_id" invisible="1" />
+										<field name="productiondate" />
+										<field name="produk" />
+										<field name="jam_mulai_bongkar_wh" />
+										<field name="basket_retort" />
+										<field name="pallet" />
+										<field name="no_retort" />
+										<field name="no_siklus" />
+										<field name="steam_on_retort" />
+										<field name="jam_basket_keluar" />
+										<field name="jam_mulai_muat_rt" />
+										<field name="jam_selesai_muat_rt" />
+										<field name="jam_cl" />
+										<field name="jam_pack" />
+										<field name="jamstartpre" />
+										<field name="jamfinishpre" />
+										<field name="nocooking" />
+										<field name="nocooker" />
+										<field name="basket_cutting" />
+										<field name="label_cutting" />
+										<field name="no_tangki" />
+										<field name="fish_box_no" />
+										<field name="barcode_no" />
+										<field name="item_no" />
+										<field name="description" />
+										<field name="vessel_no" />
+										<field name="hatch_no" />
+										<field name="voyage_no" />
+										<field name="lot_no" />
+										<field name="jam_bongkar_unpacking" />
+										<field name="no_urut_kereta" />
+										<field name="tgl_bongkar_fz" />
+										<field name="kode_produksi_loin" />
+										<field name="jam_bongkar_fz" />
+										<field name="start_thawing_fz" />
+										<field name="jam_supply" />
+										<field name="material" />
+										<field name="status_ikan" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_trace_can_lot_form">
+			<field name="name">sis.trace.can.lot.form</field>
+			<field name="model">sis.trace.can.lot</field>
+			<field name="arch" type="xml">
+				<form string="Empty Can">
+					<sheet>
+						<group col="8">
+							<field name="productiondate" colspan="4" />
+							<field name="kind_of_pkg" colspan="4"/>
+							<field name="kind_of_product" colspan="4" />
+							<field name="desc_pkg" colspan="4" />
+							<!-- <button name="caridata" string="Cari Data" type="object" class="oe_highlight" /> -->
+						</group>
+						<notebook>
+							<page name="sis_trace_backward_detail_page" string="Hasil Trace">
+								<field name="detail_id">
+									<tree string="Retort Detail">
+										<field name="head_id" invisible="1" />
+										<field name="productiondate" />
+										<field name="produk" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="sis_mtraceability_action" model="ir.actions.act_window">
+			<field name="name">Traceability</field>
+			<field name="res_model">sis.trace.view</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<record id="sis_trace_backward_action" model="ir.actions.act_window">
+			<field name="name">Trace Backward</field>
+			<field name="res_model">sis.trace.backward</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">inline</field>
+		</record>
+
+		<menuitem id="menu_sis_traceability" name="Traceability" />
+		<menuitem id="menu_sis_traceability_view" name="Traceability" action="sis_mtraceability_action" parent="menu_sis_traceability" sequence="1" />
+		<menuitem id="menu_sis_trace_backward_view" name="Trace Backward" action="sis_trace_backward_action" parent="menu_sis_traceability" sequence="5" />
+	</data>
+</odoo>

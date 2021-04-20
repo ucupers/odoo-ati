@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	    <template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+           <xpath expr="." position="inside">
+               <link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css"/>
+           </xpath>
+        </template>
+        <record model="ir.ui.view" id="sis_unpacking_defrost_loin_tree">
+            <field name="name">sis.unpacking.defrost.loin.tree</field>
+            <field name="model">sis.unpacking.defrost.loin</field>
+            <field name="arch" type="xml">
+            	<tree string="Defrost Loin Unpacking" editable="bottom" >
+					<button name="simpanan" string="Simpanan" type="object" icon="fa-calendar" invisible="0" />
+					<button name="copy" string="Copy" type="object" icon="fa-copy" invisible="0" />
+				    <field name="materialdate" string="material Date" invisible="1"/>
+				    <field name="productiondate"/>
+				    <field name="location"/>
+				    <field name="kode_loin"/>
+				    <field name="rel_cleaning_unpack" options="{'no_open': True, 'no_create': True}" string="No Urut Bongkar"/>
+				    <field name="no_urut" string="No Urut Kereta"/>
+				    <field name="no_urut_kereta" invisible="1"/>
+				    <field name="jml_kantong"/>
+				    <field name="status"/>
+				    <field name="jam_bongkar" widget="float_time"/>
+				    <field name="jam_bongkar_real" invisible="1" />
+				    <field name="line_ids" widget="many2many_tags" string="Line packing"/>
+				    <field name="line_packing" invisible="1"/>
+				    <field name="remark"/>
+				</tree>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="materialdate_unpack_wizard_form">
+			<field name="name">Tanggal Produksi Simpanan</field>
+			<field name="model">materialdate.unpack.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="unpack_id" invisible="1"/>
+						<field name="old_date" string="Tanggal Produksi"/>
+						<field name="new_date" string="Tanggal Produksi Bahan"/>
+					</group>
+					<footer>
+						<button name="change_date_unpack" type="object" string="Simpan" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="sis_unpack_view_alert_tree">
+			<field name="name">sis.unpack.view.alert.tree</field>
+			<field name="model">sis.unpack.view.alert</field>
+			<field name="arch" type="xml">
+				<tree string="Data Loin" create="false" import="false" delete="false">
+					<field name="tgl_produksi" />
+					<field name="tgl_bongkar" />
+					<field name="location" />
+					<field name="r_name" />
+					<field name="kode_loin"/>
+					<field name="lot"/>
+					<field name="create_date"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="sis_unpack_view_alert_action" model="ir.actions.act_window">
+			<field name="name">Data Loin</field>
+			<field name="res_model">sis.unpack.view.alert</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="domain">[('location','=','ATI1')]</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="change_date_unpack_wizard">
+			<field name="name">Simpanan Wizard</field>
+			<field name="res_model">materialdate.unpack.wizard</field>
+			<field name="src_model">sis.unpacking.defrost.loin</field>
+			<field name="view_mode">form</field>
+			<field name="view_type">form</field>
+			<field name="target">new</field>
+		</record>
+          
+        <record id="sis_unpacking_defrost_loin_action" model="ir.actions.act_window">
+            <field name="name">Defrost Loin Unpacking</field>
+            <field name="res_model">sis.unpacking.defrost.loin</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+	
+        <menuitem id="menu_sis_unpacking_defrost_loin" name="Defrost Loin Unpacking" action="sis_unpacking_defrost_loin_action" parent="menu_sis_packing"/>
+        <menuitem id="sis_unpack_view_alert_menu" name="Data Loin" action="sis_unpack_view_alert_action" parent="menu_sis_packing"/>  
+	</data>
+</odoo>

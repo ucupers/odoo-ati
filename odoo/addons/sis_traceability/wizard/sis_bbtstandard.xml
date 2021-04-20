@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_bbtstandard_form">
+        	<field name="name">Help</field>
+        	<field name="model">sis.bbt.standard</field>
+        	<field name="arch" type="xml">
+        		<form string="Help" create="false">
+        			<group col="8">
+						<label string="BBT Standard" colspan="8"/>
+						<label string="" colspan="8"/>			    
+        				<field name="ok" string="O" readonly="1" />
+						<label string="" colspan="6"/>			    
+        				<field name="larva" string="L" readonly="1" />
+						<label string="" colspan="6"/>			    
+        				<field name="lain" string="X" readonly="1" />
+						<label string="" colspan="6"/>			    
+						<label string="" colspan="8"/>			    
+						<label string="Gradde" colspan="8"/>
+						<label string="" colspan="8"/>			    
+        				<field name="verygood" string="A" readonly="1" />
+						<label string="" colspan="6"/>				    
+        				<field name="good" string="B" readonly="1" />
+						<label string="" colspan="6"/>				    
+        				<field name="medium" string="C" readonly="1" />
+						<label string="" colspan="6"/>				    
+        				<field name="bad" string="D" readonly="1" />
+						<label string="" colspan="6"/>			    
+        			</group>
+        			<footer>
+        				<button string="Close" special="cancel" /> 
+        			</footer>
+        		</form>
+        	</field>
+        </record>
+          
+        <record id="sis_bbtstandard_action" model="ir.actions.act_window">
+            <field name="name">Help</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sis.bbt.standard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sis_bbtstandard_form" />
+            <field name="target">new</field>
+        </record>
+	</data>
+</odoo>

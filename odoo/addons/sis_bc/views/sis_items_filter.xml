@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_bc_item">
+            <field name="name">sis.item.bc</field>
+            <field name="model">sis.item.bc</field>
+            <field name="arch" type="xml">
+            	<form string="Master Item" create="false" delete="false">
+ 					<sheet>
+	            		<group>
+							<field name="temp_id" string="Temp ID" invisible="1"/>
+							<field name="description" readonly="1"/>
+							<button name="clear_data" string="   Reset" type="object" class="oe_highlight" icon="fa-undo"/>
+	            		</group>
+	                    <notebook>
+	                        <page string="List of Master Item">
+	                            <field name="item_line">
+	                            	<tree string="Detail Laporan" limit="10" editable="Top" create="false" delete="false">
+								    	<field name="item_no" readonly="1" />				    
+								    	<field name="description" readonly="1" />				    
+								    	<field name="status_item"/>
+	                            	</tree>
+	                            </field>
+	                        </page>
+	                    </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+  	</data>
+</odoo>

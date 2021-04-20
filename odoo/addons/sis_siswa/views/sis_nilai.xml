@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_nilai_tree">
+            <field name="name">sis.nilai.tree</field>
+            <field name="model">sis.nilai</field>
+            <field name="arch" type="xml">
+            	<tree string="Nilai Siswa" editable="top">
+ 			    <field name="siswa_id" string="NAMA" options="{'no_open': True, 'no_create': True}"/>
+	<!-- 		    <field name="nis"/> -->
+			    <field name="pelajaran"/>
+			    <field name="nilai"/>
+			    </tree>
+            </field>
+        </record>
+
+       <record model="ir.ui.view" id="sis_pelajaran_tree">
+            <field name="name">sis.pelajaran.tree</field>
+            <field name="model">sis.pelajaran</field>
+            <field name="arch" type="xml">
+            	<tree string="Pelajaran" editable="top">
+			    <field name="pelajaran"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_nilai_action" model="ir.actions.act_window">
+            <field name="name">Nilai</field>
+            <field name="res_model">sis.nilai</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_pelajaran_action" model="ir.actions.act_window">
+            <field name="name">Pelajaran</field>
+            <field name="res_model">sis.pelajaran</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <menuitem id="menu_sis_nilai" name="Nilai" action="sis_nilai_action" parent="menu_sis_sekolah"/>         
+        <menuitem id="menu_sis_pelajaran" name="Pelajaran" action="sis_pelajaran_action" parent="menu_sis_sekolah"/>         
+
+	</data>
+</odoo>

@@ -1,0 +1,12 @@
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button.btn-primary.disabled {
+	background: #006600; color: #FFFFFF;
+}
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button.btn-primary.disabled[data-value="confirm"] {
+	background: #990000; color: #FFFFFF;
+} 
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button.btn-primary.disabled::after {
+	border-left-color: #006600;
+} 
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button.btn-primary.disabled[data-value="confirm"]::after {
+	border-left-color: #990000;
+}

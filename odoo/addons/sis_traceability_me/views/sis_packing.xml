@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	    <template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+           <xpath expr="." position="inside">
+               <link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css"/>
+           </xpath>
+        </template>
+        <record model="ir.ui.view" id="sis_packing_tree">
+            <field name="name">sis.packing.tree</field>
+            <field name="model">sis.packing</field>
+            <field name="arch" type="xml">
+            	<tree string="Packing" editable="top" >
+				    <field name="productiondate"/>
+				    <field name="location" readonly="1"/>
+				    <field name="jamFinish"/>
+				    <field name="rel_pre" string="Basket ID"/>
+            		<field name="basket_id" invisible="1"/>
+				    <field name="label"/>
+				    <field name="lineCleaning"/>
+				    <field name="jamPacking"/>
+				    <field name="linePacking"/>
+				    <field name="namaProduct"/>
+					</tree>
+            </field>
+        </record>
+          
+        <record id="sis_packing_action" model="ir.actions.act_window">
+            <field name="name">Packing</field>
+            <field name="res_model">sis.packing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+	
+        <menuitem id="menu_sis_packing" name="Packing"/>
+        <menuitem id="menu_sis_trace_packing" name="Packing" action="sis_packing_action" parent="menu_sis_packing"/>  
+	</data>
+</odoo>

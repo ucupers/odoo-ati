@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_locations_tree">
+            <field name="name">sis.locations.tree</field>
+            <field name="model">sis.locations</field>
+            <field name="arch" type="xml">
+            	<tree string="Locations">
+			    <field name="code"/>
+			    <field name="name"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_bins_tree">
+            <field name="name">sis.bin.tree</field>
+            <field name="model">sis.bin</field>
+            <field name="arch" type="xml">
+            	<tree string="Bins" editable="top">
+			    <field name="location_id"/>
+			    <field name="location" readonly="1"/>			    
+			    <field name="code"/>
+			    <field name="name"/>			    
+			    </tree>
+            </field>
+        </record>
+
+
+        <record id="sis_locations_action" model="ir.actions.act_window">
+            <field name="name">Locations</field>
+            <field name="res_model">sis.locations</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_bins_action" model="ir.actions.act_window">
+            <field name="name">Bins</field>
+            <field name="res_model">sis.bin</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_master" name="Master"/>
+        <menuitem id="menu_sis_bins" name="Bins" action="sis_bins_action" parent="menu_sis_master"/>
+        
+	</data>
+</openerp>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_nav_fish_status_tree">
+            <field name="name">sis.nav.fish_status.tree</field>
+            <field name="model">sis.nav.fish.status.local</field>
+            <field name="arch" type="xml">
+            	<tree string="Fish Status" decoration-primary="status=='HOLD'" decoration-danger="status=='REJECT'">
+			    <field name="pgc" readonly="1"/>
+			    <field name="item_no" readonly="1"/>
+			    <field name="description" readonly="1"/>
+			    <field name="vessel_no" readonly="1"/>			    
+			    <field name="hatch_no" readonly="1"/>			    
+			    <field name="voyage_no" readonly="1"/>			    
+			    <field name="location_code" readonly="1"/>
+			    <field name="remaining_quantity"/>
+			    <field name="status" readonly="1"/>
+			    <field name="status_analisa" readonly="1"/>			    
+			    <field name="histamin" readonly="1"/>			    
+			    <field name="kadar_garam" readonly="1"/>
+			    <field name="pemakaian" readonly="1"/>
+			    <field name="lain2_analisa" readonly="1"/>
+			    <field name="remark_analisa" readonly="1"/>
+			    <field name="status_process" readonly="1"/>			    
+			    <field name="orange_meat" readonly="1"/>			    
+			    <field name="blackspot" readonly="1"/>
+			    <field name="kontaminasi" readonly="1"/> 
+			    <field name="lain2_process" readonly="1"/>
+			    <field name="remark_process" readonly="1"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_nav_fish_status_pivot">
+            <field name="name">sis.nav.fish.status.pivot</field>
+            <field name="model">sis.nav.fish.status.local</field>
+            <field name="arch" type="xml">
+                <pivot string="NAV Fish Status">
+                    <field name="pgc" type="row"/>
+                    <field name="remaining_quantity" type="measure"/>
+                    <field name="bg" type="col"/>                
+                </pivot>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sis_fish_status_tree">
+            <field name="name">sis.fish_status.history.tree</field>
+            <field name="model">sis.fish.status.history</field>
+            <field name="arch" type="xml">
+            	<tree string="Fish Status" decoration-primary="status=='HOLD'" decoration-danger="status=='REJECT'">
+			    <field name="create_date"/>
+			    <field name="create_uid"/>
+			    <field name="item_no"/>
+			    <field name="description"/>
+			    <field name="vessel_no"/>			    
+			    <field name="hatch_no"/>			    
+			    <field name="voyage_no"/>			    
+			    <field name="barcode_no"/>
+			    <field name="lot_no"/>
+			    <field name="status"/>
+			    <field name="status_analisa"/>			    
+			    <field name="status_process"/>			    
+			    <field name="histamin"/>			    
+			    <field name="kadar_garam"/>
+			    <field name="orange_meat"/>			    
+			    <field name="blackspot"/>
+			    <field name="pemakaian"/>
+			    <field name="kontaminasi"/> 
+			    <field name="remark_analisa"/>
+			    <field name="remark_process"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_fish_status_form">
+            <field name="name">sis.fish.status.history.form</field>
+            <field name="model">sis.fish.status.history</field>
+            <field name="arch" type="xml">
+            	<form string="Fish Status">
+           		<group col="8">
+			    	<field name="link_id" options="{'limit':10,'no_quick_create':1,'no_create_edit': 1,'no_open': 1}" colspan="2"/>
+			    	<field name="item_no" readonly="1" colspan="2"/>			    	
+			    	<field name="description" readonly="1" colspan="2"/>			    	
+			    	<field name="lot_no" readonly="1" colspan="2"/>			    	
+
+					<field name="create_date" invisible="1"/>
+
+			    	<field name="vessel_no" readonly="1" colspan="2"/>			    	
+			    	<field name="hatch_no" readonly="1" colspan="2"/>			    	
+			    	<field name="voyage_no" readonly="1" colspan="2"/>			    	
+		    				    	
+			    	<field name="status" readonly="1"  colspan="2" style="font-weight:bold;"/>
+					<label string="" colspan="6"/>			    
+									    	
+			    	<field name="status_analisa" readonly="1" colspan="4"/>			    	
+			    	<field name="status_process" readonly="1" colspan="4"/>			    	
+
+			    	<field name="histamin" readonly="1" colspan="4"/>			    	
+			    	<field name="orange_meat" readonly="1" colspan="4"/>			    	
+			    	
+			    	<field name="kadar_garam" readonly="1" colspan="4"/>			    	
+			    	<field name="blackspot" readonly="1" colspan="4"/>			    	
+
+			    	<field name="pemakaian" readonly="1" colspan="4"/>			    	
+			    	<field name="kontaminasi" readonly="1" colspan="4"/>			    	
+
+			    	<field name="lain2_analisa" readonly="1" colspan="4"/>			    	
+			    	<field name="lain2_process" readonly="1" colspan="4"/>			    	
+
+			    	<field name="remark_analisa" readonly="1" colspan="4"/>			    	
+			    	<field name="remark_process" readonly="1" colspan="4"/>			    	
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+        <record id="sis_fish_status_action" model="ir.actions.act_window">
+            <field name="name">Fish status</field>
+            <field name="res_model">sis.fish.status.history</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="sis_nav_fish_status_action" model="ir.actions.act_window">
+            <field name="name">NAV Fish status</field>
+            <field name="res_model">sis.nav.fish.status.local</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,tree</field>
+        </record>
+
+        <menuitem id="menu_sis_cs" name="CS"/>
+        <menuitem id="menu_sis_cs_fish_status" name="Fish Status OLD" action="sis_fish_status_action" parent="menu_sis_cs"/>
+        <menuitem id="menu_sis_cs_nav_fish_status" name="NAV Fish Status" action="sis_nav_fish_status_action" parent="menu_sis_cs"/> 
+                
+	</data>
+</openerp>

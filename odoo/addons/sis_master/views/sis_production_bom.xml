@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_production_bom_tree">
+            <field name="name">sis.production.bom.tree</field>
+            <field name="model">sis.production.bom</field>
+            <field name="arch" type="xml">
+            	<tree string="BoM">
+			    <field name="lineitem"/>
+			    <field name="linedesc"/>			    
+			    <field name="lineqty"/>			    
+			    <field name="lineuom"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_production_bom_action" model="ir.actions.act_window">
+            <field name="name">BoM</field>
+            <field name="res_model">sis.production.bom</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+       <!-- <menuitem id="menu_sis_production_bom" name="BoM" action="sis_production_bom_action" parent="menu_sis_master"/>
+		-->
+	</data>
+</openerp>

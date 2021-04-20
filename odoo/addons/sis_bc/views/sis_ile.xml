@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+<!--         <record model="ir.ui.view" id="sis_ile_view">
+            <field name="name">sis.ile.view</field>
+            <field name="model">sis.ile.odoo.bc</field>
+            <field name="arch" type="xml">
+            	<tree string="ILE NAV" create="false" import="false">
+				    <field name="item_no" readonly="1"/>
+				    <field name="variant_code" readonly="1"/>
+				    <field name="item_category_code" readonly="1" invisible="0"/>
+				    <field name="description" readonly="1"/>
+				    <field name="location_code" readonly="1" invisible="0"/>
+				    <field name="entry_types" readonly="1" invisible="0"/>
+				    <field name="base_uom" readonly="1"/>
+				    <field name="variant_uom" readonly="1"/>
+				    <field name="quantity" readonly="1"/>
+				    <field name="posting_date" readonly="1" invisible="0"/>
+				    <field name="current_datetime" readonly="1" invisible="0"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_bc_action" model="ir.actions.act_window">
+            <field name="name">IT Inventory</field>
+            <field name="res_model">sis.ile.odoo.bc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+ -->
+        <menuitem id="menu_sis_bc" name="IT Inventory"/>
+<!--         <menuitem id="menu_sis_bc_view" name="ILE" action="sis_bc_action" parent="menu_sis_bc" sequence="50"/>  
+ -->
+ 	</data>
+</odoo>
