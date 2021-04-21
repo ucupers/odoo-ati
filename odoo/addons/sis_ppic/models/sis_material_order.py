@@ -1,6 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
-from _datetime import datetime, timedelta
+import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import pyodbc
 

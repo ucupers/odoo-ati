@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-from psycopg2.sql import NULL
+# from psycopg2.sql import NULL
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 

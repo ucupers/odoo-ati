@@ -4,6 +4,7 @@ import base64
 import codecs
 import io
 
+
 from PIL import Image
 from PIL import ImageEnhance
 from random import randrange
