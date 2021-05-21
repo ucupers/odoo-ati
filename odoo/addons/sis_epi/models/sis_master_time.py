@@ -169,7 +169,7 @@ class sis_master_time(models.Model):
             defrost_time = rec.defrost_time
             delay_de_cu = rec.delay_de_cu
             
-            cu_pk = total_time - (cs_defrost - defrost_time - delay_de_cu)
+            cu_pk = total_time - cs_defrost - defrost_time - delay_de_cu
             rec.cu_pk = cu_pk
     
     

@@ -12,19 +12,20 @@
 			    <field name="description"/>	
 	    	    <field name="can_size"/>		    
 			    <field name="line"/>
-			    <field name="capacity"/>
+			  	<field name="speed"/>
 			    <field name="altline"/>
-			    <field name="altcapacity"/>
 			    <field name="fz"/>
 			    <field name="fishmaterial"/>
-			    <field name="qtyperfcl"/>
 			    <field name="bepercent"/>
 			    <field name="net"/>
 			    <field name="meat"/>
 			    <field name="filling"/>
 			    <field name="sm"/>
 			    <field name="kaleng_per_case"/>
+			    <field name="yieldd"></field>
 			    <field name="fcl"/>
+			    <field name="altcapacity" invisible="1"/>
+			    <field name="qtyperfcl" invisible="1"/>
 			    <field name="fclfactor" invisible="1"/>
 		    </tree>
       </field>

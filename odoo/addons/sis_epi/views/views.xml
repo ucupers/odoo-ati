@@ -8,6 +8,10 @@
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
+          <field name="date_plan"></field>
+          <field name="ati12_plan"></field>
+          <field name="total_qty_fish"></field>
+          <field name="state"></field>
          
         </tree>
       </field>
@@ -19,10 +23,59 @@
         <field name="model">sis.epi</field>
         <field name="arch" type="xml">
             <form>
+            	<header>
+            		<button name="action_confirm"
+                            states="schedule"
+                            string="Confirm"
+                            class="btn-primary"
+                            type="object"/>
+                    
+                    <button name="action_fish_using"
+                            states="estimasi_pack"
+                            string="Fish Using"
+                            class="btn-primary"
+                            type="object"/>
+                            
+                    <button name="action_urut_cutting"
+                            states="estimasi_pack"
+                            string="Urut Cutting"
+                            class="btn-primary"
+                            type="object"/>
+                    
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"/>
+                            
+            		<field name="state" widget="statusbar"
+                               statusbar_visible="schedule,estimasi_pack,fish_using,urut_cutting,done"/>
+            	</header>
                 <sheet>
                     <div class="oe_title">
                         <h2><field name="name" placeholder="Name" readonly="1"/></h2>
                     </div>
+                    
+                    <group>
+                    	<group>
+				            <field name="date_plan"></field>
+				            <field name="ati12_plan"></field>
+                    	</group>
+                    </group>
+                    
+                    <button name="get_item_prod_plan"
+                            string="Get Item"
+                            class="btn-primary"
+                            type="object"/>
+                            
+                    <button name="calculate_epi"
+                            string="Hitung"
+                            class="btn-primary"
+                            type="object"/>
+                     
+                    <button name="calculate_urut_cutting"
+                           string="Hitung Urut Cutting"
+                           class="btn-primary"
+                           type="object"/>
+                           
                     
                     <!-- Notebook page -->
                      <notebook>
@@ -30,11 +83,119 @@
 			              <field name="epi_line_ids">
 			                <tree editable="bottom">
 			                  <field name="pps_item_id"></field>
+			                  <field name="line_epi" force_save="1"></field>
+			                  <field name="can_size_epi" force_save="1"></field>
+			                  <field name="speed_epi" force_save="1"></field>
+			                  <field name="kaleng_per_case_epi" force_save="1"></field>
+			                  <field name="net_epi" force_save="1"></field>
+			                  <field name="target_prd"></field> 
+			                  
+			                  <field name="filling_epi" force_save="1"></field>
+			                  <field name="sm_epi" force_save="1"></field>
+			                  <field name="budomari_epi"></field>
+			               
+			                  <field name="yieldd_epi" force_save="1"></field>
+			                  <field name="yield_total_epi"></field>
+			                  <field name="yield_total_epi_epi"></field>
+			                  <field name="qty_fish_total_epi"></field>
+			                  <field name="waktu_packing_epi"></field>
+			                  <field name="meat_epi"></field>
+			                  <field name="start_packing_epi" attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
+			                  
+			                  <field name="sis_epi_line_temp_ids" invisible="1"></field>
+			                  
+			                  <button name="action_detail_view" string="Input target produksi, size" type="object" icon="fa-list" options='{"warn": true}'/>
+			               
 			                </tree>
 			              </field>
 			
 			               <!-- Perhitungan -->
+			               <group class="oe_subtotal_footer">
+			                  <field name="total_qty_fish" class="oe_subtotal_footer_separator"/>
+			                </group>
 			                
+			            </page>
+			            
+			            <page string="Fish Using" name="fish_using" autofocus="autofocus" attrs="{'invisible': [('state', '!=', 'estimasi_pack')]}">
+			            	<field name="fish_using_line_ids">
+			            		<tree editable="bottom">
+			            			<field name="epi_line_id_fu" invisible="1"></field>
+			            			<field name="item_id_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}" options='{
+			            										"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 4 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
+			            										"bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 4 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13;
+			            													 lightblue: urutan_item_fu == 2 or urutan_item_fu == 5 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14"}'></field>
+			            			
+			            			
+			            			<field name="fish_qty_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="fish_type_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="tonase_fu" force_save="1" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="total_tonase_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}" 
+		            											  options='{"fg_color": "white: total_tonase_fu == fish_qty_fu and total_tonase_fu != 0", 
+		            											  			"bg_color": "mediumseagreen: total_tonase_fu == fish_qty_fu and total_tonase_fu != 0;
+		            											  						 maroon: total_tonase_fu > fish_qty_fu and total_tonase_fu != 0"}'></field>
+			            			
+			            			<field name="temp_total_tonase_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="remark_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="urutan_item_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="urutan_item_fu_2" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="hasil_urut_item_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="waktu_packing_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			
+			            			<field name="hasil_tonase" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="jam_hasil_tonase" widget="float_time" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			
+			            			<field name="finish_cs_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="start_defrost_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="finish_defrost_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			
+			            			<field name="start_cutting_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="finish_cutting_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			
+			            			<field name="start_cooking_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="finish_cooking_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            	
+			            			<field name="start_pre_cleaning_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="finish_pre_cleaning_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+										
+			            			<field name="start_cleaning_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="finish_cleaning_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			
+			            			<field name="start_packing_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			<field name="finish_packing_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field>
+			            			
+			            			<field name="start_packing_fu_temp" invisible="1"></field>
+			            			
+			            		</tree>
+			            	</field>
+			         
+			            </page>
+			            
+			            <!-- Page urut cutting  -->
+			            <page name="urut_cutting" string="Urut Cutting" autofocus="autofocus">
+			            	<field name="urut_cutting_line_ids">
+			            		<tree editable="bottom" default_order='start_cutting_uc'>
+			            			<field name="item_id_uc"></field>
+			            			<field name="fish_type_uc"></field>
+			            			<field name="start_packing_uc"></field>
+			            			<field name="finish_packing_uc"></field>
+			            			<field name="start_cleaning_uc"></field>
+			            			<field name="finish_cleaning_uc"></field>
+			            			<field name="start_precleaning_uc"></field>
+			            			<field name="finish_precleaning_uc"></field>
+			            			<field name="start_cutting_uc"></field>
+			            			<field name="finish_cutting_uc"></field>
+			            			<field name="start_cooking_uc"></field>
+			            			<field name="finish_cooking_uc"></field>
+			            			<field name="start_defrost_uc"></field>
+			            			<field name="finish_defrost_uc"></field>
+			            			<field name="finish_cs_uc"></field>
+			            			<field name="cutting_time_uc" widget="float_time"></field>
+			            			<field name="adj_cutting_uc"></field>
+			            			<field name="toleransi"></field>
+			            			<field name="adj_cutting_uc_temp"></field>
+			            		</tree>
+			            	</field>
+			            
 			            </page>
 			          </notebook>
                     
@@ -53,7 +214,6 @@
     <record model="ir.actions.act_window" id="sis_epi_action">
       <field name="name">EPI</field>
       <field name="res_model">sis.epi</field>
-      <field name="context">{'custom_search': True}</field>
       <field name="view_mode">tree,form</field>
     </record>
     

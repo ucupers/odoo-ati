@@ -89,7 +89,7 @@ class sis_pps_line(models.Model):
 
 class sis_pps_item(models.Model):
     _name='sis.pps.item'
-    _rec_name='line'
+    _rec_name='description'
 
     ati12 = fields.Selection([('ati1','ATI1'),('ati2','ATI2')],string="ATI1/ATI2",required=True)
     item_no = fields.Char(size=20,string="Item No.")

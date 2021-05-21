@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sis_ppic', 'mail'],
+    'depends': ['base', 'sis_ppic', 'mail', 'web'],
 
     # always loaded
     'data': [
@@ -29,6 +29,9 @@
         'views/sequence.xml',
         'views/sis_master_item_inherit.xml',
         'views/sis_master_time.xml',
+        'wizard/sis_epi_detail.xml',
+        'wizard/urut_cutting_wizard.xml',
+        'report/report.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

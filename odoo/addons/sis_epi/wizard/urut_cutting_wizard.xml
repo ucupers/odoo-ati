@@ -1,0 +1,40 @@
+<odoo>
+	<data>
+	
+		<record id="urut_cutting_wizard" model="ir.ui.view">
+            <field name="name">Urut Cutting Wizard Form</field>
+            <field name="model">urut.cutting.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Urut Cutting ">
+                	<group>
+                		<field name="epi_id_wiz" />
+                	</group>
+                	
+                	<field name="urut_cutting_ids">
+               			<tree default_order="start_cutting_wiz" editable="bottom">
+               				<field name="hasil_urut_item_wiz"></field>
+               				<field name="item_id_wiz"></field>
+               				<field name="fish_type_wiz"></field>
+               				<field name="start_cutting_wiz"></field>
+               				<field name="finish_cutting_wiz"></field>
+               				<field name="start_cooking_wiz"></field>
+               				<field name="finish_cooking_wiz"></field>
+               				<field name="start_defrost_wiz"></field>
+               				<field name="finish_defrost_wiz"></field>
+               				<field name="cutting_time_wiz" widget="float_time"></field>
+               				<field name="remark_wiz"></field>
+               				<field name="adj_cutting_wiz"></field>
+               				<field name="adj_cutting_wiz_temp"></field>
+               				<field name="shift_potong"></field>
+               			</tree>
+               		</field>
+                    
+                    <footer>
+                       <button name="adj_cutting_wiz" string="Adj Cutting" class="oe_highlight" type="object"></button>
+                       <button string="Discard" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+	</data>
+</odoo>

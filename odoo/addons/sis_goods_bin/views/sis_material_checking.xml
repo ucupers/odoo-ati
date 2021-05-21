@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="sis_material_scan_form">
+            <field name="name">sis.material.scan.form</field>
+            <field name="model">sis.material.scan</field>
+            <field name="arch" type="xml">
+            	<form string="Scan Material">
+           		<group col="8">
+			    	<field name="rpono" />			    	
+			    	<field name="description" readonly="1"/>
+			    	<field name="lotno" />
+			    	<field name="compdescription" readonly="1"/>
+			    	<field name="proddate" readonly="1"/>			    	
+			    	<field name="status" readonly="1"/>			    	
+			    	<field name="qstatus" readonly="1"/>			    	
+			    	<field name="qstatusa" readonly="1"/>			    	
+			    	<field name="qstatusp" readonly="1"/>			    				    				    	
+
+				</group>			    
+			    </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="sis_material_checking_tree">
+            <field name="name">sis.material.checking.tree</field>
+            <field name="model">sis.material.checking</field>
+            <field name="arch" type="xml">
+            	<tree string="Material scan List">
+			    	<field name="create_date" readonly="1"/>			    	
+			    	<field name="create_uid" readonly="1"/>			    	
+			    	<field name="rpono" readonly="1"/>			    	
+			    	<field name="description" readonly="1"/>
+			    	<field name="lotno" readonly="1"/>
+			    	<field name="compitemno" readonly="1"/>		
+			    	<field name="compvariant" readonly="1"/>					    		    				    	
+			    	<field name="compdescription" readonly="1"/>
+			    	<field name="proddate" readonly="1"/>			    	
+			    	<field name="status" readonly="1"/>			    	
+			    	<field name="qstatus" readonly="1"/>			    	
+			    	<field name="qstatusa" readonly="1"/>			    	
+			    	<field name="qstatusp" readonly="1"/>			    				    				    	
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_material_checking_action" model="ir.actions.act_window">
+            <field name="name">List</field>
+            <field name="res_model">sis.material.checking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="sis_material_scan_action" model="ir.actions.act_window">
+            <field name="name">Scan</field>
+            <field name="res_model">sis.material.scan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <menuitem id="menu_sis_material" name="Material Check" parent="menu_sis_warehouse"/>         
+        <menuitem id="menu_sis_material_scan" name="Scan" action="sis_material_scan_action" parent="menu_sis_material"/>         
+        <menuitem id="menu_sis_material_checking" name="List" action="sis_material_checking_action" parent="menu_sis_material"/>         
+	</data>
+</openerp>
