@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+
+        <record model="ir.ui.view" id="sis_wh_stock_tree">
+            <field name="name">sis.wh.stock.tree</field>
+            <field name="model">sis.fgstock.remaining.quantity.local</field>
+            <field name="arch" type="xml">
+            	<tree string="Stock">
+			    <field name="posting_date"/>			    
+			    <field name="item_no"/>
+			    <field name="description"/>
+			    <field name="location_code"/>			    
+			    <field name="remaining_quantity"/>			
+			        
+			    <field name="qty_in_unit"/>			    
+			    <field name="uom_code"/>
+			    <field name="qty_in_fcl"/>			    
+			    <field name="qty_per_fcl"/> 
+
+			    <field name="prodqty_in_unit"/>			    
+			    <field name="produom_code"/>
+			    <field name="prodqty_in_fcl"/>
+			    <field name="prodqty_per_fcl"/> 
+
+			    <field name="lot_no"/>
+			    <field name="labeled_unlabeled"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_wh_stock_pivot1">
+            <field name="name">sis.wh.stock.pivot</field>
+            <field name="model">sis.fgstock.remaining.quantity.local</field>
+            <field name="arch" type="xml">
+                <pivot string="Stock">
+                    <field name="description" type="row"/>
+                    <field name="qty_in_unit" type="measure"/>
+                    <field name="qty_in_fcl" type="measure"/>
+                    <field name="location_code" type="col"/>                
+                </pivot>
+            </field>
+        </record>
+
+        <record id="sis_wh_stock_action" model="ir.actions.act_window">
+            <field name="name">Stock</field>
+            <field name="res_model">sis.fgstock.remaining.quantity.local</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,tree</field>
+        </record>
+
+        <menuitem id="menu_sis_whstock" name="WH Stock"/>
+        <menuitem id="menu_sis_stock" name="Stock" action="sis_wh_stock_action" parent="menu_sis_whstock"/> 
+        
+	</data>
+</openerp>

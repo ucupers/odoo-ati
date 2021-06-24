@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="sis_spec_report">
+		<t t-call="web.html_container">
+			<t t-name="report.external_layout_header">
+				<div class="header"></div>
+				<div class="footer">
+					<hr style="border: none; border-bottom: 1px solid black;"/>
+					<table class="table-condensed"
+						width="100%">
+						<thead></thead>
+						<tbody>
+							<tr>
+								<td width="50%" style="font-size:10px">
+									<t t-foreach="docs" t-as="foot">
+										<span t-esc="foot.no_doc[:-8]" style="font-size:10px" />
+										<span t-if="foot.item_desc!='-' or foot.item_desc!=''">
+											<span t-field="foot.item_desc" style="font-size:10px" />
+										</span>
+<!-- 										<span t-if="foot.buyer_brand!='-'">
+											<span t-field="foot.buyer_brand" style="font-size:10px" />
+										</span>
+ -->									</t>
+								</td>
+								<td width="50%" style="font-size:11px" align="right">
+									Halaman
+									<span class="page" />
+									dari
+									<span class="topage" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</t>
+
+			<t t-call="web.external_layout">
+				<div class="page">
+					<style>
+						table {
+							font-family 	: arial, sans-serif;
+							border-collapse : collapse;
+							width 			: 100%;
+						}
+
+						td, th {
+							border 	: 1px solid #000000;
+							padding : 8px;
+							
+						}
+						
+						.table-condensed > tbody > tr {
+        					page-break-inside: avoid !important;
+    					}
+    					
+						<!-- tr:nth-child(even) { background-color: #dddddd; } -->
+					</style>
+
+					<t t-foreach="docs" t-as="rpt">
+						<table class="table-condensed" style="table-layout: fixed; width=100%">
+							<thead>
+								<tr>
+									<td width="5%" style="border:0"></td>
+									<td width="10%" style="border:0"></td>
+									<td width="4%" style="border:0"></td>
+									<td width="2%" style="border:0"></td>
+									<td width="8%" style="border:0"></td>
+									<td width="2%" style="border:0"></td>
+									<td style="border:0"></td>
+									<td width="4%" style="border:0"></td>
+									<td width="24%" style="border:0"></td>
+								</tr>
+								<tr>
+									<td style="font-size:16px" colspan="7" rowspan="2">
+<!-- 										<table style="table-layout: fixed; width=100%; border 	: 1px solid #ffffff;">
+											<tr>
+												<td width="30%" align="center"><img class="img" src="/sis_spec_product/static/src/images/logo-aja.png"/></td>
+												<td width="70%" align="center" valign="middle"><b>PT. ANEKA TUNA INDONESIA</b></td>
+											</tr>
+										</table> -->
+										<img class="img" src="/sis_spec_product/static/src/images/logo-aja.png"/>                                                           <b>PT. ANEKA TUNA INDONESIA</b>
+									</td>
+									<td style="font-size:13px" colspan="2">Doc No. <span t-field="rpt.no_doc"/></td>
+								</tr>
+								<tr valign="top">
+									<td style="font-size:13px" colspan="2">Rev No. <span t-field="rpt.no_rev"/></td>
+								</tr>
+								<tr>
+									<td style="font-size:13px" colspan="4" rowspan="2" valign="top">disiapkan oleh <br/><span t-field="rpt.creator_name"/></td>
+									<td colspan="3" rowspan="2" align="center"><font size="4"><br/><b>PRODUCT SPECIFICATION</b></font></td>
+
+									<td style="font-size:13px" colspan="2" rowspan="2">Tanggal Efektif <span t-field="rpt.tgl_efektif" t-options='{"format": "dd MMM yyyy"}'/></td>
+								</tr>
+								<tr>
+								</tr>
+								<tr><td colspan="9" height="20px" style="border:0"></td></tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="right" style="font-size:12px">1. </td>
+									<td colspan="4" style="font-size:12px">Nomor Seri / <i>Serial Number</i></td>
+									<td colspan="4"><span t-field="rpt.no_doc" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">2. </td>
+									<td colspan="4" style="font-size:12px">Tanggal Mulai / <i>Starting Date</i></td>
+									<td colspan="4"><span t-field="rpt.tgl_mulai" t-options='{"format": "dd MMM yyyy"}' style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">3. </td>
+									<td colspan="4" style="font-size:12px">Kode Produk / <i>Product Code</i></td>
+									<td colspan="4"><span t-field="rpt.item_desc" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px"></td>
+									<td colspan="4" style="font-size:12px">Kode Produk Buyer / <i>Buyer Product Code</i></td>
+									<td colspan="4"><span t-field="rpt.buyer_produk" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">4. </td>
+									<td colspan="4" style="font-size:12px">Nama Pembeli / <i>Buyer Name</i></td>
+									<td colspan="4"><span t-field="rpt.buyer_name" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px"></td>
+									<td colspan="4" style="font-size:12px">Nama Brand / <i>Brand Name</i></td>
+									<td colspan="4"><span t-field="rpt.buyer_brand" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">5. </td>
+									<td colspan="4" style="font-size:12px">Nama Produk / <i>Product Name</i></td>
+									<td colspan="4"><span t-field="rpt.nama_produk" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">6. </td>
+									<td colspan="4" style="font-size:12px">Ukuran Kaleng / <i>Can Size</i></td>
+									<td colspan="4"><span t-field="rpt.can_size" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">7. </td>
+									<td colspan="4" style="font-size:12px">Tutup Kaleng / <i>Lid</i></td>
+									<td colspan="4"><span t-field="rpt.lid" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">8. </td>
+									<td colspan="4" style="font-size:12px">Jenis Ikan / <i>Kind of Fish</i></td>
+									<td colspan="4"><span t-field="rpt.jenis_ikan" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">9. </td>
+									<td colspan="4" style="font-size:12px">Ukuran Ikan / <i>Fish Size</i></td>
+									<td colspan="4"><span t-field="rpt.ukuran_ikan" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">10. </td>
+									<td colspan="4" style="font-size:12px">Berat Netto / <i>Net Weight</i></td>
+									<td colspan="4"><span t-field="rpt.netto" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">11. </td>
+									<td colspan="4" style="font-size:12px">Hampa Udara / <i>Vacuum</i></td>
+									<td colspan="4"><span t-field="rpt.hampa_udara" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">12. </td>
+									<td colspan="4" style="font-size:12px">Sisa Udara / <i>Residual Air</i></td>
+									<td colspan="4"><span t-field="rpt.sisa_udara" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">13. </td>
+									<td colspan="4" style="font-size:12px">Komposisi / <i>Ingredient</i></td>
+									<td colspan="4"><span t-field="rpt.komposisi" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">14. </td>
+									<td colspan="4" style="font-size:12px">Formulasi / <i>Filling Weight</i></td>
+									<td colspan="4"><span t-field="rpt.formulasi" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">15. </td>
+									<td colspan="4" style="font-size:12px">Jenis Minyak / <i>Kind of Oil</i></td>
+									<td colspan="4"><span t-field="rpt.jenis_minyak" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">16. </td>
+									<td colspan="4" style="font-size:12px">Bumbu / <i>Seasoning</i></td>
+									<td colspan="4"><span t-field="rpt.bumbu" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">17. </td>
+									<td colspan="4" style="font-size:12px">Rasio Air : Likuid / <i>Aqueous Component</i></td>
+									<td colspan="4"><span t-field="rpt.rasio_air" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">18. </td>
+									<td colspan="4" style="font-size:12px">Berat Tekan / <i>Press Weight</i></td>
+									<td colspan="4"><span t-field="rpt.berat_tekan" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">19. </td>
+									<td colspan="4" style="font-size:12px">Berat Tuntas / <i>Drain Weight</i></td>
+									<td colspan="4"><span t-field="rpt.berat_tuntas" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">20. </td>
+									<td colspan="4" style="font-size:12px">Tingkat Pembersihan / <i>Level Cleaning</i></td>
+									<td colspan="4"><span t-field="rpt.tingkat_bersih" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">21. </td>
+									<td colspan="4" style="font-size:12px">Serpihan / <i>Flakes</i></td>
+									<td colspan="4"><span t-field="rpt.serpihan" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">22. </td>
+									<td colspan="4" style="font-size:12px">Ukuran Serpihan / <i>Flakes Size</i></td>
+									<td colspan="4"><span t-field="rpt.ukuran_serpihan" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">23. </td>
+									<td colspan="4" style="font-size:12px">Jenis Packing / <i>Pack Style</i></td>
+									<td colspan="4"><span t-field="rpt.jenis_packing" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">24. </td>
+									<td colspan="4" style="font-size:12px">Kebersihan Produk / <i>Cleaning Defect</i></td>
+									<td colspan="4"><span t-field="rpt.kebersihan_produk" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">25. </td>
+									<td colspan="4" style="font-size:12px">PH Produk Akhir / <i>PH End Product</i></td>
+									<td colspan="4"><span t-field="rpt.ph_produk_air" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">26. </td>
+									<td colspan="4" style="font-size:12px">Kadar Garam / <i>Salt Content</i></td>
+									<td colspan="4"><span t-field="rpt.kadar_garam" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">27. </td>
+									<td colspan="4" style="font-size:12px">Histamin / <i>Histamine</i></td>
+									<td colspan="4"><span t-field="rpt.histamin" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">28. </td>
+									<td colspan="4" style="font-size:12px">Analisa Proximat / <i>Proximate Analysis</i></td>
+									<td colspan="4"><span t-field="rpt.analisa_proximat" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">29. </td>
+									<td colspan="4" style="font-size:12px">Proses Produksi / <i>Processing Method</i></td>
+									<td colspan="4"><span t-field="rpt.proses_produksi" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">30. </td>
+									<td colspan="4" style="font-size:12px">Sterilisasi / <i>Sterilization</i></td>
+									<td colspan="4"><span t-field="rpt.sterilisasi" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">31. </td>
+									<td colspan="4" style="font-size:12px">Pendinginan / <i>Cooling</i></td>
+									<td colspan="4"><span t-field="rpt.pendinginan" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">32. </td>
+									<td colspan="4" style="font-size:12px">Kode di Kaleng / <i>Can Code</i></td>
+									<td colspan="4"><span t-field="rpt.kode_kaleng" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">33. </td>
+									<td colspan="4" style="font-size:12px">Kadaluarsa / <i>Expiry</i></td>
+									<td colspan="4"><span t-field="rpt.kadaluarsa" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">34. </td>
+									<td colspan="4" style="font-size:12px">Etiket / <i>Label</i></td>
+									<td colspan="4"><span t-field="rpt.etiket" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">35. </td>
+									<td colspan="4" style="font-size:12px">Jumlah Produk Perdus / <i>Qty Product Per Case</i></td>
+									<td colspan="4"><span t-field="rpt.kaleng_dus" style="font-size:12px"/></td>
+								</tr>
+								<tr>
+									<td align="right" style="font-size:12px">36. </td>
+									<td colspan="4" style="font-size:12px">Keterangan / <i>Remark</i></td>
+									<td colspan="4"><span t-field="rpt.keterangan" style="font-size:12px"/></td>
+								</tr>
+								<tr height="50px"></tr>
+<!-- 								<tr invisible="1">
+									<td colspan="2" style="font-size:12px; font-weight:normal"><i>No.</i></td>
+									<td style="font-size:12px; font-weight:normal"><i>Rev</i></td>
+									<td colspan="3" style="font-size:12px; font-weight:normal"><i>Tgl. Efektif</i></td>
+									<td colspan="2" style="font-size:12px; font-weight:normal"><i>Alasan Revisi</i></td>
+									<td style="font-size:12px; font-weight:normal"><i>Keterangan</i></td>
+								</tr>
+			 	        		<t t-foreach="rpt.spec_line_id" t-as="o">
+									<tr valign="top">
+										<td align="center" colspan="2"><span t-esc="o.no_item" style="font-size: 12px !important;"/></td>
+										<td align="center"><span t-esc="o.no_rev" style="font-size: 12px !important;"/></td>
+										<td align="center" colspan="3"><span t-esc="o.tgl_efektif" style="font-size: 12px !important;"/></td>
+										<td colspan="2"> <span t-esc="o.alasan" style="font-size: 12px !important; word-wrap: break-word"/></td>
+										<td> <span t-esc="o.keterangan" style="font-size: 12px !important;word-wrap: normal"/></td>
+									</tr>
+								</t> -->
+								<tr><td colspan="9" height="20px" style="border:0"></td></tr>
+								
+							</tbody>
+						</table>
+						
+						
+<!-- 	 					<table class="table-condensed" style="table-layout: fixed; width=100%">
+	 						<thead>
+							</thead>
+							<tbody>
+							</tbody>
+							<tr invisible="1">
+								<td colspan="2" style="font-size:12px; font-weight:normal"><i>No.</i></td>
+								<td style="font-size:12px; font-weight:normal"><i>Rev</i></td>
+								<td colspan="3" style="font-size:12px; font-weight:normal"><i>Tgl. Efektif</i></td>
+								<td colspan="2" style="font-size:12px; font-weight:normal"><i>Alasan Revisi</i></td>
+								<td style="font-size:12px; font-weight:normal"><i>Keterangan</i></td>
+							</tr>
+		 	        		<t t-foreach="rpt.spec_line_id" t-as="o">
+								<tr valign="top">
+									<td align="center" colspan="2"><span t-esc="o.no_item" style="font-size: 12px !important;"/></td>
+									<td align="center"><span t-esc="o.no_rev" style="font-size: 12px !important;"/></td>
+									<td align="center" colspan="3"><span t-esc="o.tgl_efektif" style="font-size: 12px !important;"/></td>
+									<td colspan="2"> <span t-esc="o.alasan" style="font-size: 12px !important; word-wrap: break-word"/></td>
+									<td> <span t-esc="o.keterangan" style="font-size: 12px !important;word-wrap: normal"/></td>
+								</tr>
+							</t>
+						</table>
+ -->					
+ 					</t>
+ 					
+ 					<!-- Tanda Tangan -->
+ 					<p style="page-break-after:always;"></p>
+					<t t-foreach="docs" t-as="rpt2">
+						<table class="table-condensed" style="table-layout: fixed; width=100%">
+							<thead>
+								<tr>
+									<td width="5%" style="border:0"></td>
+									<!-- <td width="10%" style="border:0"></td> -->
+									<td width="5%" style="border:0"></td>
+									<td width="5%" style="border:0"></td>
+									<td width="4%" style="border:0"></td>
+									<td width="2%" style="border:0"></td>
+									<td width="8%" style="border:0"></td>
+									<td width="2%" style="border:0"></td>
+									<td width="8%" style="border:0"></td>
+									<td style="border:0"></td>
+									<td width="2%" style="border:0"></td>
+									<td width="4%" style="border:0"></td>
+									<td width="24%" style="border:0"></td>
+								</tr>
+								<tr>
+									<td style="font-size:16px" colspan="10" rowspan="2">
+<!-- 										<table style="table-layout: fixed; width=100%; border 	: 1px solid #ffffff;">
+											<tr>
+												<td width="30%" align="center"><img class="img" src="/sis_spec_product/static/src/images/logo-aja.png"/></td>
+												<td width="70%" align="center" valign="middle"><b>PT. ANEKA TUNA INDONESIA</b></td>
+											</tr>
+										</table> -->
+										<img class="img" src="/sis_spec_product/static/src/images/logo-aja.png"/>                                                           <b>PT. ANEKA TUNA INDONESIA</b>
+									</td>
+									<td style="font-size:13px" colspan="2">Doc No. <span t-field="rpt2.no_doc"/></td>
+								</tr>
+								<tr valign="top">
+									<td style="font-size:13px" colspan="2">Rev No. <span t-field="rpt2.no_rev"/></td>
+								</tr>
+								<tr>
+									<td style="font-size:13px" colspan="5" rowspan="2" valign="top">disiapkan oleh <br/><span t-field="rpt2.creator_name"/></td>
+									<td colspan="5" rowspan="2" align="center"><font size="4"><br/><b>PRODUCT SPECIFICATION</b></font></td>
+
+									<td style="font-size:13px" colspan="2" rowspan="2">Tanggal Efektif <span t-field="rpt2.tgl_efektif" t-options='{"format": "dd MMM yyyy"}'/></td>
+								</tr>
+								<tr>
+								</tr>
+								<tr><td colspan="12" height="20px" style="border:0"></td></tr>
+							</thead>
+							<tbody>
+								<tr valign="middle">
+									<td colspan="2" width="10%"	style="font-size:12px; font-weight:normal; border:0"></td>
+									<td colspan="6" width="30%" style="font-size:12px; font-weight:normal">Diperiksa oleh</td>
+									<td colspan="4" style="font-size:12px; font-weight:normal">Disetujui oleh</td>
+								</tr>
+								<tr valign="middle">
+									<td colspan="2" style="font-size:12px; font-weight:normal" align="center">Jabatan</td>
+									<td colspan="6" width="30%" style="font-size:12px; font-weight:normal" align="center"><span t-field="rpt2.ttd_jabatan1" style="font-size:12px"/></td>
+									<td width="30%" style="font-size:12px; font-weight:normal" align="center"><span t-field="rpt2.ttd_jabatan2" style="font-size:12px"/></td>
+									<td colspan="3" width="30%" style="font-size:12px; font-weight:normal" align="center"><span t-field="rpt2.ttd_jabatan3" style="font-size:12px"/></td>
+								</tr>
+								<tr valign="middle">
+									<td colspan="2" height="120px" style="font-size:12px; font-weight:normal" align="center">Tanda<br />Tangan</td>
+									<td colspan="6" width="30%" style="font-size:12px; font-weight:normal" align="center"></td>
+									<td width="30%" style="font-size:12px; font-weight:normal" align="center"></td>
+									<td colspan="3" width="30%" style="font-size:12px; font-weight:normal" align="center"></td>
+								</tr>
+								<tr valign="middle">
+									<td colspan="2" style="font-size:12px; font-weight:normal" align="center">Nama</td>
+									<td colspan="6" width="30%" style="font-size:12px; font-weight:normal" align="center"><span t-field="rpt2.ttd_nama1" style="font-size:12px"/></td>
+									<td width="30%" style="font-size:12px; font-weight:normal" align="center"><span t-field="rpt2.ttd_nama2" style="font-size:12px"/></td>
+									<td colspan="3" width="30%" style="font-size:12px; font-weight:normal" align="center"><span t-field="rpt2.ttd_nama3" style="font-size:12px"/></td>
+								</tr>
+								<tr valign="middle">
+									<td colspan="2" style="font-size:12px; font-weight:normal" align="center">Tanggal</td>
+									<td colspan="6" width="30%" style="font-size:12px; font-weight:normal" align="center"></td>
+									<td width="30%" style="font-size:12px; font-weight:normal" align="center"></td>
+									<td colspan="3" width="30%" style="font-size:12px; font-weight:normal" align="center"></td>
+								</tr>
+								
+
+								<tr height="30px"></tr>
+								<tr invisible="1">
+									<td colspan="2" style="font-size:12px; font-weight:normal"><i>No.</i></td>
+									<td colspan="2" style="font-size:12px; font-weight:normal"><i>Rev</i></td>
+									<td colspan="3" style="font-size:12px; font-weight:normal"><i>Tgl. Efektif</i></td>
+									<td colspan="3" style="font-size:12px; font-weight:normal"><i>Alasan Revisi</i></td>
+									<td colspan="2" style="font-size:12px; font-weight:normal"><i>Keterangan</i></td>
+								</tr>
+			 	        		<t t-foreach="rpt2.spec_line_id" t-as="o">
+									<tr valign="top">
+										<td align="center" colspan="2"><span t-esc="o.no_item" style="font-size: 12px !important;"/></td>
+										<td colspan="2" align="center"><span t-esc="o.no_rev" style="font-size: 12px !important;"/></td>
+										<td align="center" colspan="3"><span t-esc="o.tgl_efektif" style="font-size: 12px !important;"/></td>
+										<td colspan="3"> <span t-esc="o.alasan" style="font-size: 12px !important; word-wrap: break-word"/></td>
+										<td colspan="2"><span t-esc="o.keterangan" style="font-size: 12px !important;word-wrap: normal"/></td>
+									</tr>
+								</t>
+								
+							</tbody>
+						</table>
+					</t>
+
+				</div>
+			</t>
+
+		</t>
+	</template>
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_view_spec_prod">
+            <field name="name">sis.spec.prod.view</field>
+            <field name="model">sis.spec.prod.view</field>
+            <field name="arch" type="xml">
+            	<form string="Product Specification">
+ 					<sheet>
+<!-- 		           		<group>
+	                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+	                    </group>
+	                    <group invisible="1">
+	                    	<field name="view_6" readonly="1" invisible="1"/>
+	                    	<field name="view_7" readonly="1" invisible="1"/>
+	                    	<field name="view_8" readonly="1" invisible="1"/>
+	                    	<field name="view_9" readonly="1" invisible="1"/>
+	                    	<field name="view_10" readonly="1" invisible="1"/>
+	                    	<field name="view_11" readonly="1" invisible="1"/>
+	                    	<field name="view_12" readonly="1" invisible="1"/>
+	                    	<field name="view_13" readonly="1" invisible="1"/>
+	                    	<field name="view_14" readonly="1" invisible="1"/>
+	                    	<field name="view_15" readonly="1" invisible="1"/>
+	                    	<field name="view_16" readonly="1" invisible="1"/>
+	                    	<field name="view_17" readonly="1" invisible="1"/>
+	                    	<field name="view_18" readonly="1" invisible="1"/>
+	                    	<field name="view_19" readonly="1" invisible="1"/>
+	                    	<field name="view_20" readonly="1" invisible="1"/>
+	                    	<field name="view_21" readonly="1" invisible="1"/>
+	                    	<field name="view_22" readonly="1" invisible="1"/>
+	                    	<field name="view_23" readonly="1" invisible="1"/>
+	                    	<field name="view_24" readonly="1" invisible="1"/>
+	                    	<field name="view_25" readonly="1" invisible="1"/>
+	                    	<field name="view_26" readonly="1" invisible="1"/>
+	                    	<field name="view_27" readonly="1" invisible="1"/>
+	                    	<field name="view_28" readonly="1" invisible="1"/>
+	                    	<field name="view_29" readonly="1" invisible="1"/>
+	                    	<field name="view_30" readonly="1" invisible="1"/>
+	                    	<field name="view_31" readonly="1" invisible="1"/>
+	                    	<field name="view_32" readonly="1" invisible="1"/>
+	                    	<field name="view_33" readonly="1" invisible="1"/>
+	                    	<field name="view_34" readonly="1" invisible="1"/>
+	                    	<field name="view_35" readonly="1" invisible="1"/>
+	                    	<field name="view_36" readonly="1" invisible="1"/>
+	                    </group>
+		           		<group col="8">
+					    	<field name="no_doc" colspan="4" readonly="1"/>
+					    	<field name="tgl_efektif" colspan="4" readonly="1"/>
+					    	<field name="no_rev" colspan="4" readonly="1"/>
+					    	<field name="creator_name" readonly="1" colspan="4"/>
+					    	<field name="item_desc" colspan="4" readonly="1"/>
+					    	<field name="buyer_name" string="Nama Pembeli" colspan="4" readonly="1"/>
+					    	<field name="buyer_brand" string="Nama Brand" colspan="4" readonly="1"/>
+						</group>
+                       	<group col="8">
+                        	<field name="nama_produk" colspan="5" readonly="1"/>
+                        	<field name="can_size" colspan="5" readonly="1" attrs="{'invisible':[('view_6','=',False)]}"/>
+                        	<field name="lid" colspan="5" readonly="1" attrs="{'invisible':[('view_7','=',False)]}"/>
+                        	<field name="jenis_ikan" colspan="5" readonly="1" attrs="{'invisible':[('view_8','=',False)]}"/>
+                        	<field name="ukuran_ikan" colspan="5" readonly="1" attrs="{'invisible':[('view_9','=',False)]}"/>
+                        	<field name="netto" colspan="5" readonly="1" attrs="{'invisible':[('view_10','=',False)]}"/>
+                        	<field name="hampa_udara" colspan="5" readonly="1" attrs="{'invisible':[('view_11','=',False)]}"/>
+                        	<field name="sisa_udara" colspan="5" readonly="1" attrs="{'invisible':[('view_12','=',False)]}"/>
+                        	<field name="komposisi" colspan="5" readonly="1" attrs="{'invisible':[('view_13','=',False)]}"/>
+                        	<field name="formulasi" colspan="5" readonly="1" attrs="{'invisible':[('view_14','=',False)]}"/>
+                        	<field name="jenis_minyak" colspan="5" readonly="1" attrs="{'invisible':[('view_15','=',False)]}"/>
+                        	<field name="bumbu" colspan="5" readonly="1" attrs="{'invisible':[('view_16','=',False)]}"/>
+                        	<field name="rasio_air" colspan="5" readonly="1" attrs="{'invisible':[('view_17','=',False)]}"/>
+                        	<field name="berat_tekan" colspan="5" readonly="1" attrs="{'invisible':[('view_18','=',False)]}"/>
+                        	<field name="berat_tuntas" colspan="5" readonly="1" attrs="{'invisible':[('view_19','=',False)]}"/>
+                        	<field name="tingkat_bersih" colspan="5" readonly="1" attrs="{'invisible':[('view_20','=',False)]}"/>
+                        	<field name="serpihan" colspan="5" readonly="1" attrs="{'invisible':[('view_21','=',False)]}"/>
+                        	<field name="ukuran_serpihan" colspan="5" readonly="1" attrs="{'invisible':[('view_22','=',False)]}"/>
+                        	<field name="jenis_packing" colspan="5" readonly="1" attrs="{'invisible':[('view_23','=',False)]}"/>
+                        	<field name="kebersihan_produk" colspan="5" readonly="1" attrs="{'invisible':[('view_24','=',False)]}"/>
+                        	<field name="ph_produk_air" colspan="5" readonly="1" attrs="{'invisible':[('view_25','=',False)]}"/>
+                        	<field name="kadar_garam" colspan="5" readonly="1" attrs="{'invisible':[('view_26','=',False)]}"/>
+                        	<field name="histamin" colspan="5" readonly="1" attrs="{'invisible':[('view_27','=',False)]}"/>
+                        	<field name="analisa_proximat" colspan="5" readonly="1" attrs="{'invisible':[('view_28','=',False)]}"/>
+                        	<field name="proses_produksi" colspan="5" readonly="1" attrs="{'invisible':[('view_29','=',False)]}"/>
+                        	<field name="sterilisasi" colspan="5" readonly="1" attrs="{'invisible':[('view_30','=',False)]}"/>
+                        	<field name="pendinginan" colspan="5" readonly="1" attrs="{'invisible':[('view_31','=',False)]}"/>
+                        	<field name="kode_kaleng" colspan="5" readonly="1" attrs="{'invisible':[('view_32','=',False)]}"/>
+                        	<field name="kadaluarsa" colspan="5" readonly="1" attrs="{'invisible':[('view_33','=',False)]}"/>
+                        	<field name="etiket" colspan="5" readonly="1" attrs="{'invisible':[('view_34','=',False)]}"/>
+                        	<field name="kaleng_dus" colspan="5" readonly="1" attrs="{'invisible':[('view_35','=',False)]}"/>
+                        	<field name="keterangan" colspan="5" readonly="1" attrs="{'invisible':[('view_36','=',False)]}"/>
+			               	<field name="temp_id" invisible="1" colspan="5" readonly="1"/>
+                       	</group> -->
+                       	
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+						<group>
+							<field name="view_html" nolabel="1" readonly="1"/>
+						</group>
+						
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+  	</data>
+</odoo>

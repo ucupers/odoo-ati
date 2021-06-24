@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_trace_view">
+            <field name="name">sis.trace.view</field>
+            <field name="model">sis.trace.view</field>
+            <field name="arch" type="xml">
+            	<tree string="Traceability" create="false" import="false" decoration-danger="status_pl==True" decoration-bf="status_pl==True">
+				    <field name="pabrik_id" readonly="1"/>
+				    <field name="tgl_produksi" readonly="1"/>
+				    <field name="no_potong" readonly="1"/>
+				    <field name="fresh_fish" readonly="1"/>
+				    <field name="barcode_no" readonly="1"/>
+				    <field name="fish_box_no" readonly="1"/>
+				    <field name="quantity" readonly="1"/>
+				    <field name="fish_type" readonly="1"/>
+				    <field name="fish_size" readonly="1"/>
+				    <field name="no_tangki" readonly="1"/>
+				    <field name="no_line" readonly="1"/>
+				    <field name="basket_id" readonly="1"/>
+				    <field name="label" readonly="1"/>
+				    <field name="tespek" readonly="1"/>
+				    <field name="nocooking" readonly="1"/>
+				    <field name="nocooker" readonly="1"/>
+				    <field name="steamon" readonly="1"/>
+				    <field name="steamoff" readonly="1"/>
+				    <field name="startshowertime" readonly="1"/>
+				    <field name="stopshowertime" readonly="1"/>
+				    <field name="showerline" readonly="1"/>
+				    <field name="coolingroomline" readonly="1"/>
+				    <field name="po" readonly="1"/>
+				    <field name="status" readonly="1"/>
+				    <field name="tgl_keluar" readonly="1"/>
+				    <field name="tgl_start" readonly="1"/>
+				    <field name="tgl_finish" readonly="1"/>
+				    <field name="tgl_tuang" readonly="1"/>
+				    <field name="suhu_before" readonly="1"/>
+				    <field name="suhu_after" readonly="1"/>
+				    <field name="remark" readonly="1"/>
+				    <field name="item_no" readonly="1"/>
+				    <field name="description" readonly="1"/>
+				    <field name="vessel_no" readonly="1"/>
+				    <field name="hatch_no" readonly="1"/>
+				    <field name="voyage_no" readonly="1"/>
+				    <field name="status_pl" invisible="1" readonly="1"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_mtraceability_action" model="ir.actions.act_window">
+            <field name="name">Traceability</field>
+            <field name="res_model">sis.trace.view</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_traceability" name="Traceability"/>
+        <menuitem id="menu_sis_traceability_view" name="Traceability" action="sis_mtraceability_action" parent="menu_sis_traceability"/>  
+	</data>
+</odoo>

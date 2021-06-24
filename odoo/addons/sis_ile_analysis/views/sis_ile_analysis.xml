@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+
+        <record model="ir.ui.view" id="sis_ile_analysis_tree">
+            <field name="name">sis.ile.analysis.tree</field>
+            <field name="model">sis.ile.analysis.local</field>
+            <field name="arch" type="xml">
+            	<tree string="Stock">
+			    <field name="posting_date"/>			    
+			    <field name="item_no"/>
+			    <field name="description"/>
+			    <field name="variant"/>
+			    <field name="quantity"/>
+			    <field name="remaining_quantity"/>			
+			    <field name="uom"/>			    
+			    <field name="entrytype"/>
+			    <field name="location_code"/>			    
+			    <field name="itc"/>			    
+			    <field name="pgc"/> 
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_ile_analysis_pivot">
+            <field name="name">sis.ile.analysis.pivot</field>
+            <field name="model">sis.ile.analysis.local</field>
+            <field name="arch" type="xml">
+                <pivot string="ILE Analysis">
+                    <field name="itemdesc" type="row"/>
+                    <field name="quantity" type="measure"/>
+                    <field name="posting_date" type="col"/>                
+                </pivot>
+            </field>
+        </record>
+
+        <record id="sis_ile_analysis_action" model="ir.actions.act_window">
+            <field name="name">ILE</field>
+            <field name="res_model">sis.ile.analysis.local</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,tree</field>
+        </record>
+
+        <menuitem id="menu_sis_analysis" name="Analysis"/>
+        <menuitem id="menu_sis_ile_analysis" name="ILE" action="sis_ile_analysis_action" parent="menu_sis_analysis"/> 
+        
+	</data>
+</openerp>

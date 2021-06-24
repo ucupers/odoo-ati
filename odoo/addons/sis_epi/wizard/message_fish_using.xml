@@ -1,0 +1,21 @@
+<odoo>
+	<data>
+	
+		<record id="message_fish_using_form" model="ir.ui.view">
+            <field name="name">Fish Using Message Form</field>
+            <field name="model">message.fish.using</field>
+            <field name="arch" type="xml">
+                <form string="Warning">
+                	
+                	<field name="name"></field>
+                	<field name="id_epi" invisible="1"></field>
+                	
+                    <footer>
+                       <button name="create_fish_using_wiz" string="Yes" class="oe_highlight" type="object"></button>
+                       <button string="No" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+	</data>
+</odoo>

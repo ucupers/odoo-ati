@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record model="ir.ui.view" id="sis_storage_mapping_tree">
+            <field name="name">sis.storage.mapping.tree</field>
+            <field name="model">sis.storage.mapping</field>
+            <field name="arch" type="xml">
+            	<tree string="Storage Mapping" editable="top">
+			    <field name="item_no" readonly="1"/>
+			    <field name="description" readonly="1"/>
+			    <field name="posting_date" readonly="1"/>
+			    <field name="bin"/>
+			    <field name="location_code" readonly="1"/>			    
+			    <field name="quantity" readonly="1"/>			    
+			    <field name="remaining_quantity" readonly="1"/>			    
+			    <field name="uom" readonly="1"/>
+			    <field name="entry_no" readonly="1"/>
+			    <button name="open_history" string="H>>" type="object" class="oe_highlight"/> 
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_storage_history_tree">
+            <field name="name">sis.storage.history.tree</field>
+            <field name="model">sis.storage.history</field>
+            <field name="arch" type="xml">
+            	<tree string="History" editable="top">
+			    <field name="bin" readonly="1"/>
+			    <field name="remaining_quantity" readonly="1"/>			    
+			    <field name="create_date" readonly="1"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_storage_mapping_pivot">
+            <field name="name">sis.storage.mapping.pivot</field>
+            <field name="model">sis.storage.mapping</field>
+            <field name="arch" type="xml">
+                <pivot string="storage_mapping">
+                    <field name="description" type="row"/>
+                    <field name="remaining_quantity" type="measure"/>
+                    <field name="bin" type="col"/>                
+                </pivot>
+            </field>
+        </record>
+
+		<record id="sis_storage_mapping_search" model="ir.ui.view">
+			<field name="name">sis.storage.mapping.search</field>
+			<field name="model">sis.storage.mapping</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+                    <field name="description" filter_domain="[('description','ilike', self)]"/>                 	
+                    <field name="item_no" filter_domain="[('item_no','ilike', self)]"/>                 	
+                    <field name="bin" filter_domain="[('bin','ilike', self)]"/>                 	
+				</search>
+			</field>
+		</record>
+
+        <record model="ir.ui.view" id="sis_storage_bin_tree">
+            <field name="name">sis.storage.bin.tree</field>
+            <field name="model">sis.storage.bin</field>
+            <field name="arch" type="xml">
+            	<tree string="Storage Bin" editable="top">
+			    <field name="location_id"/>
+			    <field name="code"/>
+			    <field name="name"/>			    
+			    </tree>
+            </field>
+        </record>
+
+		<record id="sis_storage_update_action" model="ir.actions.server">
+    		<field name="name">Update from NAV</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_storage_mapping.model_sis_storage_mapping" />
+    		<field name="binding_model_id" ref="sis_storage_mapping.model_sis_storage_mapping" />
+    		<field name="state">code</field>
+    		<field name="code">model.update_ILE_storage()</field>
+		</record>
+
+        <record id="sis_storage_mapping_action" model="ir.actions.act_window">
+            <field name="name">Input</field>
+            <field name="res_model">sis.storage.mapping</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,pivot</field>
+        </record>
+
+        <record id="sis_storage_bin_action" model="ir.actions.act_window">
+            <field name="name">Bin</field>
+            <field name="res_model">sis.storage.bin</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        
+        <menuitem id="menu_sis_storage" name="Storage"/>
+        <menuitem id="menu_sis_storage_mapping" name="Input" action="sis_storage_mapping_action" parent="menu_sis_storage"/>
+        <menuitem id="menu_sis_storage_bin" name="Bin" action="sis_storage_bin_action" parent="menu_sis_storage"/>          
+	</data>
+</openerp>

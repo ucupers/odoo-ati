@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_master_akses_admin,sis_spec_product.sis_spec_akses_admin,sis_spec_product.model_sis_spec_akses,group_admin,1,1,1,1
+access_master_akses_user,sis_spec_product.sis_spec_akses_user,sis_spec_product.model_sis_spec_akses,group_user,0,0,0,0
+access_master_spec,sis_spec_product.sis_spec_prod,sis_spec_product.model_sis_spec_prod,,1,1,1,1

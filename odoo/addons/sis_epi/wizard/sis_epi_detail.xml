@@ -1,0 +1,81 @@
+<odoo>
+  <data>
+    
+    <!-- Form view -->
+    <record id="sis_epi_detail_form" model="ir.ui.view">
+        <field name="name">EPI Form View</field>
+        <field name="model">sis.epi.detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                    	<group>
+                    		<field name="target_prd_detail"></field>
+                    		<label for="qty_fish_total" string="Qty Fish Total(ton)"/>
+                    		<div class="o_row">
+                                    <field name="qty_fish_total" options='{
+			            										"fg_color": "white: qty_fish_total > yield_total_detail",
+			            										"bg_color": "maroon: qty_fish_total > yield_total_detail"}'/> / <field name="yield_total_detail"></field>
+                            </div>
+                    		
+    
+                    		<field name="epi_line_id" invisible="1"></field>
+                    	</group>
+                    </group>
+                    
+                    <!-- Notebook page -->
+                     <notebook>
+			            <page name="material_ikan" string="Material Ikan">
+			              <field name="epi_detail_line">
+			                <tree editable="bottom">
+			                 	<field name="size_fish"></field>
+			                 	<field name="qty_fish"></field>
+			                </tree>
+			              </field>
+			                
+			            </page>
+			          </notebook>
+                    
+                </sheet>   
+                <footer>
+                   <button string="Save" class="oe_highlight" type="object" name="save"/>
+                   <button string="Cancel" special="cancel"></button>
+                </footer>             
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_sis_epi_detail" model="ir.actions.act_window">
+      <field name="name">sis.epi.detail.form</field>
+      <field name="res_model">sis.epi.detail</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="sis_epi_detail_form"/>
+      <field name="target">new</field>
+      <field name="context">{'default_epi_line_id': active_id}</field>
+     </record>
+    
+    <!-- 
+    <record id="view_sis_epi_detail_nosuggest_operations" model="ir.ui.view">
+         <field name="name">sis.epi.detail.form</field>
+         <field name="model">sis.epi.detail</field>
+         <field name="priority">1000</field>
+         <field name="mode">primary</field>
+         <field name="inherit_id" ref="sis_epi.sis_epi_detail_form"/>
+         <field name="arch" type="xml">
+             <field name="epi_detail_line" position="replace">
+                 <field name="epi_detail_line_nosuggest">
+                 	<tree editable="bottom">
+	                 	<field name="size_fish"></field>
+	                 	<field name="qty_fish"></field>
+	                </tree>
+                 </field> 
+                 		
+             </field>
+         </field>
+     </record>
+    -->
+    
+    
+  </data>
+</odoo>

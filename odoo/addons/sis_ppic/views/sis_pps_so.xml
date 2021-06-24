@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="sis_pps_so_buffer_tree">
+            <field name="name">sis.pps.so.buffer.tree</field>
+            <field name="model">sis.pps.so.buffer</field>
+            <field name="arch" type="xml">
+            	<tree string="Buffer" editable="top">
+			    <field name="id" readonly="1" />
+			    <field name="selltoname"/>
+			    <field name="itemrequireddate" widget="datepicker"/>
+			    <field name="ati12"/>
+			    <field name="itm" />
+			    <field name="variant_code" />			    
+			    <field name="quantity" />		    
+			    <field name="uom" readonly="1"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_pps_so_buffer_action" model="ir.actions.act_window">
+            <field name="name">SO Buffer</field>
+            <field name="res_model">sis.pps.so.buffer</field>
+            <field name="view_id" ref="sis_pps_so_buffer_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_ppic_buffer" name="SO Buffer" action="sis_pps_so_buffer_action" parent="menu_sis_ppic_sales"/> 
+
+</odoo>

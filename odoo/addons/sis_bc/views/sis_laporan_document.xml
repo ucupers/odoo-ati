@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_laporan_dok_in_form">
+            <field name="name">sis.laporan.document.header.in.form</field>
+            <field name="model">sis.report.doc.bc</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan Pemasukan Barang Per Dokumen">
+					<sheet>
+						<group col="6">
+							<field name="rpt_kode" string="No Pengajuan" />
+							<field name="rpt_tanggal1" string="Tgl. Aju Awal" />
+							<field name="rpt_tanggal2" string="Tgl. Aju Akhir" />
+							<field name="rpt_no_bc" string="No. Pendaftaran" />
+							<field name="rpt_kode_sup" />
+							<field name="rpt_nama_sup" />
+							<field name="rpt_no_dok" string="No. Bukti Penerimaan" />
+							<field name="rpt_jenis_bc_in" />
+							<field name="rpt_pabrik" readonly="1"/>
+							<field name="rpt_init" invisible="1"/>
+							<field name="hide" invisible="1"/>
+						</group>
+						<button name="get_data_doc_bc" string="  Cari Data" type="object" class="oe_highlight" icon="fa-search"/>
+						<label string="    "/>
+						<button name="clear_data_bc" string="   Hapus Filter" type="object" class="oe_highlight" icon="fa-undo"/>
+						<label string="    "/>
+						<button name="write_xlsx" string="   Excel" type="object" class="oe_highlight" icon="fa-save"/>
+                        <notebook>
+                            <page string="Detail Pemasukan Barang Per Dokumen">
+                                <field name="rpt_doc_line">
+                                    <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+<!--  										<field name="line_no" style="text-align: right;" invisible="0"/>
+ --> 									    <button name="viewdata" type="object" icon="fa-external-link"/>
+<!--  										<field name="rel_doc_line_id" string="link" style="text-align: left;" invisible="0"/>
+ 										<field name="hide" string="hide" style="text-align: left;" invisible="0"/>
+ --> 										<field name="rpt_kode" string="__Nomor_Pengajuan__" style="text-align: left;" invisible="1"/>
+ 										<field name="rpt_nopengajuan" string="Nomor Pengajuan" style="text-align: left;" invisible="0" readonly="1"/>
+                                        <field name="rpt_tgl_bc" string="Tgl. Pengajuan" style="text-align: center;" invisible="0" readonly="1"/>
+                                        <field name="rpt_no_bc" string="No Pendaftaran" style="text-align: center;" invisible="0" readonly="1"/>
+									    <field name="rpt_tgl_no_bc" string="Tgl Pendaftaran" style="text-align: center;" readonly="1"/>
+                                        <field name="rpt_no_dok" string="No_Bukti Penerimaan" style="text-align: center;" invisible="0" readonly="1"/>
+									    <field name="rpt_tgl_dok" string="Tgl Bukti Penerimaan" style="text-align: center;" readonly="1"/>
+									    <field name="rpt_nama_sup" string="Pengirim" readonly="1"/>
+									    <field name="rpt_item_no" readonly="1"/>
+									    <field name="rpt_description" readonly="1"/>
+									    <field name="rpt_jumlah" readonly="1"/>
+									    <field name="rpt_satuan" style="text-align: center;" readonly="1"/>
+									    <field name="rpt_nilai_barang" readonly="1"/>
+									    <field name="rpt_jenis_bc" style="text-align: center;" readonly="1"/>
+<!-- 									    <field name="rpt_item_no" string="testing" attrs="{'invisible':[('hide','=',True)]}"/>
+ -->                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+					</sheet>
+			    </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="sis_laporan_dok_out_form">
+            <field name="name">sis.laporan.document.header.out.form</field>
+            <field name="model">sis.report.doc.bc</field>
+            <field name="arch" type="xml">
+            	<form string="Laporan Pengeluaran Barang Per Dokumen">
+					<sheet>
+						<group col="6">
+							<field name="rpt_kode" string="No Pengajuan"/>
+							<field name="rpt_tanggal1" string="Tgl. Aju Awal" />
+							<field name="rpt_tanggal2" string="Tgl. Aju Akhir" />
+							<field name="rpt_no_bc" string="No. Pendaftaran" />
+							<field name="rpt_kode_cust" />
+							<field name="rpt_nama_cust" />
+							<field name="rpt_no_dok" string="No. Bukti Pengeluaran" />
+							<field name="rpt_jenis_bc_out" />
+							<field name="rpt_pabrik" readonly="1"/>
+							<field name="rpt_init" invisible="1"/>
+						</group>
+						<button name="get_data_doc_bc" string="  Cari Data" type="object" class="oe_highlight" icon="fa-search"/>
+						<label string="    "/>
+						<button name="clear_data_bc" string="  Hapus Filter" type="object" class="oe_highlight" icon="fa-undo"/>
+						<label string="    "/>
+						<button name="write_xlsx" string="   Excel" type="object" class="oe_highlight" icon="fa-save"/>
+                        <notebook>
+                            <page string="Detail Pengeluaran Barang Per Dokumen">
+                                <field name="rpt_doc_line">
+                                    <tree string="Detail Laporan" limit="50" create="false" delete="false" editable="none">
+<!--  										<field name="line_no" style="text-align: right;" invisible="0"/>
+ --> 									    <button name="viewdata" string=">" type="object" icon="fa-external-link"/>
+ 										<field name="rpt_kode" string="__Nomor_Pengajuan__" style="text-align: left;" invisible="1"/>
+ 										<field name="rpt_nopengajuan" string="Nomor Pengajuan" style="text-align: left;" invisible="0" readonly="1"/>
+                                        <field name="rpt_tgl_bc" string="Tgl. Pengajuan" invisible="0" style="text-align: center;" readonly="1"/>
+                                        <field name="rpt_no_bc" string="No Pendaftaran" style="text-align: center;" invisible="0" readonly="1"/>
+									    <field name="rpt_tgl_no_bc" string="Tgl Pendaftaran" style="text-align: center;" readonly="1"/>
+                                        <field name="rpt_no_dok" string="No_Bukti Pengeluaran" style="text-align: center;" invisible="0" readonly="1"/>
+									    <field name="rpt_tgl_dok" string="Tgl Bukti Pengeluaran" style="text-align: center;" readonly="1"/>
+									    <field name="rpt_nama_cust" string="Penerima" readonly="1"/>
+									    <field name="rpt_item_no" readonly="1"/>
+									    <field name="rpt_description" readonly="1"/>
+									    <field name="rpt_jumlah" readonly="1"/>
+									    <field name="rpt_satuan" style="text-align: center;" readonly="1"/>
+									    <field name="rpt_nilai_barang" readonly="1"/>
+									    <field name="rpt_jenis_bc" style="text-align: center;" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+					</sheet>
+			    </form>
+            </field>
+        </record>
+
+        <record id="sis_laporan_dok_in_action" model="ir.actions.act_window">
+            <field name="name">Laporan Pemasukan Barang Per Dokumen</field>
+            <field name="res_model">sis.report.doc.bc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+			<field name="context">{'default_rpt_init':'69'}</field>
+ 			<field name="target">inline</field>            
+        </record>
+
+		<record id="sis_laporan_dok_in_action_form" model="ir.actions.act_window.view">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">form</field>
+		    <field name="view_id" ref="sis_laporan_dok_in_form"/>
+		    <field name="act_window_id" ref="sis_laporan_dok_in_action"/>
+		</record>        
+
+        <record id="sis_laporan_dok_out_action" model="ir.actions.act_window">
+            <field name="name">Laporan Pengeluaran Barang Per Dokumen</field>
+            <field name="res_model">sis.report.doc.bc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+			<field name="context">{'default_rpt_init':'96'}</field>
+ 			<field name="target">inline</field>            
+       </record>
+
+		<record id="sis_laporan_dok_out_action_form" model="ir.actions.act_window.view">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">form</field>
+		    <field name="view_id" ref="sis_laporan_dok_out_form"/>
+		    <field name="act_window_id" ref="sis_laporan_dok_out_action"/>
+		</record>        
+
+        <menuitem id="menu_sis_laporan_dok_in" name="Laporan Pemasukan Barang Per Dokumen" action="sis_laporan_dok_in_action" parent="menu_sis_bc" sequence="20"/>  
+        <menuitem id="menu_sis_laporan_dok_out" name="Laporan Pengeluaran Barang Per Dokumen" action="sis_laporan_dok_out_action" parent="menu_sis_bc" sequence="30"/>  
+	</data>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="sis_pps_material_order_tree">
+            <field name="name">sis.pps.material.order.tree</field>
+            <field name="model">sis.pps.material.order</field>
+            <field name="arch" type="xml">
+						<tree string="Transactions" limit="18"  editable="top">
+			    			<field name="pono" readonly="1" />
+			    			<field name="posting_date" readonly="1"/>							
+			    			<field name="line_no" readonly="1"/>							
+			    			<field name="item_no" readonly="1"/>							
+			    			<field name="description" readonly="1"/>										    			
+			    			<field name="location_code" readonly="1"/>							
+			    			<field name="estimated_time_departure" readonly="1"/>							
+			    			<field name="expected_receipt_date" readonly="1" />							
+			    			<field name="expected_date" attrs="{'readonly':[('purchasing_team','==',False)]}"/>							
+			    			<field name="requested_receipt_date" readonly="1" options='{"fg_color": "red: date_warning == 1"}'/>	
+			    			<field name="requested_date" options='{"bg_color": "yellow: demurrage_warning == 1"}'/>							
+			    			<field name="remark"/>							
+			    			<field name="quantity" readonly="1"/>							
+			    			<field name="outstanding_quantity" readonly="1"/>							
+			    			<field name="uom" readonly="1"/>							
+			    			<field name="purchasercode" readonly="1"/>							
+			    			<field name="bg" readonly="1"/>							
+			    			<field name="itc" readonly="1"/>							
+			    			<field name="pgc" readonly="1"/>							
+			    			<field name="date_warning" invisible="1"/>							
+			    			<field name="demurrage_warning" invisible="1"/>							
+			    			<field name="purchasing_team" invisible="1"/>							
+						</tree>
+            </field>
+        </record>
+
+
+		<record id="sis_pps_get_material_order_action" model="ir.actions.server">
+    		<field name="name">Get Material Order</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_material_order" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_material_order" />
+    		<field name="state">code</field>
+    		<field name="code">model.get_material_order()</field>
+		</record>
+
+		<record id="sis_pps_update_and_notif_action" model="ir.actions.server">
+    		<field name="name">Update and Notif</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_ppic.model_sis_pps_material_order" />
+    		<field name="binding_model_id" ref="sis_ppic.model_sis_pps_material_order" />
+    		<field name="state">code</field>
+    		<field name="code">model.update_and_notif()</field>
+		</record>
+
+
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_wh_bongkar_produk_tree">
+			<field name="name">sis.wh.bongkar.produk.tree</field>
+			<field name="model">sis.wh.bongkar.produk</field>
+			<field name="arch" type="xml">
+				<tree string="Muat Produk ke dalam Basket">
+					<field name="productiondate" />
+					<field name="loadingdate" />
+					<field name="produk" />
+					<field name="create_date" string="Created On" />
+					<field name="create_uid" string="Created By" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_wh_view_alert_tree">
+			<field name="name">sis.wh.view.alert.tree</field>
+			<field name="model">sis.wh.view.alert</field>
+			<field name="arch" type="xml">
+				<tree string="Muat Produk ke dalam Basket" create="false" import="false" delete="false">
+					<field name="productiondate" />
+					<field name="location" />
+					<field name="produk" />
+					<field name="basket_line"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_wh_bongkar_produk_form">
+			<field name="name">sis.wh.bongkar.produk.form</field>
+			<field name="model">sis.wh.bongkar.produk</field>
+			<field name="arch" type="xml">
+				<form string="Bongkar Produk">
+					<header>
+					</header>
+					<group col="8">
+						<field name="productiondate" colspan="4" />
+						<field name="loadingdate" colspan="4" />
+						<field name="produk_wh_id" options="{'no_open': True, 'no_create': True}" colspan="4" />
+						<field name="line" colspan="4" />
+						<field name="produk_list" invisible="1" colspan="4" />
+						<field name="produk" invisible="1" colspan="4" />
+					</group>
+					<button name="update_ile_nav_odoo" string="Update No. Pallet" type="object" class="btn" invisible="0" />
+					<group>
+					</group>
+					<notebook>
+						<page name="sis_bongkar_produk_page" string="Bongkar Produk Detail">
+							<field name="bongkar_produk_ids">
+								<tree string="Bongkar Produk Detail" editable="bottom" limit="400">
+									<field name="jam_mulai" widget="float_time" />
+									<field name="jam_selesai" widget="float_time" />
+									<field name="jam_mulai_real" invisible="1"/>
+									<field name="jam_selesai_real" invisible="1"/>
+									<field name="header_id" invisible="1" />
+									<field name="product" invisible="1" />
+									<field name="kode_nav" invisible="1" />
+									<field name="loadingdate" invisible="1" />
+									<field name="productiondate" invisible="1" />
+									<!-- <field name="basket_wh_id"/> domain = " [ '|', ( ' prodi_id ' , ' = ' , prodi_id ) , ( 'name' , ' = ' , semester_kurikulum ) ] " -->
+									<field name="basket_no" invisible="1" />
+									<field name="retort_loading_id" string="No Basket" options="{'no_open': True, 'no_create': True}" />
+									<field name="pallet_ids" string="No Pallet" widget="many2many_tags" options="{'no_open': True, 'no_create': True}" />
+									<field name="pallet" invisible="1" />
+									<field name="remark" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+		
+		<record id="sis_bongkar_produk_action" model="ir.actions.act_window">
+			<field name="name">Bongkar Produk dari Basket</field>
+			<field name="res_model">sis.wh.bongkar.produk</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<record id="sis_wh_view_alert_action" model="ir.actions.act_window">
+			<field name="name">Basket yang belum diinput</field>
+			<field name="res_model">sis.wh.view.alert</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem id="menu_sis_wh" name="Warehouse Unlabeled"/>
+		<menuitem id="menu_sis_trace_bongkar_produk" name="Bongkar Produk dari Basket" action="sis_bongkar_produk_action" parent="menu_sis_wh" />
+		<menuitem id="sis_wh_view_alert_menu" name="Data retort" action="sis_wh_view_alert_action" parent="menu_sis_wh" />
+
+	</data>
+</odoo>

@@ -1,0 +1,32 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="sis_ile_whunlabel_tree">
+			<field name="name">No Pallet Wizard</field>
+			<field name="model">sis.ile.whunlabel.loc</field>
+			<field name="arch" type="xml">
+				<form string="No Pallet" create="false" delete="false">
+ 					<sheet>
+	                    <notebook>
+	                        <page string="List No Pallet">
+	                            	<tree>
+								    	<field name="tanggal_produksi"/>				    
+								    	<field name="no_pallet"/>
+	                            	</tree>
+	                        </page>
+	                    </notebook>
+ 					</sheet>
+			    </form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="sis_ile_whunlabel_wizard">
+			<field name="name">ILE WHUnlabel</field>
+			<field name="res_model">sis.ile.whunlabel.loc</field>
+			<field name="src_model">sis.wh.bongkar.produk.detail</field>
+			<field name="view_mode">form,tree</field>
+			<field name="view_type">tree</field>
+			<field name="target">new</field>
+		</record>
+	</data>
+</odoo> -->

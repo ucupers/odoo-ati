@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	   	<record model="report.paperformat" id="paperformat_spec_report">
+	        <field name="name">paperformat.spec.report</field>
+	        <field name="default" eval="True"/>
+	        <field name="format">A5</field>
+	        <field name="page_height">0</field>
+	        <field name="page_width">0</field>
+	        <field name="orientation">Landscape</field>
+	        <field name="margin_top">10</field>
+	        <field name="margin_right">5</field>
+	        <field name="margin_bottom">20</field>
+	        <field name="margin_left">5</field>
+	        <field name="header_line" eval="False"/>
+	        <field name="header_spacing">50</field>
+	        <field name="dpi">90</field>
+	    </record>
+	    
+        <report 
+            id="report_spec"
+            string="Product Specification"
+            model="sis.spec.prod" 
+            report_type="qweb-pdf"
+            paperformat="paperformat_spec_report"
+            file="sis_spec_product.sis_spec_report" 
+            name="sis_spec_product.sis_spec_report"
+            menu="False"
+        />
+    </data>
+</odoo>

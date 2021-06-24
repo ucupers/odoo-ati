@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_buyer_filter">
+            <field name="name">sis.spec.buyer</field>
+            <field name="model">sis.spec.buyer</field>
+            <field name="arch" type="xml">
+            	<form string="Buyer">
+ 					<sheet>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight" />
+	            		<group>
+							<field name="temp_id" string="Temp ID" invisible="1"/>
+							<field name="filter" string="Find Buyer"/>
+							<field name="selected_buy" readonly="1"/>
+ 	            		</group>
+						<button name="find_buyer" string="   Find" type="object" class="oe_highlight" icon="fa-search"/>
+						<label string="    "/>
+						<button name="find_buyer" string="   Reset" type="object" class="oe_highlight" icon="fa-undo"/>
+	                    <notebook>
+	                        <page string="List of Buyer">
+	                            <field name="buyer_line">
+	                            	<tree string="Detail Buyer" limit="15" editable="none" create="false" delete="false">
+								    	<field name="buyer_no" readonly="0" />				    
+								    	<field name="description" readonly="0"/>
+								    	<field name="status_buyer" invisible="1"/>
+										<button name="select_buyer" string="Select Buyer" type="object" class="oe_highlight"/>
+ 	                            	</tree>
+	                            </field>
+	                        </page>
+	                    </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+  	</data>
+</odoo>

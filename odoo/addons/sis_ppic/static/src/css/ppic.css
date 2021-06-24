@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+.item_ppic {
+	
+[data-field-value='0'] {
+        color: transparent;
+    }
+}

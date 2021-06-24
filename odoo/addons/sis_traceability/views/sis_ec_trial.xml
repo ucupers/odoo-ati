@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_ec_trial_tree">
+			<field name="name">sis.ec.trial.tree</field>
+			<field name="model">sis.ec.trial</field>
+			<field name="arch" type="xml">
+				<tree string="Pouch Trial">
+					<field name="productiondate_ati" />
+					<field name="nama_produk" />
+					<field name="deskripsi_pouch" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_ec_trial_form">
+			<field name="name">sis.ec.trial.form</field>
+			<field name="model">sis.ec.trial</field>
+			<field name="arch" type="xml">
+				<form string="Pouch trial">
+					<header>
+					</header>
+					<group col="8">
+						<field name="productiondate_ati" colspan="4" />
+						<field name="line" colspan="4" />
+						<field name="nama_produk" colspan="4" />
+						<field name="kode_barang" colspan="4" />
+						<field name="deskripsi_pouch" colspan="4" />
+						<field name="productiondate_supplier" colspan="4" />
+						<field name="total_kedatangan" colspan="4" />
+						<field name="total_reject" colspan="4" />
+						<field name="remark" colspan="4" />
+					</group>
+					<notebook>
+						<page name="sis_ec_trial_detail_page" string="Pouch Trial Detail">
+							<field name="detail_ids">
+								<tree string="Pouch Trial Detail" editable="top" limit="400">
+									<field name="incoming_date" />
+									<field name="invoices" />
+									<field name="incoming_total" />
+									<field name="using_total" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+		
+		<record id="sis_ec_trial_action" model="ir.actions.act_window">
+			<field name="name">Pouch Trial</field>
+			<field name="res_model">sis.ec.trial</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<menuitem id="menu_sis_ec_trial" name="Pouch Trial" action="sis_ec_trial_action" parent="menu_sis_ec" sequence="20"/>
+		
+	</data>
+</odoo>

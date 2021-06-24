@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="sis_por_report_rutin">
+		<t t-call="web.html_container">
+			<t t-name="report.external_layout_header">
+				<div class="header"></div>
+				<div class="footer">
+					<div style="border: 1px solid #000000; width: 100%">
+						<table class="table" width="100%">
+							<thead></thead>
+							<tbody>
+								<tr>
+	 								<td width="50%" style="font-size:11px"></td>
+	 								<td width="15%" style="font-size:11px">
+	 									<table width="100%" height="100%">
+	 										<tr><td align="center">PEMESAN :</td></tr>
+	 										<tr><td align="center" height="60px"></td></tr>
+	 										<tr><td align="center">..........................</td></tr>
+	 										<tr><td align="center" valign="bottom">Nama &amp; Sign</td></tr>
+	 									</table>
+	 								</td>
+	 								<td width="5%" style="font-size:11px"></td>
+	 								<td width="15%" style="font-size:11px">
+	 									<table width="100%" height="100%">
+	 										<tr><td align="center">MANAGER :</td></tr>
+	 										<tr><td align="center" height="60px"></td></tr>
+	 										<tr><td align="center">..........................</td></tr>
+	 										<tr><td align="center" valign="bottom">Nama &amp; Sign</td></tr>
+	 									</table>
+	 								</td>
+	 								<td width="5%" style="font-size:11px"></td>
+								</tr>
+							</tbody>
+						</table>
+					
+					</div>
+				</div>
+			</t>
+
+			<t t-call="web.external_layout">
+				<div class="page">
+					<style>
+						table {
+							font-family 	: arial, sans-serif;
+							border-collapse : collapse;
+							width 			: 100%;
+						}
+
+						td, th {
+							border 	: 1px solid #000000;
+							padding : 8px;
+							
+						}
+						
+						.table-condensed > tbody > tr {
+        					page-break-inside: avoid !important;
+    					}
+    					
+    					
+						<!-- tr:nth-child(even) { background-color: #dddddd; } -->
+					</style>
+					
+					<t t-foreach="docs" t-as="rpt">
+						<table class="table-condensed" width="100%">
+							<tr>
+								<td width="4%" style="border:0"></td>
+								<td width="4%" style="border:0"></td>
+								<td width="15%" style="border:0"></td>
+								<td width="41%" style="border:0"></td>
+								<td width="8%" style="border:0"></td>
+								<td width="8%" style="border:0"></td>
+								<td width="4%" style="border:0"></td>
+								<td width="4%" style="border:0"></td>
+								<td width="3%" style="border:0"></td>
+								<td width="9%" style="border:0"></td>
+							</tr>
+							<tr>
+								<td colspan="2" align="center" style="border:0"><img class="img" src="/sis_purreq/static/src/images/logo-aja.png" height="55%"/></td>
+								<td colspan="6" align="center" style="border:0; font-size:16px"><b>DAFTAR PERMINTAAN BARANG</b></td>
+								<td colspan="2" style="border:0; font-size:8px" align="right"></td>
+							</tr>
+ 							<tr><td style="border:0" colspan="10" height="5px"></td></tr>
+							<tr>
+								<td colspan="2" style="font-size:12px">Tanggal</td>
+								<td style="font-size:12px"><span t-field="rpt.tgl_doc"/></td>
+								<td colspan="2" style="border:1; border-top: 2px solid #ffffff"></td>
+								<td colspan="5" rowspan="2" style="font-size:12px" align="center">Nomor : <span t-field="rpt.no_doc"/></td>
+							</tr>
+							<tr>
+								<td colspan="2" style="font-size:12px">Section</td>
+								<td style="font-size:12px"><span t-field="rpt.section_id"/></td>
+								<td style="border:1; border-bottom: 2px solid #ffffff" colspan="2"></td>
+							</tr>
+							<tr><td style="border:0" colspan="10" height="5px"></td></tr>
+							<tr>
+								<td align="center" style="font-size:12px"><b>No</b></td>
+								<td colspan="3" align="center" style="font-size:12px"><b>KETERANGAN</b></td>
+								<td align="center" style="font-size:12px"><b>JUMLAH</b></td>
+								<td align="center" style="font-size:12px"><b>SATUAN</b></td>
+								<td colspan="2" align="center" style="font-size:12px"><b>ALASAN ORDER</b></td>
+								<td colspan="2" align="center" style="font-size:12px"><b>ESTIMASI HARGA</b></td>
+							</tr>
+
+		 	        		<t t-foreach="rpt.por_line_id" t-as="o">
+								<tr valign="top">
+									<td align="right"><span t-esc="o.no_line" style="font-size: 12px !important;"/> </td>
+									<td colspan="3"> <span t-esc="o.item_desc" style="font-size: 12px !important;"/> (<span t-esc="o.item_no" style="font-size: 12px !important;"/>)<br/><i><span t-esc="o.item_remark" style="font-size: 12px !important;"/></i></td>
+									<td align="right"><span t-esc="o.item_qty" style="font-size: 12px !important;"/></td>
+									<td align="center"><span t-esc="o.item_uom" style="font-size: 12px !important; word-wrap: break-word"/></td>
+									<td colspan="2" align="center"><span t-esc="o.alasan" style="font-size: 12px !important;word-wrap: normal"/></td>
+									<td align="left" style="font-size:11px"><span t-esc="o.curr_code" style="font-size: 12px !important;word-wrap: normal"/></td>
+									<td align="right" style="font-size:11px"><span t-esc="'%.2f'% o.estimasi_harga" style="font-size: 12px !important;word-wrap: normal"/></td>
+								</tr>
+							</t>
+							
+						</table>
+
+
+					</t>
+					
+				</div>
+			</t>
+
+		</t>
+	</template>
+</odoo>

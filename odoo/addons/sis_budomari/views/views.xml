@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="sis_budomari.list">
+      <field name="name">sis_budomari list</field>
+      <field name="model">sis_budomari.sis_budomari</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="sis_budomari.action_window">
+      <field name="name">sis_budomari window</field>
+      <field name="res_model">sis_budomari.sis_budomari</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="sis_budomari.action_server">
+      <field name="name">sis_budomari server</field>
+      <field name="model_id" ref="model_sis_budomari_sis_budomari"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="sis_budomari" id="sis_budomari.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="sis_budomari.menu_1" parent="sis_budomari.menu_root"/>
+    <menuitem name="Menu 2" id="sis_budomari.menu_2" parent="sis_budomari.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="sis_budomari.menu_1_list" parent="sis_budomari.menu_1"
+              action="sis_budomari.action_window"/>
+    <menuitem name="Server to list" id="sis_budomari" parent="sis_budomari.menu_2"
+              action="sis_budomari.action_server"/>
+    -->
+  </data>
+</odoo>

@@ -1,0 +1,8 @@
+<odoo>
+	<data>
+		
+        <menuitem name="Item Coba" id="item_coba_menu" action="sis_coba_action_window" sequence="102" 
+        		  parent="sis_master.menu_sis_master"/>
+		
+	</data>
+</odoo>

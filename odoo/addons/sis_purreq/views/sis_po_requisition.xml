@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_items_tree">
+            <field name="name">sis.por.items.tree</field>
+            <field name="model">sis.por.items</field>
+            <field name="arch" type="xml">
+            	<tree string="List Items">
+				<field name="item_no"/>
+                <field name="item_desc"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="view_items_search" model="ir.ui.view">
+            <field name="name">sis.por.items.search</field>
+            <field name="model">sis.por.items</field>
+            <field name="arch" type="xml">
+                <search string="Search Items">
+                    <field name="item_no"/>
+                    <field name="item_desc"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_po_requisition_tree">
+            <field name="name">sis.po.requisition.tree</field>
+            <field name="model">sis.po.requisition</field>
+            <field name="arch" type="xml">
+            	<tree string="List PO Requisition">
+				<field name="no_doc"/>
+                <field name="tgl_doc"/>
+                <field name="pabrik_id"/>
+                <field name="section_id"/>
+                <field name="state_doc"/>
+			    </tree>
+            </field>
+        </record>
+        
+		<record model="ir.ui.view" id="sis_po_requisition_form">
+			<field name="name">sis.po.requisition.form</field>
+			<field name="model">sis.po.requisition</field>
+			<field name="arch" type="xml">
+				<form string="PO Requisition">
+                    <header>
+                        <button name="kembali" type="object" icon="fa-arrow-left" string="  Back" class="oe_highlight"  attrs="{'invisible': [('no_doc','=','/')]}"/>
+						<button name="%(report_por)d" class="oe_highlight" icon="fa-print" string="  Print" type="action" attrs="{'invisible': [('state_doc','!=','released')]}"/>
+						<button name="%(report_por_rutin)d" class="oe_highlight" icon="fa-print" string="  Print Order Rutin" type="action" attrs="{'invisible': ['|',('state_doc','!=','released'),('user_id','!=','storage@ati.id')]}"/>
+                        <button name="action_release" string="Release" type="object" class="oe_highlight" attrs="{'invisible': [('state_doc','!=','draft')]}"/>
+                        <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('state_doc','!=','released')]}"/>
+                        <button name="action_close" string="Close" type="object" class="oe_highlight" attrs="{'invisible': [('state_doc','!=','confirmed')]}"/>
+                        <button name="action_cancel" string="Cancel" type="object" class="oe_highlight" attrs="{'invisible': [('state_doc','!=','released')]}"/>
+                        <button name="action_undo" string="Undo" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state_doc','=','draft'),('state_doc','=','closed')]}"/>
+<!--                         <button name="baru" string="Baru" type="object" class="oe_highlight" /> -->
+						<button name="sync_nav" string="Sync. NAV" type="object" class="oe_highlight" />
+                        <field name="state_doc" widget="statusbar" statusbar_visible="draft,released,confirmed,canceled,closed"/>
+					</header>
+<!-- 					<sheet> -->
+						<div class="oe_title">
+							<h1>
+								<field name="no_doc" class="oe_inline" readonly="1" />
+							</h1>
+						</div>
+						<group col="8">
+							<field name="tgl_doc" string="Tanggal" colspan="2" readonly="1"/>
+							<field name="pabrik_id" string="Factory" colspan="2" readonly="1"/>
+							<label string="" colspan="4" />
+							<field name="section_id" string="Section" colspan="2" readonly="1" />
+							<field name="item_type" string="Type" colspan="2" />
+							<label string="" colspan="4" />
+							<field name="user_id" string="Login" colspan="2" invisible="1" />
+						</group>
+
+						<notebook>
+							<page string="Detail Requisition">
+								<field name="por_line_id">
+									<tree string="Detail requisition" editable="bottom" limit="30">
+										<field name="no_line" string="Line" readonly="1"/>
+										<field name="item_type" string="Type" readonly="1" invisible="1"/>
+										<field name="item_line_id" string="Deskripsi Item" options="{'no_open':True,'no_edit':True,'no_create':True}" />
+										<field name="item_var_line_id" string="Variant"  options="{'no_open':True,'no_edit':True,'no_create':True}" />
+										<field name="item_no" string="__Kode__" readonly="1" invisible="1"/>
+										<field name="por_line_id" invisible="1"/>
+										<field name="item_desc" string="Deskripsi POR" readonly="0" invisible='1' />
+										<field name="item_qty" string="Jumlah" />
+										<field name="uom_line_id" string="Satuan" options="{'no_open':True,'no_edit':True,'no_create':True}" />
+										<field name="alasan" string="Alasan" />
+										<field name="curr_code" style="text-align: center;" readonly="1" />
+										<field name="estimasi_harga" string="Estimasi Harga" />
+<!-- 										<field name="estimasi_total" string="Estimasi Total" /> -->
+<!-- 										<field name="no_po_nav" string="No. PO NAV" readonly="1" /> -->
+										<field name="item_remark" string="Catatan / Remark" />
+<!-- 				                        <button name="close_por_line" type="object" icon="fa-times" /> -->
+									</tree>
+								</field>
+							</page>
+							<page string="Audit Trail">
+								<group>
+									<group>
+										<field name="create_uid" readonly="1" />
+										<field name="create_date" readonly="1" />
+									</group>
+									<group>
+										<field name="write_uid" readonly="1" />
+										<field name="write_date" readonly="1" />
+									</group>
+								</group>
+							</page>
+						</notebook>
+<!-- 					</sheet> -->
+<!-- 					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+
+						<field name="message_ids" widget="mail_thread" />
+					</div> -->
+				</form>
+			</field>
+		</record>
+        
+        
+        <record id="sis_po_requisition_action" model="ir.actions.act_window">
+            <field name="name">Form Requisition</field>
+            <field name="res_model">sis.po.requisition</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="sis_items_action" model="ir.actions.act_window">
+            <field name="name">List Items</field>
+            <field name="res_model">sis.por.items</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_sis_purreq" name="PO Requisition"/>
+<!--         <menuitem id="menu_sis_po_requisition" name="Form Requisition" action="sis_po_requisition_action" parent="menu_sis_purreq"/> -->  
+	</data>
+</odoo>

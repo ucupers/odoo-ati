@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_gl_account_tree">
+            <field name="name">sis.gl.account.tree</field>
+            <field name="model">sis.gl.account</field>
+            <field name="arch" type="xml">
+            	<tree string="GL Account">
+			    <field name="no"/>
+			    <field name="name"/>			    
+			    <field name="income_balance"/>			    
+			    <field name="account_type"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_gl_account_action" model="ir.actions.act_window">
+            <field name="name">GL Account</field>
+            <field name="res_model">sis.gl.account</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_gl_account" name="GL Account" action="sis_gl_account_action" parent="menu_sis_master"/>
+        
+	</data>
+</openerp>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+		<record model="ir.ui.view" id="sis_packing_supply_tree">
+			<field name="name">sis.packing.supply.tree</field>
+			<field name="model">sis.packing.supply</field>
+			<field name="arch" type="xml">
+				<tree string="Packing Supply" editable="bottom">
+					<button name="simpanan" string="Simpanan" type="object" icon="fa-calendar" invisible="0" />
+					<field name="productiondate" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="materialdate" string="Material Date" invisible="1"/>
+					<field name="location" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="shift" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="status_simpanan" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="status_xray" attrs="{'readonly':[('id', '!=', False )]}" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="status_fish" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="line_cl" invisible="1" options='{"bg_color": "#B0C4DE: status_xray==True"}' attrs="{'invisible':[('status_fish', '==', 'FZ')]}" />
+					<field name="jam_cl" widget="float_time" options='{"bg_color": "#B0C4DE: status_xray==True"}' readonly="0" />
+					<field name="jam_packing" string="Jam Supply" widget="float_time" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="material" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="rel_unpack_supply" widget="many2many_tags" string="Basket Loin" attrs="{'invisible':[('status_fish', '!=', 'FZ')]}"
+						options="{'no_open': True, 'no_create_edit': True, 'bg_color': '#B0C4DE: status_xray==True'}" />
+					<field name="rel_item" widget="many2many_tags" string="Item" attrs="{'invisible':[('status_fish', '!=', 'RM')]}"
+						options="{'no_open': True, 'no_create_edit': True, 'bg_color': '#B0C4DE: status_xray==True'}" />
+					<field name="item" invisible="1" />
+					<field name="kindoffish" invisible="1" />
+					<field name="kindoffish2" invisible="1" />
+					<field name="rel_supply_jenisikan" string="Jenis Ikan" widget="many2many_tags" attrs="{'invisible':[('status_fish', '!=', 'RM')]}" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="status" attrs="{'invisible':[('status_fish', '!=', 'RM')]}" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="rel_pre_supply" widget="many2many_tags" string="No Basket" options="{'no_open': True, 'no_create_edit': True, 'bg_color': '#B0C4DE: status_xray==True'}"
+						attrs="{'invisible':[('status_fish', '!=', 'RM')]}" />
+					<field name="basket_no" invisible="1" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="rel_line_supply" widget="many2many_tags" string="Untuk Line" options="{'no_open': True, 'no_create_edit': True, 'bg_color': '#B0C4DE: status_xray==True'}" />
+					<field name="qty_box" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="qty_kg" options='{"bg_color": "#B0C4DE: status_xray==True"}' invisible="1" />
+					<field name="total_kg" readonly="0" options='{"bg_color": "#B0C4DE: status_xray==True"}' invisible="1" />
+					<field name="rel_product_supply" colspan="4" options="{'no_open': True, 'no_create_edit': True, 'bg_color': '#B0C4DE: status_xray==True'}" />
+					<field name="kind_of_product" invisible="1" />
+					<field name="remark" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="pic" options='{"bg_color": "#B0C4DE: status_xray==True"}' />
+					<field name="jam_cl_real" invisible="1" />
+					<field name="jam_packing_real" invisible="1" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_packing_supply_basket_tree">
+			<field name="name">sis.packing.supply.basket.tree</field>
+			<field name="model">sis.packing.supply.basket</field>
+			<field name="arch" type="xml">
+				<tree string="Basket Packing Supply" editable="top">
+					<field name="rel_packing_detail_sup" />
+					<field name="productiondate" />
+					<field name="material" />
+					<field name="basket_no" />
+					<button type="object" string="Delete" name="unlink" icon="fa-trash" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="materialdate_sup_wizard_form">
+			<field name="name">Tanggal Produksi Simpanan</field>
+			<field name="model">materialdate.sup.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="sup_id" invisible="1"/>
+						<field name="old_date" string="Tanggal Produksi"/>
+						<field name="new_date" string="Tanggal Produksi Bahan"/>
+					</group>
+					<footer>
+						<button name="change_date" type="object" string="Simpan" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="change_date_sup_wizard">
+			<field name="name">Simpanan Wizard</field>
+			<field name="res_model">materialdate.sup.wizard</field>
+			<field name="src_model">sis.packing.supply</field>
+			<field name="view_mode">form</field>
+			<field name="view_type">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<record id="sis_packing_supply_action" model="ir.actions.act_window">
+			<field name="name">Supply</field>
+			<field name="res_model">sis.packing.supply</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem id="menu_sis_trace_packing_supply" name="Supply" action="sis_packing_supply_action" parent="menu_sis_packing" />
+	</data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record model="ir.module.category" id="module_category_spec"> 
+			<field name="name">Product Spec</field>
+			<field name="description">Product Spec</field>
+			<field name="sequence">7</field>
+		</record>
+
+		<record id="group_user" model="res.groups">
+			<field name="name">READ</field>
+			<field name="category_id" ref="module_category_spec" />
+		</record>
+
+		<record id="group_admin" model="res.groups">
+			<field name="name">FULL</field>
+			<field name="category_id" ref="module_category_spec" />
+			<field name="implied_ids" eval="[(4, ref('group_user'))]" />
+			<field name="users" eval="[(4, ref('base.user_root'))]" />
+		</record>
+
+	</data>
+</odoo>

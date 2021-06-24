@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="epi_budomari_master_tree_view">
+          <field name="name">sis.epi.budomari.master.tree</field>
+          <field name="model">sis.epi.budomari.master</field>
+          <field name="arch" type="xml">
+              <tree string="Budomari">
+                <field name="name"></field>
+              </tree>
+          </field>
+        </record>
+
+        <!-- Membuat tampilan form -->
+        <record model="ir.ui.view" id="epi_budomari_master_form_view">
+        <field name="name">sis.epi.budomari.master.form</field>
+        <field name="model">sis.epi.budomari.master</field>
+        <field name="arch" type="xml">
+          <form string="New">
+            <sheet>
+              <group>
+                <group>
+                  <field name="name"></field>
+                </group>
+              </group>
+            </sheet>
+          </form>
+        </field>
+        </record>
+
+
+        <!-- ### Membuat Action/Event Object Kursus ### -->
+        <record model="ir.actions.act_window" id="epi_budomari_master_list_action">
+          <field name="name">Master Budomari</field>
+          <field name="res_model">sis.epi.budomari.master</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form</field>
+          <field name="help" type="html">
+              <p class="oe_view_nocontent_create">Create a new Budomari</p>
+          </field>
+        </record>
+
+
+    </data>
+</odoo>

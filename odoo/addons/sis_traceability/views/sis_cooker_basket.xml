@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_cooker_basket_tree">
+        	<field name="name">sis.cooker.basket.tree</field>
+        	<field name="model">sis.cooker.basket</field>
+        	<field name="arch" type="xml">
+            	<tree string="Basket ID" editable="top" decoration-danger="status_pnl==True" decoration-bf="status_pnl==True">
+				    <field name="rel_basket_cutting" string="Label/No Urut" options="{'no_open': True, 'no_create': True}"/>
+				    <field name="label" invisible="1"/>
+				    <field name="productiondate" invisible="1"/>
+				    <field name="location" invisible="1"/>
+				    <field name="basket_id"/>
+				    <field name="location_nobasket" invisible="0"/>
+				    <field name="status_pnl" invisible="1"/>
+				    <field name="status_basket" invisible="1"/>
+				    <field name="tespek" invisible="1"/>		
+				    <field name="combination" invisible="1"/>			    
+				    <field name="tespek_desc" string="Test" invisible="0"/>				    
+					<button type="object" string="Delete" name="unlink" icon="fa-trash" />				    
+ 			    </tree>
+        	</field>
+        </record>
+
+
+ 	</data>
+</odoo>

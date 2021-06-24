@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="sis_ile_temp_tree">
+            <field name="name">sis.ile.stock.tree</field>
+            <field name="model">sis.ile.</field>
+            <field name="arch" type="xml">
+            	<tree string="Stock" >
+			    <field name="postingdate"/>
+			    <field name="item_no"/>
+			    <field name="description"/>
+			    <field name="variant"/>
+			    <field name="itc"/>
+			    <field name="pgc"/>
+			    <field name="location"/>
+			    <field name="qty"/>
+			    <field name="stockatdate"/>
+			    <field name="uom"/>
+			    <field name="qtyperuom"/>
+			    <field name="remainingqty"/>
+			    <field name="bg"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_ile_temp_pivot1">
+            <field name="name">sis.ile.temp.pivot</field>
+            <field name="model">sis.ile_temp</field>
+            <field name="arch" type="xml">
+                <pivot string="Stock">
+                    <field name="description" type="row"/>
+                    <field name="remaining_quantity" type="measure"/>
+                    <field name="location_code" type="col"/>                
+                </pivot>
+            </field>
+        </record>
+
+        <record id="sis_ile_temp_action" model="ir.actions.act_window">
+            <field name="name">Stock</field>
+            <field name="res_model">sis.ile.temp</field>
+            <field name="view_id" ref="sis_ile_temp_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_ile_temp" name="Stock" action="sis_ile_temp_action" parent="menu_sis_ppic_sales_confirmation"/> 
+
+</odoo>

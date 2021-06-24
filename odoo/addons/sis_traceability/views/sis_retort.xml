@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_retort_tree">
+			<field name="name">sis.retort.header.tree</field>
+			<field name="model">sis.retort.header</field>
+			<field name="arch" type="xml">
+				<tree string="Retort">
+					<field name="productiondate" />
+					<field name="no_retort" string="Nomor Retort" />
+					<field name="create_date" />
+					<field name="create_uid" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_retort_form">
+			<field name="name">sis.retort.header.form</field>
+			<field name="model">sis.retort.header</field>
+			<field name="arch" type="xml">
+				<form string="Retort">
+					<header>
+					</header>
+					<group col="8">
+						<field name="productiondate" colspan="4" />
+						<field name="location" colspan="4" />
+						<field name="no_retort" string="Nomor Retort" colspan="4" />
+						<field name="siklus" colspan="4" invisible="1" />
+					</group>
+					<notebook>
+						<page name="sis_retort_detail_page" string="Retort Detail">
+							<field name="retort_detail_ids">
+								<tree string="Retort Detail" editable="top">
+									<field name="productiondate" invisible="1" />
+									<field name="location" invisible="1" />
+									<field name="basket_filt" invisible="1" />
+									<button name="copy" string="Copy" type="object" class="btn" />
+									<field name="no_siklus" string="Nomor Siklus" />
+									<field name="produk_ids" widget="many2many_tags" string="Jenis Produk" options="{'no_open': True, 'no_create_edit': True'}"
+										domain="[('status_take_retort','!=','True'),('productiondate','=',productiondate),('location','=',location)]" /> 
+									<field name="produk" invisible="1" />
+									<field name="basket_no" invisible="1" />
+									<field name="basket_ids" widget="many2many_tags" string="Nomor Basket" options="{'no_open': True, 'no_create_edit': True'}" />
+									<field name="basket_idss" invisible="1" />
+									<field name="jml_basket" />
+									<field name="steam_on" widget="float_time" />
+									<field name="steam_off" widget="float_time" />
+									<field name="jam_basket_keluar" widget="float_time" />
+									<field name="steam_on_real" invisible="1" />
+									<field name="steam_off_real" invisible="1" />
+									<field name="jam_basket_keluar_real" invisible="1" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+		<record id="sis_retort_action" model="ir.actions.act_window">
+			<field name="name">Retort</field>
+			<field name="res_model">sis.retort.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+
+		<menuitem id="menu_sis_retort" name="Retort" />
+		<menuitem id="menu_sis_trace_retort" name="Retort" action="sis_retort_action" parent="menu_sis_retort" />
+		<!-- <menuitem id="menu_stts_retort" name="Produk" action="sis_stts_retort_action" parent="menu_sis_retort" sequence="10"/> -->
+	</data>
+</odoo>

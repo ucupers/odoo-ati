@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record id="cs_today_filter" model="ir.ui.view">
+			<field name="name">cs.today.filter</field>
+			<field name="model">sis.cs.header</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<xpath expr="/search/filter[1]" position="before">
+					<filter string="Today" name="Today" domain="[['tgl_produksi','=',datetime.datetime.now().strftime('%Y-%m-%d')]]" />
+				</xpath>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_fish_status_tree">
+			<field name="name">sis.fish_status.history.tree</field>
+			<field name="model">sis.cs.detail</field>
+			<field name="arch" type="xml">
+				<tree string="Fish Status" decoration-primary="status=='HOLD'" decoration-danger="status=='REJECT'" create="false" import="false">
+					<field name="tgl_produksi" />
+					<field name="create_date" string="Created On" />
+					<field name="create_uid" string="Created By" />
+					<field name="pabrik_id" string="_Lokasi" />
+					<field name="barcode_no" string="____Barcode____" />
+					<field name="tgl_keluar" string="__Tgl._Keluar__" />
+					<field name="fish_box_no" string="_FishBox_" />
+					<field name="fresh_fish" string="Fresh Fish" />
+					<field name="no_potong" string="No. Potong" />
+					<field name="quantity" string="_Qty._" />
+					<field name="item_no" />
+					<field name="description" string="___________Description___________" />
+					<field name="vessel_no" string="________Vessel_No.________" />
+					<field name="hatch_no" string="______Hatch_No.______" />
+					<field name="voyage_no" string="_Voyage_No._" />
+					<field name="lot_no" string="__________Lot_No.__________" />
+					<field name="status" />
+					<field name="status_analisa" />
+					<field name="status_process" />
+					<field name="histamin" string="_Histamin_" />
+					<field name="kadar_garam" string="Kadar_Garam" />
+					<field name="orange_meat" string="_________Orange_Meat_________" />
+					<field name="blackspot" string="__Blackspot__" />
+					<field name="pemakaian" string="______Pemakaian_khusus______" />
+					<field name="kontaminasi" string="______Kontaminasi______" />
+					<field name="remark_analisa" string="_________Remark_Analisa_________" />
+					<field name="remark_process" string="_________Remark_Process_________" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_fish_tree">
+			<field name="name">sis.cs.header.tree</field>
+			<field name="model">sis.cs.header</field>
+			<field name="arch" type="xml">
+				<tree string="Fish Status">
+					<field name="cs_id" />
+					<field name="pabrik_id" />
+					<field name="tgl_produksi" />
+					<field name="fresh_fish" />
+					<field name="invoice" string="Kategori" invisible="1" />
+					<field name="no_potong" />
+					<field name="total_tonase" />
+					<field name="create_date" />
+					<field name="create_uid" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_fish_tree2">
+			<field name="name">sis.cs.header.tree2</field>
+			<field name="model">sis.cs.header</field>
+			<field name="arch" type="xml">
+				<tree string="Fish Status">
+					<field name="cs_id" />
+					<field name="pabrik_id" />
+					<field name="tgl_produksi" />
+					<field name="fresh_fish" />
+					<field name="invoice" string="Kategori" invisible="1" />
+					<field name="no_potong" />
+					<field name="total_tonase" />
+					<field name="create_date" />
+					<field name="create_uid" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_loin_tree">
+			<field name="name">sis.cs.header.tree</field>
+			<field name="model">sis.cs.header</field>
+			<field name="arch" type="xml">
+				<tree string="Loin Status">
+					<field name="cs_id" />
+					<field name="pabrik_id" />
+					<field name="tgl_produksi" />
+					<field name="invoice" string="Kategori" />
+					<field name="no_potong" invisible="1" />
+					<field name="total_tonase" invisible="1" />
+					<field name="create_date" />
+					<field name="create_uid" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_loin_tree2">
+			<field name="name">sis.cs.header.tree2</field>
+			<field name="model">sis.cs.header</field>
+			<field name="arch" type="xml">
+				<tree string="Loin Status">
+					<field name="cs_id" />
+					<field name="pabrik_id" />
+					<field name="tgl_produksi" />
+					<field name="invoice" string="Kategori" />
+					<field name="no_potong" invisible="1" />
+					<field name="total_tonase" invisible="1" />
+					<field name="create_date" />
+					<field name="create_uid" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_fish_form">
+			<field name="name">sis.cs.header.form</field>
+			<field name="model">sis.cs.header</field>
+			<field name="arch" type="xml">
+				<form string="Fish Status">
+					<header>
+						<field name="user_checker" invisible='1' readonly='1' />
+						<field name="user_unchecker" invisible='1' readonly='1' />
+						<button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('cs_state','!=','draft'),('user_checker','=',False)]}" />
+						<button name="action_unconfirm" string="Un-Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('cs_state','!=','confirm'),('user_unchecker','=',False)]}" />
+						<field name="cs_state" widget="statusbar" statusbar_visible="draft,confirm" />
+					</header>
+
+					<sheet>
+						<div class="oe_title">
+							<h1>
+								<field name="cs_id" class="oe_inline" readonly="1" />
+							</h1>
+						</div>
+						<group col="8">
+							<field name="tgl_produksi" string="Tanggal Produksi" colspan="2" attrs="{'readonly': [('id', '!=', False)]}"/>
+							<field name="pabrik_id" string="Lokasi" colspan="2" />
+							<label string="" colspan="4" />
+
+							<field name="no_potong" string="No. Potong" colspan="2" attrs="{'readonly':['|',('invoice','=','3'),('id', '!=', False)]}" />
+							<field name="total_tonase" string="Tonase" colspan="2" readonly='1' />
+							<label string="" colspan="4" />
+							<field name="invoice" string="Kategori" colspan="2" widget="radio" options="{'horizontal': true}" invisible="1" />
+							<label string="" colspan="6" invisible="1" />
+							<field name="fresh_fish" string="Fresh Fish" colspan="2" />
+							<label string="" colspan="6" />
+							<field name="invoice_no" string="No. Sizing" colspan="2" attrs="{'invisible':[('fresh_fish','!=',True)]}" />
+							<label string="" colspan="6" />
+							<button name="get_data_fresh_fish" string="Get Data Fresh Fish" type="object" class="oe_highlight" attrs="{'invisible':[('fresh_fish', '!=', True)]}" />
+						</group>
+
+						<notebook>
+							<page string="Detail Fish">
+								<field name="cs_line_id">
+									<tree string="Detail Fish" editable="bottom" decoration-danger="status_pl==True" decoration-bf="status_pl==True" limit="300">
+										<field name="no_urut" string="No Urut" readonly="0"/>
+										<field name="barcode_no" string="__Barcode / Sizing No.__" />
+										<field name="tgl_produksi" string="Tgl. Produksi" invisible="1" />
+										<field name="pabrik_id" string="Lokasi" invisible="1" />
+										<field name="po" invisible="1" />
+										<field name="tgl_keluar" string="_____Tgl._Keluar_____" style="text-align: center;" />
+										<field name="no_potong" string="No. Potong" invisible="1" />
+										<field name="fresh_fish" string="Fish Type" invisible="1" style="text-align: center;" />
+										<field name="quantity" string="__Qty.__" />
+										<field name="quantity_loin" invisible="1" />
+										<field name="real_item_no" string="Fish Size" invisible="1" />
+										<field name="real_itemno" invisible="1" />
+										<field name="product_group_code" string="Product Group Code" invisible="1" />
+										<field name="lot_no" string="_________Lot_No._________" readonly="1" />
+										<field name="fish_box_no" string="FishBox" readonly="1" style="text-align: center;" />
+										<field name="item_no" string="Item_No." readonly="1" style="text-align: center;" />
+										<field name="description" string="________Description________" readonly="1" />
+										<field name="vessel_no" string="______Vessel_No.______" readonly="1" />
+										<field name="hatch_no" string="__Hatch_No.__" readonly="1" />
+										<field name="voyage_no" string="Voyage No." readonly="1" style="text-align: center;" />
+										<field name="status" string="Status" readonly="1" style="text-align: center;" />
+										<field name="status_analisa" string="Status Analisa" invisible="1" readonly="1" />
+										<field name="status_process" string="Status Process" invisible="1" readonly="1" />
+										<field name="histamin" string="____Histamin____" invisible="1" readonly="1" />
+										<field name="kadar_garam" string="___Kadar Garam___" invisible="1" readonly="1" />
+										<field name="orange_meat" string="___Orange Meat___" invisible="1" readonly="1" />
+										<field name="blackspot" string="___Blackspot___" invisible="1" readonly="1" />
+										<field name="pemakaian" string="___Kasus_Khusus___" invisible="1" readonly="1" />
+										<field name="kontaminasi" string="______Kontaminasi______" invisible="1" readonly="1" />
+										<field name="lain2_analisa" string="_Lain-lain_Analisa_" invisible="1" readonly="1" />
+										<field name="lain2_process" string="_Lain-lain_Process_" invisible="1" readonly="1" />
+										<field name="remark_analisa" string="__Remark_Analisa__" invisible="1" readonly="1" />
+										<field name="remark_process" string="_Remark_Process_" invisible="1" readonly="1" />
+										<field name="status_def" string="Status" invisible="1" readonly="1" />
+										<field name="status_pl" string="Pole Line" invisible="1" readonly="1" />
+										<field name="remark" />
+									</tree>
+								</field>
+							</page>
+							<page string="Audit Trail">
+								<group>
+									<group>
+										<field name="create_uid" readonly="1" />
+										<field name="create_date" readonly="1" />
+									</group>
+									<group>
+										<field name="write_uid" readonly="1" />
+										<field name="write_date" readonly="1" />
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_loin_form">
+			<field name="name">sis.cs.header.form</field>
+			<field name="model">sis.cs.header</field>
+			<field name="arch" type="xml">
+				<form string="Fish Status">
+					<header>
+						<field name="user_checker" invisible='1' readonly='1' />
+						<field name="user_unchecker" invisible='1' readonly='1' />
+						<button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('cs_state','!=','draft'),('user_checker','=',False)]}" />
+						<button name="action_unconfirm" string="Un-Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|',('cs_state','!=','confirm'),('user_unchecker','=',False)]}" />
+						<field name="cs_state" widget="statusbar" statusbar_visible="draft,confirm" />
+					</header>
+
+					<sheet>
+						<div class="oe_title">
+							<h1>
+								<field name="cs_id" class="oe_inline" readonly="1" />
+							</h1>
+						</div>
+						<group col="8">
+							<field name="tgl_produksi" string="Tanggal Produksi" colspan="2" attrs="{'readonly':[('id', '!=', False)]}" />
+							<field name="pabrik_id" string="Lokasi" colspan="2" />
+							<label string="" colspan="4" />
+
+							<field name="no_potong" string="No. Potong" colspan="2" attrs="{'readonly':['|',('invoice','=','3'),('id', '!=', False)]}" />
+							<label string="" colspan="6" invisible="1" />
+
+							<field name="invoice" string="Kategori" colspan="2" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('id', '!=', False)]}" invisible="1" />
+							<label string="" colspan="6" invisible="1" />
+							<field name="invoice_no" string="No. Invoice" colspan="2" attrs="{'invisible':[('invoice','!=','1')]}" />
+							<label string="" colspan="6" />
+							<button name="get_data_fresh_fish" string="Get Data Fresh Fish" type="object" class="oe_highlight" attrs="{'invisible':[('invoice', '!=', '1')]}" />
+						</group>
+
+						<notebook>
+							<page string="Detail Loin">
+								<field name="cs_line_id">
+									<tree string="Detail Loin" editable="bottom" decoration-danger="status_pl==True" decoration-bf="status_pl==True" limit="300">
+										<field name="barcode_no" string="__Barcode__" />
+										<field name="tgl_produksi" string="Tgl. Produksi" invisible="1" />
+										<field name="pabrik_id" string="Lokasi" invisible="1" />
+										<field name="po" invisible="1" />
+										<field name="tgl_keluar" string="_____Tgl._Keluar_____" style="text-align: center;" />
+										<field name="no_potong" string="No. Potong" invisible="1" />
+										<field name="fresh_fish" string="Fish Type" invisible="1" style="text-align: center;" />
+										<field name="quantity" string="__Qty.__" />
+										<field name="quantity_loin" string="__Qty.__" invisible="1" />
+										<field name="real_item_no" string="Fish Size" invisible="1" />
+										<field name="real_itemno" invisible="1" />
+										<field name="product_group_code" string="Product Group Code" invisible="1" />
+										<field name="lot_no" string="_________Lot_No._________" readonly="1" />
+										<field name="fish_box_no" string="FishBox" readonly="1" style="text-align: center;" />
+										<field name="item_no" string="Item_No." readonly="1" style="text-align: center;" />
+										<field name="description" string="________Description________" readonly="1" />
+										<field name="vessel_no" string="______Vessel_No.______" readonly="1" />
+										<field name="hatch_no" string="__Hatch_No.__" readonly="1" />
+										<field name="voyage_no" string="Voyage No." readonly="1" style="text-align: center;" />
+										<field name="status" string="Status" readonly="1" style="text-align: center;" />
+										<field name="status_analisa" string="Status Analisa" invisible="1" readonly="1" />
+										<field name="status_process" string="Status Process" invisible="1" readonly="1" />
+										<field name="histamin" string="____Histamin____" invisible="1" readonly="1" />
+										<field name="kadar_garam" string="___Kadar Garam___" invisible="1" readonly="1" />
+										<field name="orange_meat" string="___Orange Meat___" invisible="1" readonly="1" />
+										<field name="blackspot" string="___Blackspot___" invisible="1" readonly="1" />
+										<field name="pemakaian" string="___Kasus_Khusus___" invisible="1" readonly="1" />
+										<field name="kontaminasi" string="______Kontaminasi______" invisible="1" readonly="1" />
+										<field name="lain2_analisa" string="_Lain-lain_Analisa_" invisible="1" readonly="1" />
+										<field name="lain2_process" string="_Lain-lain_Process_" invisible="1" readonly="1" />
+										<field name="remark_analisa" string="__Remark_Analisa__" invisible="1" readonly="1" />
+										<field name="remark_process" string="_Remark_Process_" invisible="1" readonly="1" />
+										<field name="status_def" string="Status" invisible="1" readonly="1" />
+										<field name="status_pl" string="Pole Line" invisible="1" readonly="1" />
+									</tree>
+								</field>
+							</page>
+							<page string="Audit Trail">
+								<group>
+									<group>
+										<field name="create_uid" readonly="1" />
+										<field name="create_date" readonly="1" />
+									</group>
+									<group>
+										<field name="write_uid" readonly="1" />
+										<field name="write_date" readonly="1" />
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_cs_view">
+			<field name="name">sis.cs.view</field>
+			<field name="model">sis.cs.view</field>
+			<field name="arch" type="xml">
+				<tree string="Cold Storage" create="false" import="false">
+					<field name="cs_id" invisible="1" />
+					<field name="pabrik_id" string="Lokasi" />
+					<field name="tgl_produksi" string="Tgl. Produksi" />
+					<field name="no_potong" string="No. Potong" />
+					<field name="barcode_no" string="____Barcode____" />
+					<field name="fish_box_no" string="_FishBox_" />
+					<field name="quantity" string="_Qty._" />
+					<field name="total_tonase" string="__Tonase__" invisible="1" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_cs_view_search">
+			<field name="name">sis.cs.view.search</field>
+			<field name="model">sis.cs.view</field>
+			<field name="arch" type="xml">
+				<search string="Search CheckSheet">
+					<field name="cs_id" invisible="1" />
+					<field name="pabrik_id" string="Lokasi" />
+					<field name="tgl_produksi" string="Tgl. Produksi" />
+					<field name="no_potong" string="No. Potong" />
+					<field name="barcode_no" string="____Barcode____" />
+					<field name="fish_box_no" string="_FishBox_" />
+					<field name="quantity" string="_Qty._" />
+					<field name="total_tonase" string="__Tonase__" invisible="1" />
+					<group expand="0" string="Group By">
+						<filter name="group_lokasi" string="Lokasi" domain="[]" context="{'group_by':'pabrik_id'}" />
+						<filter name="group_nopotong" string="Tgl. Produksi, No. Potong" domain="[]" context="{'group_by':'cs_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="sis_cs_view_action" model="ir.actions.act_window">
+			<field name="name">Cold Storage</field>
+			<field name="res_model">sis.cs.view</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<record id="sis_fish_status_action" model="ir.actions.act_window">
+			<field name="name">Fish status</field>
+			<field name="res_model">sis.cs.detail</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<record id="sis_fish_using_action" model="ir.actions.act_window">
+			<field name="name">Fish Using ATI1</field>
+			<field name="res_model">sis.cs.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'default_invoice':'1','default_no_potong':'1'}</field>
+			<field name="domain">[('invoice','=','1'),('pabrik_id','=','ATI1')]</field>
+			<!-- <field name="context">{"search_default_Today":1}</field> -->
+			<field name="view_id" ref="sis_fish_tree" />
+		</record>
+
+		<record id="sis_fish_using_action2" model="ir.actions.act_window">
+			<field name="name">Fish Using ATI2</field>
+			<field name="res_model">sis.cs.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'default_invoice':'1','default_no_potong':'1'}</field>
+			<field name="domain">[('invoice','=','1'),('pabrik_id','=','ATI2')]</field>
+			<!-- <field name="context">{"search_default_Today":1}</field> -->
+			<field name="view_id" ref="sis_fish_tree2" />
+		</record>
+
+		<record id="sis_fish_using_action_tree" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="sis_fish_tree" />
+			<field name="act_window_id" ref="sis_fish_using_action" />
+		</record>
+
+		<record id="sis_fish_using_action_form" model="ir.actions.act_window.view">
+			<field eval="3" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="sis_fish_form" />
+			<field name="act_window_id" ref="sis_fish_using_action" />
+		</record>
+
+		<record id="sis_fish_using_action_tree2" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="sis_fish_tree2" />
+			<field name="act_window_id" ref="sis_fish_using_action2" />
+		</record>
+
+		<record id="sis_fish_using_action_form2" model="ir.actions.act_window.view">
+			<field eval="4" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="sis_fish_form" />
+			<field name="act_window_id" ref="sis_fish_using_action2" />
+		</record>
+
+		<record id="sis_loin_using_action" model="ir.actions.act_window">
+			<field name="name">Loin Using ATI1</field>
+			<field name="res_model">sis.cs.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'default_invoice':'2','default_no_potong':'0'}</field>
+			<field name="domain">[('pabrik_id','=','ATI1'),'|',('invoice','=','2'),('invoice','=','3')]</field>
+			<!-- <field name="context">{"search_default_Today":1}</field> -->
+			<field name="view_id" ref="sis_loin_tree" />
+		</record>
+
+		<record id="sis_loin_using_action2" model="ir.actions.act_window">
+			<field name="name">Loin Using ATI2</field>
+			<field name="res_model">sis.cs.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'default_invoice':'2','default_no_potong':'0'}</field>
+			<field name="domain">[('pabrik_id','=','ATI2'),'|',('invoice','=','2'),('invoice','=','3')]</field>
+			<!-- <field name="context">{"search_default_Today":1}</field> -->
+			<field name="view_id" ref="sis_loin_tree2" />
+		</record>
+
+		<record id="sis_loin_using_action_tree" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="sis_loin_tree" />
+			<field name="act_window_id" ref="sis_loin_using_action" />
+		</record>
+
+		<record id="sis_loin_using_action_form" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="sis_loin_form" />
+			<field name="act_window_id" ref="sis_loin_using_action" />
+		</record>
+
+		<menuitem id="menu_sis_cs_view" name="Check Sheet" action="sis_cs_view_action" parent="sis_fish_status.menu_sis_cs" sequence="20" />
+		<menuitem id="menu_sis_cs_fish_status" name="Fish Status" action="sis_fish_status_action" parent="sis_fish_status.menu_sis_cs" sequence="10" />
+		<menuitem id="menu_sis_cs_loin_using" name="Loin Using ATI1" action="sis_loin_using_action" parent="sis_fish_status.menu_sis_cs" sequence="3" />
+		<menuitem id="menu_sis_cs_loin_using2" name="Loin Using ATI2" action="sis_loin_using_action2" parent="sis_fish_status.menu_sis_cs" sequence="4" />
+		<menuitem id="menu_sis_cs_fish_using" name="Fish Using ATI1" action="sis_fish_using_action" parent="sis_fish_status.menu_sis_cs" sequence="1" />
+		<menuitem id="menu_sis_cs_fish_using2" name="Fish Using ATI2" action="sis_fish_using_action2" parent="sis_fish_status.menu_sis_cs" sequence="2" />
+
+	</data>
+</openerp>

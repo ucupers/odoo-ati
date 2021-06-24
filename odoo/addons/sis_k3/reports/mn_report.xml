@@ -1,0 +1,38 @@
+<odoo>
+	<data>
+<!-- 		<record model="report.paperformat" id="paperformat_check_recap_report">
+			<field name="name">paperformat.check.recap.report</field>
+			<field name="default" eval="True" />
+			<field name="format">A4</field>
+			<field name="page_width">0</field>
+			<field name="page_width">0</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">30</field>
+			<field name="margin_right">5</field>
+			<field name="margin_bottom">10</field>
+			<field name="margin_left">5</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">20</field>
+			<field name="dpi">90</field>
+		</record>
+ -->
+		<report
+		    id="sis_pelaporan_k3"
+		    model="sis.pelaporan.k3"
+		    string="Download Excel"
+		    report_type="xlsx"
+		    name="sis_k3.rpt_pelaporan_k3"
+		    file="Pelaporan_k3"
+		    attachment_use="False"
+		/>
+<!-- 
+		<report
+		    id="sis_pelaporan_k3"
+		    model="sis.pelaporan.k3"
+		    string="Download Excel"
+		    report_type="object"
+		    name="write_xlsx"
+		/>
+ -->
+	</data>
+</odoo>

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_make_pl_form">
+            <field name="name">sis.make.pl.form</field>
+            <field name="model">sis.make.pl</field>
+            <field name="arch" type="xml">
+            	<form string="Make PL for SO">
+            	    <script>
+        $(document).ready(function(){
+        $(".modal-footer").hide();
+        });
+    </script>
+            	<header>
+           			<button name="make_pl" string="Make PL" type="object" class="oe_highlight"/>           			
+           			<button name="update_so" string="Update SO" type="object" />           			
+            	</header>
+           		<group>
+			    	<field name="sono" />
+			    	<field name="containerno" />
+			    	<field name="bg" />			    				    	
+			    	<field name="postingdate" />			    				    	
+			    	<field name="remark" />			    	
+				</group>
+				</form>
+			</field>
+		</record>		
+		
+		<act_window id="sis_make_pl_more"
+    		name="Make PL"
+    		src_model="sis.temp.ile.remaining.quantity"
+    		res_model="sis.make.pl"
+    		view_type="form" view_mode="form"
+    		key2="client_action_multi" target="new"
+		/>			
+
+        <record model="ir.ui.view" id="sis_add_pl_form">
+            <field name="name">sis.add.pl.form</field>
+            <field name="model">sis.add.pl</field>
+            <field name="arch" type="xml">
+            	<form string="Add item to PL">
+            	    <script>
+        $(document).ready(function(){
+        $(".modal-footer").hide();
+        });
+    </script>
+            	<header>
+           			<button name="add_to_pl" string="Add to PL" type="object" class="oe_highlight"/>           			
+            	</header>
+           		<group>
+			    	<field name="pl" />
+				</group>
+				</form>
+			</field>
+		</record>		
+		
+		<act_window id="sis_add_pl_more"
+    		name="Add to PL"
+    		src_model="sis.temp.ile.remaining.quantity"
+    		res_model="sis.add.pl"
+    		view_type="form" view_mode="form"
+    		key2="client_action_multi" target="new"
+		/>			
+	
+        <record model="ir.ui.view" id="sis_goods_bin_form">
+            <field name="name">sis.goods.bin.form</field>
+            <field name="model">sis.goods.bin</field>
+            <field name="arch" type="xml">
+            	<form string="Input Goods Bin">
+           		<group>
+			    	<field name="ile" />
+			    	<field name="description" readonly="1"/>			    	
+				    <field name="bin" />
+				    <field name="bin_no" readonly="1"/>
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_goods_bin_free_form">
+            <field name="name">sis.goods.bin.free.form</field>
+            <field name="model">sis.goods.bin.free</field>
+            <field name="arch" type="xml">
+            	<form string="Input Goods Bin Temporary">
+           		<group>
+			    	<field name="ile" />
+				    <field name="bin" />
+				    <field name="bin_no" readonly="1"/>
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_goods_bin_free_tree">
+            <field name="name">sis.goods.bin.free.tree</field>
+            <field name="model">sis.goods.bin.free</field>
+            <field name="arch" type="xml">
+            	<tree string="Goods Bin Temporary">
+			    <field name="create_date"/>
+			    <field name="create_uid"/>
+			    <field name="ile"/>			    
+			    <field name="bin"/>
+			    <field name="bin_no"/>
+			    <field name="error"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_goods_bin_tree">
+            <field name="name">sis.goods.bin.tree</field>
+            <field name="model">sis.goods.bin</field>
+            <field name="arch" type="xml">
+            	<tree string="Goods Bin" >
+			    <field name="create_date"/>
+			    <field name="create_uid"/>
+			    <field name="item_no"/>
+			    <field name="variant"/>
+			    <field name="description"/>
+			    <field name="posting_date"/>
+			    <field name="ile"/>			    
+			    <field name="bin"/>
+			    <field name="remaining_quantity"/>			    
+			    <field name="quantity"/>
+			    <field name="entry_no"/>
+			    <field name="fish_box_no"/>			    
+			    <field name="vessel_no"/>
+			    <field name="container_no"/>			    
+			    <field name="voyage_no"/>
+			    <field name="hatch_no"/>			    
+			    <field name="no_basket"/>
+			    <field name="no_contract"/>			    
+			    <field name="inkjet_print"/>
+			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_temp_ile_remaining_quantity_tree">
+            <field name="name">sis.temp.ile.remaining.quantity.tree</field>
+            <field name="model">sis.temp.ile.remaining.quantity</field>
+            <field name="arch" type="xml">
+            	<tree string="Stock List" default_order="proddate">
+			    <field name="item_no"/>
+			    <field name="description"/>
+			    <field name="variant"/>
+			    <field name="proddate"/>
+			    <field name="lot_no"/>
+			    <field name="plno"/>
+			    <field name="remaining_quantity"/>
+			    <field name="location_code"/>
+			    <field name="bin"/>
+			    <field name="itc"/>
+			    <field name="pgc"/>			    
+			    <field name="no_basket"/>
+			    <field name="no_contract"/>			    
+			    </tree>
+            </field>
+        </record>
+
+		<record id="sis_temp_ile_remaining_quantity_search" model="ir.ui.view">
+			<field name="name">sis.temp.ile.remaining.quantity.search</field>
+			<field name="model">sis.temp.ile.remaining.quantity</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+                    <field name="description" filter_domain="[('description','ilike', self)]"/>                 	
+                    <field name="variant" filter_domain="[('variant','ilike', self)]"/>                 	
+                    <field name="item_no" filter_domain="[('item_no','ilike', self)]"/>                 	
+                    <field name="lot_no" filter_domain="[('lot_no','ilike', self)]"/>                 	
+                    <field name="proddate" filter_domain="[('proddate','ilike', self)]"/>                 	
+                    <field name="no_contract" filter_domain="[('proddate','ilike', self)]"/>                 	
+				</search>
+			</field>
+		</record>
+
+
+        <record model="ir.ui.view" id="sis_goods_bin_pivot1">
+            <field name="name">sis.goods.bin.pivot</field>
+            <field name="model">sis.goods.bin</field>
+            <field name="arch" type="xml">
+                <pivot string="Goods Bin">
+                    <field name="description" type="row"/>
+                    <field name="remaining_quantity" type="measure"/>
+                    <field name="bin" type="col"/>                
+                </pivot>
+            </field>
+        </record>
+
+		<record id="sis_goods_bin_search" model="ir.ui.view">
+			<field name="name">sis.goods.bin.search</field>
+			<field name="model">sis.goods.bin</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+                    <field name="description" filter_domain="[('description','ilike', self)]"/>                 	
+                    <field name="lot_no" filter_domain="[('lot_no','ilike', self)]"/>                 	
+                    <field name="bin" filter_domain="[('bin','ilike', self)]"/>                 	
+ 					<field name="next_id"/>
+					<field name="out"/>
+					<filter name="laststock" string="Stock Terakhir" domain="[('next_id','=',None),('out','=',False)]"
+					help="Melihat stock barang terakhir" />
+					<filter name="lastpos" string="Posisi Terakhir" domain="[('next_id','=',None)]"
+						help="Melihat posisi barang terakhir" />
+				</search>
+			</field>
+		</record>
+
+        <record model="ir.ui.view" id="sis_opname_wizard_form">
+            <field name="name">sis.opname.wizard.form</field>
+            <field name="model">sis.opname.wizard</field>
+            <field name="arch" type="xml">
+            	<form string="OPNAME CHECKLIST">
+            	    <script>
+        $(document).ready(function(){
+        $(".modal-footer").hide();
+        });
+    </script>
+            	<header>
+           			<button name="open_report" string="Report" type="object" class="oe_highlight"/>           			
+            	</header>
+           		<group>
+			    	<field name="bins" />
+				</group>
+				</form>
+			</field>
+		</record>	
+
+<!-- 		<record id="sis_pps_opname_action" model="ir.actions.server">
+    		<field name="name">Opname</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_goods_bin.model_sis_goods_bin" />
+    		<field name="binding_model_id" ref="sis_goods_bin.model_sis_goods_bin" />
+    		<field name="state">code</field>
+    		<field name="code">model.opname()</field>
+		</record>
+ -->
+
+		<record id="sis_update_ile_remaining_qty_action" model="ir.actions.server">
+    		<field name="name">Update</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_goods_bin.model_sis_temp_ile_remaining_quantity" />
+    		<field name="binding_model_id" ref="sis_goods_bin.model_sis_temp_ile_remaining_quantity" />
+    		<field name="state">code</field>
+    		<field name="code">model.update_stock_list()</field>
+		</record>
+
+
+		<record id="sis_pps_upload_goods_bin_action" model="ir.actions.server">
+    		<field name="name">Upload to Goods Bin</field>
+    		<field name="type">ir.actions.server</field>
+    		<field name="model_id" ref="sis_goods_bin.model_sis_goods_bin_free" />
+    		<field name="binding_model_id" ref="sis_goods_bin.model_sis_goods_bin_free" />
+    		<field name="state">code</field>
+    		<field name="code">model.upload_to_goods_bin()</field>
+		</record>
+
+		<act_window id="sis_open_wizard_more"
+    		name="Opname Checklist"
+    		src_model="sis.goods.bin"
+    		res_model="sis.opname.wizard"
+    		view_type="form" view_mode="form"
+    		key2="client_action_multi" target="new"
+		/>	
+
+        <record id="sis_goods_bin_input_action" model="ir.actions.act_window">
+            <field name="name">Input Goods Bin</field>
+            <field name="res_model">sis.goods.bin</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record id="sis_goods_bin_free_input_action" model="ir.actions.act_window">
+            <field name="name">Input Temporary</field>
+            <field name="res_model">sis.goods.bin.free</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <record id="sis_goods_bin_action1" model="ir.actions.act_window">
+            <field name="name">Goods Bin</field>
+            <field name="res_model">sis.goods.bin</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,pivot</field>
+        </record>
+        
+        <record id="sis_stock_list_action" model="ir.actions.act_window">
+            <field name="name">Stock List</field>
+            <field name="res_model">sis.temp.ile.remaining.quantity</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('itc','=','FG')]</field>
+        </record>
+
+
+        <menuitem id="menu_sis_warehouse" name="Warehouse"/>
+        <menuitem id="menu_sis_goods_input_bin" name="Input" action="sis_goods_bin_input_action" parent="menu_sis_warehouse"/> 
+        <menuitem id="menu_sis_goods_bin" name="Goods Bin" action="sis_goods_bin_action1" parent="menu_sis_warehouse"/>
+        <menuitem id="menu_sis_goods_free_input_bin" name="In.Temporary" action="sis_goods_bin_free_input_action" parent="menu_sis_warehouse"/>         
+
+        <menuitem id="menu_sis_shipment" name="Shipment" parent="menu_sis_warehouse"/>        
+        <menuitem id="menu_sis_shipment_stock_list" name="Stock List" action="sis_stock_list_action" parent="menu_sis_shipment"/>        
+	</data>
+</openerp>

@@ -1,0 +1,76 @@
+<odoo>
+  <data>
+  
+  	<!-- Tree view -->
+  	<record model="ir.ui.view" id="view_sis_master_item_tree">
+        <field name="name">Master Item Tree</field>
+        <field name="model">sis.pps.item</field>
+        <field name="arch" type="xml">
+            <tree string="Items (additional)" editable="top">
+			    <field name="ati12"/>
+			    <field name="item_no"/>
+			    <field name="description"/>	
+	    	    <field name="can_size"/>		    
+			    <field name="line"/>
+			    <field name="capacity"/>
+			  	<field name="speed" invisible="1"/>
+			    <field name="altline"/>
+			    <field name="fz"/>
+			    <field name="fishmaterial"/>
+			    <field name="bepercent" invisible="1"/>
+			    <field name="net"/>
+			    <field name="meat"/>
+			    <field name="filling"/>
+			    <field name="sm"/>
+			    <field name="kaleng_per_case"/>
+			    <field name="yieldd"></field>
+			    <field name="remark"></field>
+			    <field name="fcl" invisible="1"/>
+			    <field name="altcapacity" invisible="1"/>
+			    <field name="qtyperfcl" invisible="1"/>
+			    <field name="fclfactor" invisible="1"/>
+		    </tree>
+      </field>
+    </record>
+    
+    
+    <!-- Search view -->
+    <record id="sis_master_item_search" model="ir.ui.view">
+        <field name="name">sis.master.item.list.select</field>
+        <field name="model">sis.pps.item</field>
+        <field name="arch" type="xml">
+            <search string="Search Item">
+                <separator/>
+                <field name="description"/>
+                <field name="item_no"/>
+                <field name="line"/>
+                
+                <group expand="0" string="Group By...">
+                    <filter string="Description" icon="terp-personal"
+                            domain="[]"
+                            context="{'group_by':'description'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="sis_master_item_epi_action">
+      <field name="name">Master Item</field>
+      <field name="res_model">sis.pps.item</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree</field> 
+      <field name="view_id" ref="view_sis_master_item_tree"></field>
+    </record>
+    
+    <!-- Untuk action tree view --><!-- 
+    <record id="view_sis_master_item_tree_action" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_sis_master_item_tree"/>
+        <field name="act_window_id" ref="sis_master_item_epi_action"/>
+    </record> -->
+    
+    
+  </data>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_view_por_header_form">
+            <field name="name">sis.view.por.header.form</field>
+            <field name="model">sis.view.por</field>
+            <field name="arch" type="xml">
+            	<form string="View Requisition">
+<!-- 					<sheet> -->
+						<group col="12">
+							<field name="no_doc" string="No PO Requisition" colspan="3"/>
+							<field name="tanggal1_doc" colspan="3"/>
+							<field name="tanggal2_doc" colspan="3"/>
+							<field name="pabrik_id" colspan="3"/>
+							<field name="section_id" colspan="3" />
+							<field name="item_type" colspan="3"/>
+							<field name="item_no" colspan="3"/>
+							<field name="item_desc" colspan="3"/>
+							<field name="state_doc" colspan="3"/>
+						</group>
+						<button name="get_data_por" string="  Cari Data" type="object" class="oe_highlight" icon="fa-search"/>
+						<label string="    "/>
+						<button name="new_data_por" string="  Baru" type="object" class="oe_highlight" icon="fa-file"/>
+						<label string="    "/>
+						<button name="write_xlsx" string="   Excel" type="object" class="oe_highlight" icon="fa-save"/>
+                        <notebook>
+                            <page string="List PO Requisition">
+                                <field name="view_por_line">
+                                    <tree string="Detail Data" limit="50" create="false" delete="false" editable="none">
+ 									    <button name="viewdata" type="object" icon="fa-external-link"/>
+ 										<field name="no_doc" string="__No._PO_Requisition__" style="text-align: center;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}' />
+ 										<field name="line_no" string="Line" style="text-align: right;" invisible="0" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="tgl_doc" string="Tanggal" style="text-align: center;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="section" string="_______Section_______" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="item_type" invisible="1" readonly="1"/>
+ 										<field name="item_no" string="Kode_Item" style="text-align: center;" invisible="0" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+                                        <field name="item_desc" string="Uraian Item" invisible="0" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+                                        <field name="item_uom" string="Satuan" style="text-align: center;" invisible="0" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="item_qty" string="Qty" style="text-align: right;" invisible="0" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="no_po" string="____No._PO_NAV____" style="text-align: center;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="tgl_po" string="Tgl. PO" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="vendor_desc" string="Vendor" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="qty_po" string="Qty. PO" style="text-align: right;" invisible="0" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="po_uom" string="Satuan PO" style="text-align: center;" invisible="0" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="qty_sisa" string="Qty. Sisa" style="text-align: right;" invisible="0" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="wr_no" string="No. WH_Receipt" style="text-align: center;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="wr_tgl"  string="Tgl. WHR" style="text-align: center;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="wr_qty"  string="Qty WHR" style="text-align: right;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="inv_no" string="___No._Invoice____" style="text-align: center;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="inv_tgl"  string="Tgl. Inv." style="text-align: center;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+ 										<field name="state_doc" string="Status" style="text-align: center;" readonly="1" options='{"bg_color": "gold: item_type==1; skyblue: item_type==3"}'/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+<!-- 					</sheet> -->
+			    </form>
+            </field>
+        </record>
+        
+        <record id="sis_view_por_action" model="ir.actions.act_window">
+            <field name="name">View PO Requisition</field>
+            <field name="res_model">sis.view.por</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+ 			<field name="target">inline</field>            
+        </record>
+
+        <menuitem id="menu_sis_view_por" name="Data Requisition" action="sis_view_por_action" parent="menu_sis_purreq"/>  
+	</data>
+</odoo>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_siswa_tree">
+            <field name="name">sis.siswa.tree</field>
+            <field name="model">sis.siswa</field>
+            <field name="arch" type="xml">
+            	<tree string="Siswa Sekolah" >
+            	<button name="genraport" string="Generate Raport" type="object" class="oe_highlight"/> 
+			    <field name="nis"/>
+			    <field name="nama"/>
+			    <field name="rata2"/>
+			    <field name="tinggi"/>
+			    <field name="bmi"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_siswa_form">
+            <field name="name">sis.siswa.form</field>
+            <field name="model">sis.siswa</field>
+            <field name="arch" type="xml">
+            	<form string="Siswa">
+            	<header>
+           			<button name="genraport" string="Generate Raport" type="object" class="oe_highlight"/>           			
+            	</header>            	
+           		<group col="8">
+			    	<field name="nis" colspan="4"/>
+				    <field name="nama" colspan="4"/>			    
+				    <field name="tinggi" colspan="8"/>			    
+				    <field name="bmi" colspan="2"/>	
+				    <field name="rata2"/>		    
+				</group>			    
+				<notebook>
+				<page name="sis_nilai_page" string="Nilai" >
+					<field name="nilai_id">
+						<tree string="Nilai" editable="top">
+			    			<field name="pelajaran" />
+			    			<field name="nilai" />			    										
+						</tree>
+					</field>
+				</page>
+				</notebook>
+			    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_raport_tree">
+            <field name="name">sis.raport.tree</field>
+            <field name="model">sis.raport</field>
+            <field name="arch" type="xml">
+            	<tree string="Raport" >
+			    <field name="nis"/>
+			    <field name="nama"/>
+			    <field name="rata2"/>	    
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_siswa_action" model="ir.actions.act_window">
+            <field name="name">Siswa</field>
+            <field name="res_model">sis.siswa</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('rata2', '>=', 80)]</field>
+        </record>
+
+
+        <record id="sis_raport_action" model="ir.actions.act_window">
+            <field name="name">Raport</field>
+            <field name="res_model">sis.raport</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        
+        <menuitem id="menu_sis_sekolah" name="Sekolah"/>
+        <menuitem id="menu_sis_siswa" name="Siswa" action="sis_siswa_action" parent="menu_sis_sekolah"/>  
+        <menuitem id="menu_sis_raport" name="Raport" action="sis_raport_action" parent="menu_sis_sekolah"/>                 
+	</data>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <record model="ir.sequence" id="msi_pnl_sequence">
+            <field name="name">SIS PnL Sequence</field>
+            <field name="code">sis.pnl.sequence</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">PnL%(y)s</field>
+            <field name="number_increment">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>       
+    </data>
+</openerp>

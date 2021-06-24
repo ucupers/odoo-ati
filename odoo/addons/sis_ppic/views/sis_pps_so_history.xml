@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="sis_pps_so_current_tree">
+            <field name="name">sis.pps.so.current.tree</field>
+            <field name="model">sis.pps.so.current</field>
+            <field name="arch" type="xml">
+            	<tree string="Current" editable="top">
+			    <field name="write_date" readonly="1"/>	
+			    <field name="existnav" readonly="1"/>	
+			    <field name="no" readonly="1"/>
+			    <field name="shiptoname" readonly="1"/>
+			    <field name="postingdate" readonly="1"/>
+			    <field name="itemrequireddate" readonly="1"/>
+			    <field name="extdocno" readonly="1"/>
+			    <field name="bg" readonly="1" options='{"bg_color": "red: fbg == False"}'/>
+			    <field name="quantity" readonly="1"/>
+			    <field name="uom" readonly="1"/>
+			    <field name="qtyppic" readonly="1"/>
+			    <field name="uomppic" readonly="1"/>
+			    <field name="ati1qtyppic"/>
+			    <field name="ati1date" widget="datepicker"/>
+			    <field name="ati2qtyppic"/>
+			    <field name="ati2date" widget="datepicker"/>
+			    <field name="remark"/>
+			    <field name="whshipno" readonly="1"/>			    		    
+				<button name="open_historyview" string="H" type="object" class="oe_highlight"/>
+			    <field name="fbg" invisible="1"/>
+			    <field name="qtyperuom" invisible="1"/>			    			    
+			    <field name="qtyperuomppic" invisible="1"/>
+			    <field name="ati1qty" invisible="1"/>
+			    <field name="ati2qty" invisible="1"/>			    			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_so_history_tree">
+            <field name="name">sis.pps.so.history.tree</field>
+            <field name="model">sis.pps.so.history</field>
+            <field name="arch" type="xml">
+            	<tree string="History">
+			    <field name="changetime" readonly="1"/>			    			    
+			    <field name="no" readonly="1"/>
+			    <field name="shiptoname" readonly="1"/>
+			    <field name="postingdate" readonly="1"/>
+			    <field name="itemrequireddate" readonly="1"/>
+			    <field name="extdocno" readonly="1"/>
+			    <field name="bg" readonly="1" />
+			    <field name="quantity" readonly="1"/>
+			    <field name="uom" readonly="1"/>
+			    <field name="qtyppic" readonly="1"/>
+			    <field name="uomppic" readonly="1"/>
+			    <field name="ati1qtyppic" readonly="1"/>
+			    <field name="ati1date" readonly="1"/>
+			    <field name="ati2qtyppic" readonly="1"/>
+			    <field name="ati2date" readonly="1"/>			    
+			    <field name="remark"  readonly="1"/>
+			    <field name="whshipno" readonly="1"/>
+			    <field name="existnav" readonly="1"/>			    			    
+			    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sis_pps_so_current_all_tree">
+            <field name="name">sis.pps.so.current.all.tree</field>
+            <field name="model">sis.pps.so.current</field>
+            <field name="arch" type="xml">
+            	<tree string="Current">
+			    <field name="write_date" readonly="1"/>			    			    
+			    <field name="no" readonly="1"/>
+			    <field name="selltoname" readonly="1"/>
+			    <field name="shiptoname" readonly="1"/>
+			    <field name="postingdate" readonly="1"/>
+			    <field name="itemrequireddate" readonly="1"/>
+			    <field name="extdocno" readonly="1"/>
+			    <field name="bg" readonly="1" options='{"bg_color": "red: fbg == False"}'/>
+			    <field name="itemno" readonly="1"/>
+			    <field name="description" readonly="1"/>
+			    <field name="variant" readonly="1"/>			    			    
+			    <field name="quantity" readonly="1"/>
+			    <field name="uom" readonly="1"/>
+			    <field name="ati1qty" readonly="1"/>
+			    <field name="ati1date" readonly="1"/>
+			    <field name="ati2qty" readonly="1"/>
+			    <field name="ati2date" readonly="1"/>
+			    <field name="remark"  readonly="1"/>
+			    <field name="whshipno" readonly="1"/>
+			    <field name="existnav" readonly="1"/>
+				<button name="open_historyview" string="H" type="object" class="oe_highlight"/>
+			    <field name="fbg" invisible="1"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_pps_so_current_all_action" model="ir.actions.act_window">
+            <field name="name">Sales-PPIC Confirmation</field>
+            <field name="res_model">sis.pps.so.current</field>
+            <field name="view_id" ref="sis_pps_so_current_all_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_ppic_sales" name="Sales-PPIC" parent="menu_sis_ppic"/> 
+        <menuitem id="menu_sis_ppic_sales_confirmation" name="Confirmation" action="sis_pps_so_current_all_action" parent="menu_sis_ppic_sales"/> 
+
+</odoo>

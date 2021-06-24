@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_spec_signature_tree">
+            <field name="name">sis.spec.signature.tree</field>
+            <field name="model">sis.spec.signature</field>
+            <field name="arch" type="xml">
+            	<tree string="Master Signature" editable="top">
+	               	<field name="id"/>
+	               	<field name="ttd_jabatan1"/>
+	               	<field name="ttd_nama1"/>
+	               	<field name="ttd_jabatan2"/>
+	               	<field name="ttd_nama2"/>
+	               	<field name="ttd_jabatan3"/>
+	               	<field name="ttd_nama3"/>
+	               	<field name="ttd_status" invisible="1"/>
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_master_signature_action" model="ir.actions.act_window">
+            <field name="name">Master Signature</field>
+            <field name="res_model">sis.spec.signature</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        
+	</data>
+</odoo>

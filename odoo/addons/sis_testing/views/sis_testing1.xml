@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_testing1_form">
+            <field name="name">sis.testing.form</field>
+            <field name="model">sis.testing1</field>
+            <field name="arch" type="xml">
+            	<form string="Testing1">
+           		<group col="8">
+			    	<field name="html1" colspan="6"/>
+				    <field name="html2" colspan="6"/>			    
+				    <field name="html3" colspan="6"/>			    
+				    <field name="file_image" colspan="6" widget="image"/>			    
+				</group>			    
+			    </form>
+            </field>
+        </record>
+
+        <record id="sis_testing1_action" model="ir.actions.act_window">
+            <field name="name">Testing1</field>
+            <field name="res_model">sis.testing1</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+
+        <menuitem id="menu_sis_testing" name="Testing"/>
+        <menuitem id="menu_sis_testing1" name="Testing1" action="sis_testing1_action" parent="menu_sis_testing"/>  
+	</data>
+</odoo>

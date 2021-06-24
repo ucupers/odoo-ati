@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_wh_labeling_tree">
+			<field name="name">sis.wh.labeling.tree</field>
+			<field name="model">sis.wh.labeling.header</field>
+			<field name="arch" type="xml">
+				<tree string="Muat ke Pallet">
+					<field name="productiondate" />
+					<field name="bongkar_date" />
+					<field name="jenis_produk" />
+					<field name="line" />
+					<field name="create_date" string="Created On" />
+					<field name="create_uid" string="Created By" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_wh_labeling_form">
+			<field name="name">sis.wh.labeling.form</field>
+			<field name="model">sis.wh.labeling.header</field>
+			<field name="arch" type="xml">
+				<form string="Muat Pallet">
+					<header>
+					</header>
+					<group col="8">
+						<field name="productiondate" colspan="4" attrs="{'readonly':[('button_stts', '=', True )]}"/>
+						<field name="bongkar_date" colspan="4" attrs="{'readonly':[('button_stts', '=', True )]}"/>
+						<field name="produk_id" colspan="4" attrs="{'readonly':[('button_stts', '=', True )]}" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
+						<field name="item_no" colspan="4" />
+						<field name="line" colspan="4" />
+						<field name="pcs_layer" colspan="4" />
+						<field name="ttl_rjct" colspan="4" />
+						<field name="pcs_percase" colspan="4" />
+						<field name="button_stts" colspan="4" invisible="1"/>
+						<field name="jenis_produk" colspan="4" invisible="1"/>
+					</group>
+					<button name="get_data" string="Get data" type="object" class="btn" attrs="{'invisible':[('button_stts', '=', True )]}"/>
+					<notebook>
+						<page name="sis_wh_labeling_page" string="Palet Detail">
+							<field name="detail_ids">
+								<tree string="WH Labeling Detail" editable="top" limit="400">
+									<field name="jam_penuh" widget="float_time" />
+									<field name="pallet_id" invisible="1"/>
+									<field name="pallet" attrs="{'readonly':[('button_stts', '=', True )]}"/>
+									<field name="basket_ids" widget="many2many_tags" invisible="0" attrs="{'readonly':[('button_stts', '=', True )]}"/>
+									<field name="basket_no" invisible="1"/>
+									<field name="seaming_condition" />
+									<field name="clean" />
+									<field name="no_rust" />
+									<field name="no_oily" />
+									<field name="can_mark_print_result" />
+									<field name="jml_layer" />
+									<field name="jml_pcs" />
+									<field name="total_pcs" />
+									<field name="rjct" />
+									<field name="rjct_id"  options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
+									<field name="rjct_remark" invisible="1"/>
+									<field name="remark" />
+									<field name="button_stts" invisible="1"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+		
+		<record id="sis_wh_labeling_basket_action" model="ir.actions.act_window">
+			<field name="name">WH Labeling Basket</field>
+			<field name="res_model">sis.wh.labeling.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<menuitem id="sis_wh_labeling_basket_menu" name="Muat Palet" action="sis_wh_labeling_basket_action" parent="menu_sis_wh" />
+
+	</data>
+</odoo>

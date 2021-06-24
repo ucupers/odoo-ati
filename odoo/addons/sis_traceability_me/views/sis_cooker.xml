@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	    <template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+           <xpath expr="." position="inside">
+               <link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css"/>
+           </xpath>
+        </template>
+        <record model="ir.ui.view" id="sis_cooker_tree">
+            <field name="name">sis.cooker.tree</field>
+            <field name="model">sis.cooker</field>
+            <field name="arch" type="xml">
+            	<tree string="Cooker" editable="top" >
+				    <field name="productiondate" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="location" readonly='1' options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="nocooking" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="nocooker" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="list_label" string="No._Urut_/_Label" options='{"bg_color": "gold: status_input==False"}'/>
+            		<button name="open_nobasket" string="No. Basket" type="object" class="btn" />
+				    <field name="total_tray" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="cookingtime" widget="float_time" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="cookingtemp" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="steamon" string="___Steam_On___" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="vent_closed" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="steamoff" string="___Steam_Off___" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="standardtemp" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="tempbeforetop" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="tempbeforecenter" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="tempbeforebottom" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="tempaftertop" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="tempaftercenter" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="tempafterbottom" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="startshowertime" string="___Start_Shower_Time___" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="stopshowertime" string="___Stop_Shower_Time___" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="aftershowertemp1" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="aftershowertemp2" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="aftershowertemp3" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="showerline" readonly="1" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="coolingRoomLine" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="remark" options='{"bg_color": "gold: status_input==False"}'/>
+				    <field name="status_input" invisible="1"/>
+					</tree>
+            </field>
+        </record>
+          
+        <record id="sis_cooker_action" model="ir.actions.act_window">
+            <field name="name">Cooker</field>
+            <field name="res_model">sis.cooker</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+	
+        <menuitem id="menu_sis_cooker" name="Cooker"/>
+        <menuitem id="menu_sis_trace_cooker" name="Cooker" action="sis_cooker_action" parent="menu_sis_cooker"/>  
+	</data>
+</odoo>

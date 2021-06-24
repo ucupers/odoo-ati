@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model="ir.ui.view" id="sis_bc_product_group">
+            <field name="name">sis.product.group.bc</field>
+            <field name="model">sis.product.group.bc</field>
+            <field name="arch" type="xml">
+            	<form string="Product Group Code" create="false" delete="false">
+ 					<sheet>
+	            		<group>
+							<field name="temp_id" string="Temp ID" invisible="1"/>
+							<field name="description" readonly="1"/>
+	            		</group>
+	                    <notebook>
+	                        <page string="List of Product Group Code">
+	                            <field name="product_group_line">
+	                            	<tree string="Detail Laporan" limit="10" editable="Top" create="false" delete="false">
+								    	<field name="description" readonly="1" />				    
+								    	<field name="status_pg"/>
+	                            	</tree>
+	                            </field>
+	                        </page>
+	                    </notebook>
+ 					</sheet>
+			    </form>
+            </field>
+        </record>
+  	</data>
+</odoo>

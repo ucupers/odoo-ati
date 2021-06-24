@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_cutting_tree">
+			<field name="name">sis.cutting.tree</field>
+			<field name="model">sis.cutting</field>
+			<field name="arch" type="xml">
+				<tree string="Cutting" editable="top" decoration-danger="status_pl_cut==True" decoration-bf="status_pl_cut==True">
+					<button name="sis_traceability.sis_bbtstandard_action" string="Help" type="action" icon="fa-question-circle" />
+					<field name="productiondate" />
+					<field name="location" readonly='1' />
+					<field name="no_potong" />
+					<field name="status_pl_cut" string="Pole Line" invisible="1" readonly="1" />
+					<field name="list_tangki" string="____Tangki____" />
+					<field name="list_basket" string="_____Label_____" />
+					<button name="open_notangki" string="No. Tangki" type="object" class="btn" />
+					<button name="open_nobasket" string="No. Basket" type="object" class="btn btn-default" />
+					<field name="data_ok" />
+					<field name="jam_potong" string="Jam_Potong" />
+					<field name="suhu"/>
+					<field name="suhu_akhir"/>
+					<field name="qty_reject" string="Qty. Reject" />
+					<field name="eyes" />
+					<field name="gill" />
+					<field name="skin" />
+					<field name="physical_damage" />
+					<field name="texture" />
+					<field name="belly_cavity" />
+					<field name="odour" />
+					<field name="grade_assigned" />
+					<field name="parasite" />
+					<field name="pic" string="Title_Holder" />
+					<field name="remark" string="__Remark_" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_cutting_tree2">
+			<field name="name">sis.cutting.tree2</field>
+			<field name="model">sis.cutting</field>
+			<field name="arch" type="xml">
+				<tree string="Cutting ATI2" editable="top" decoration-danger="status_pl_cut==True" decoration-bf="status_pl_cut==True">
+					<button name="sis_traceability.sis_bbtstandard_action" string="Help" type="action" icon="fa-question-circle" />
+					<field name="productiondate" />
+					<field name="location" readonly='1' />
+					<field name="no_potong" />
+					<field name="status_pl_cut" string="Pole Line" invisible="1" readonly="1" />
+					<field name="list_tangki" string="____Tangki____" />
+					<field name="list_basket" string="_____Label_____" />
+					<button name="open_notangki" string="No. Tangki" type="object" class="btn" />
+					<button name="open_nobasket" string="No. Basket" type="object" class="btn btn-default" />
+					<field name="data_ok" />
+					<field name="jam_potong" string="Jam_Potong" />
+					<field name="suhu" string="___Suhu___" />
+					<field name="qty_reject" string="Qty. Reject" />
+					<field name="eyes" />
+					<field name="gill" />
+					<field name="skin" />
+					<field name="physical_damage" />
+					<field name="texture" />
+					<field name="belly_cavity" />
+					<field name="odour" />
+					<field name="grade_assigned" />
+					<field name="parasite" />
+					<field name="pic" string="Title_Holder" />
+					<field name="remark" string="__Remark_" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_cutting_view_alert_tree">
+			<field name="name">sis.cutting.view.alert.tree</field>
+			<field name="model">sis.cutting.view.alert</field>
+			<field name="arch" type="xml">
+				<tree string="Data Defrost" create="false" import="false" delete="false">
+					<field name="tgl_produksi" />
+					<field name="pabrik_id" />
+					<field name="no_tangki" />
+					<field name="no_potong" />
+					<field name="item_no" />
+					<field name="description" />
+					<field name="vessel_no" />
+					<field name="hatch_no" />
+					<field name="create_date" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="sis_cutting_action" model="ir.actions.act_window">
+			<field name="name">Cutting ATI1</field>
+			<field name="res_model">sis.cutting</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="domain">[('location','=','ATI1')]</field>
+			<field name="view_id" ref="sis_cutting_tree" />
+		</record>
+		
+		<record id="sis_cutting_action2" model="ir.actions.act_window">
+			<field name="name">Cutting ATI2</field>
+			<field name="res_model">sis.cutting</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="domain">[('location','=','ATI2')]</field>
+			<field name="view_id" ref="sis_cutting_tree2" />
+		</record>
+		
+		<record id="sis_cutting_view_alert_action" model="ir.actions.act_window">
+			<field name="name">Data Defrost</field>
+			<field name="res_model">sis.cutting.view.alert</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="domain">[('pabrik_id','=','ATI1')]</field>
+		</record>
+
+		<menuitem id="menu_sis_cutting" name="Cutting" />
+		<menuitem id="menu_sis_trace_cutting" name="Cutting ATI1" action="sis_cutting_action" parent="menu_sis_cutting" />
+		<menuitem id="menu_sis_trace_cutting2" name="Cutting ATI2" action="sis_cutting_action2" parent="menu_sis_cutting" />
+		<menuitem id="sis_cutting_view_alert_menu" name="Data Defrost" action="sis_cutting_view_alert_action" parent="menu_sis_cutting"/> 
+	</data>
+</odoo>

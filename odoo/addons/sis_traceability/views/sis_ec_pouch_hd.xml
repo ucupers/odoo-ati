@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="backend" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/sis_traceability/static/src/css/statusbar.css" />
+			</xpath>
+		</template>
+
+		<record model="ir.ui.view" id="sis_ec_pouch_header_tree">
+			<field name="name">sis.ec.pouch.header.tree</field>
+			<field name="model">sis.ec.pouch.header</field>
+			<field name="arch" type="xml">
+				<tree string="Pouch">
+					<field name="productiondate_ati" />
+					<field name="line" />
+					<field name="nama_produk" />
+					<!-- <field name="incomingdate" /> -->
+					<field name="kode_barang" />
+					<field name="deskripsi_pouch" />
+					<!-- <field name="total_kedatangan" /> -->
+					<field name="sisa" />
+					<field name="remark" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_ec_pouch_header_form">
+			<field name="name">sis.ec.pouch.header.form</field>
+			<field name="model">sis.ec.pouch.header</field>
+			<field name="arch" type="xml">
+				<form string="Pouch">
+					<header>
+					</header>
+					<group col="8">
+						<field name="productiondate_ati" colspan="4" />
+
+						<field name="packing_hd_id" colspan="4" string="Nama Produk" options="{'no_open': True, 'no_create_edit': True'}" />
+						
+
+						<field name="items_ec_hd_id" colspan="4" string="Kode barang" options="{'no_open': True, 'no_create_edit': True'}" />
+						<field name="total_pemakaian" colspan="4" />
+
+						<field name="deskripsi_pouch" colspan="4" />
+						<field name="total_reject" colspan="4" />
+
+						<field name="line_hd_id" colspan="4" string="Line" options="{'no_open': True, 'no_create_edit': True'}" />
+						<field name="sample_ec" colspan="4" />
+						<field name="remark" colspan="4" />
+						<field name="ket_sample" colspan="4" />
+						<field name="nama_produk" colspan="4" invisible="1" />
+						<field name="sisa" colspan="4" />
+						<field name="line" colspan="4" invisible="1" />
+						<field name="nama_produk" colspan="4" invisible="1" />
+						<field name="kode_barang" colspan="4" invisible="1" />
+						<field name="status_button" colspan="4" invisible="1" />
+					</group>
+					<group col="8">
+						<button name="update_ile_ec" string="Update Data" type="object" class="oe_highlight" />
+						<button name="get_detail" string="Get Detail" type="object" class="oe_highlight" attrs="{'invisible':[('status_button', '=', True)]}" />
+						<field name="status_button" colspan="6" invisible="1" />
+					</group>
+					<notebook>
+						<page name="sis_ec_pouch_detail_page" string="Pouch Detail">
+							<field name="detail_ids">
+								<tree string="Pouch Detail" editable="top" limit="400">
+									<field name="kode_barang" />
+									<field name="no_box" />
+									<field name="productiondate_sup" />
+									<field name="nama_supplier" />
+									<field name="tgl_kedatangan" />
+									<field name="invoice" />
+									<field name="qty_kedatangan" />
+									<field name="qty_pemakaian" />
+									<field name="qty_reject" />
+									<field name="qty_sample" />
+									<field name="sisa_qty" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_ec_pouch_lot_tree">
+			<field name="name">sis.ec.pouch.lot.tree</field>
+			<field name="model">sis.ec.pouch.lot</field>
+			<field name="arch" type="xml">
+				<tree string="Pouch per Lot" create="false" import="false">
+					<button name="get_detail_lot_view" string="Detail" type="object" class="btn btn-default" attrs="{'invisible':[('btn_stts', '=', True)]}"/>
+					<field name="productiondate_sup" readonly="1" />
+					<field name="nama_supplier" readonly="1" />
+					<field name="tgl_kedatangan" readonly="1" />
+					<field name="invoice" readonly="1" />
+					<field name="total_kedatangan" readonly="1" />
+					<field name="total_pemakaian" readonly="1" />
+					<field name="total_reject" readonly="1" />
+					<field name="total_sample" readonly="1" />
+					<field name="sisa" readonly="1" />
+					<field name="btn_stts" invisible="1" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="sis_ec_pouch_lot_form">
+			<field name="name">sis.ec.pouch.lot.form</field>
+			<field name="model">sis.ec.pouch.lot</field>
+			<field name="arch" type="xml">
+				<form string="Pouch">
+					<header>
+					</header>
+					<group col="8">
+						<field name="productiondate_sup" colspan="4" />
+						<field name="nama_supplier" colspan="4" />
+
+						<field name="tgl_kedatangan" colspan="4" />
+						<field name="invoice" colspan="4" />
+
+						<field name="total_kedatangan" colspan="4" />
+						<field name="total_pemakaian" colspan="4" />
+
+						<field name="total_reject" colspan="4" />
+						<field name="total_sample" colspan="4" />
+
+						<field name="sisa" colspan="4" />
+					</group>
+					<notebook>
+						<page name="lot_view_detail_page" string="Detail Pemakaian Pouch">
+							<field name="detail_ids">
+								<tree string="Pouch Detail" editable="top" limit="400">
+									<field name="productiondate" />
+									<field name="produk" />
+									<field name="kode_barang"/>
+									<field name="deskripsi_pouch"/>
+									<field name="total_kedatangan"/>
+									<field name="total_pemakaian"/>
+									<field name="total_reject"/>
+									<field name="sample_ec"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+		<record id="sis_ec_pouch_header_action" model="ir.actions.act_window">
+			<field name="name">Pouch</field>
+			<field name="res_model">sis.ec.pouch.header</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+
+		<record id="sis_ec_pouch_lot_view_action" model="ir.actions.act_window">
+			<field name="name">Pouch per Lot</field>
+			<field name="res_model">sis.ec.pouch.lot</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_sis_ec" name="Empty Can" />
+		<menuitem id="menu_sis_ec_pouch_header" name="Pouch" action="sis_ec_pouch_header_action" parent="menu_sis_ec" sequence="50" />
+		<!-- <menuitem id="menu_sis_ec_pouch_lot_view" name="Pouch per Lot" action="sis_ec_pouch_lot_view_action" parent="menu_sis_ec" sequence="60" /> -->
+
+	</data>
+</odoo>

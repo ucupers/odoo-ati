@@ -1,0 +1,18 @@
+<odoo>
+	<data>
+	
+		<record id="message_get_item_view_form" model="ir.ui.view">
+            <field name="name">message.get.data.form</field>
+            <field name="model">message.get.data</field>
+            <field name="arch" type="xml">
+                <form string="Success Message">
+                    <field name="name" readonly="1"/>
+                    <footer>
+                       <button string="Oke" class="oe_highlight" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+	
+	</data>
+</odoo>

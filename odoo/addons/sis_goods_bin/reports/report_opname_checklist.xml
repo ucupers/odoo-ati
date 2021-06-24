@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_opname_checklist_form">
+    <t t-call="web.html_container">
+			<t t-name="report.external_layout_header">
+			    <div class="header">
+	   			</div>
+			    <div class="footer">
+	   			</div>
+			</t>
+	    <t t-call="web.external_layout">
+  			<div class="page">
+	  			<div class="row">
+					<div class="col-xs-10" style="text-align:left;font-size: 12px !important;">
+						<div class="row" style="text-align:left;font-size: 14px !important;">.</div>
+						<div class="row" style="text-align:left;font-size: 14px !important;">
+							<div class="col-xs-7" style="text-align:left;font-size: 14px !important;">
+								PT. Aneka Tuna Indonesia
+								<BR/>
+								<h4>Opname Checklist </h4>
+							</div>
+							<div class="col-xs-5" style="text-align:right;font-size: 14px !important;">
+								DATE :							
+							</div>
+						</div>
+					</div>
+				</div>
+	  			<div class="row" style="text-align:left;border: 1px solid black;font-size:14px!important;">
+					<strong><div class="col-xs-2" style="">No / Bin</div>
+					<div class="col-xs-4" style="">Description</div>
+					<div class="col-xs-2" style="text-align:right;">Qty/Cs</div>
+					<div class="col-xs-1" style="text-align:right;">Qty/Lot</div>				
+					<div class="col-xs-3" style="">Cek / Remark</div></strong>
+				</div>
+				<t t-set="num" t-value="0"/>
+		    	<t t-foreach="docs" t-as="doc">
+			       	<div class="row" style="border: 1px solid black;">
+						<t t-set="num" t-value="num+1"/>
+						<div class="col-xs-2" style="text-align:left;">
+							<span t-esc ="num" style="font-size: 14px !important;vertical-align:top!important"/> / <span t-esc="doc.bin" style="font-size: 14px !important;vertical-align:top!important"/>
+						</div>			
+						<div class="col-xs-4" style="text-align:left;">
+							<span t-esc="doc.description" style="font-size: 14px !important;"/>
+						</div>
+						<div class="col-xs-2" style="text-align:right;font-size: 14px !important;">
+							<span t-esc="'%.2f'% doc.qtyincase"/>
+						</div>
+						<div class="col-xs-1" style="text-align:right;font-size: 14px !important;">
+							<span t-esc="'%.0f'% doc.qtyinlot"/>
+						</div>
+						<div class="col-xs-3" style="text-align:left;font-size: 14px !important;">
+							[ ]
+						</div>
+	       			</div>
+				</t>
+			</div>
+    	</t>
+    </t>
+</template>
+
+</odoo>

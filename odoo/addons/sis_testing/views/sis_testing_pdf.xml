@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	   	<record model="report.paperformat" id="paperformat_testing_report">
+	        <field name="name">paperformat.testing.report</field>
+	        <field name="default" eval="True"/>
+	        <field name="format">A4</field>
+	        <field name="page_width">0</field>
+	        <field name="orientation">Portrait</field>
+	        <field name="margin_top">10</field>
+	        <field name="margin_right">5</field>
+	        <field name="margin_bottom">10</field>
+	        <field name="margin_left">5</field>
+	        <field name="header_line" eval="False"/>
+	        <field name="header_spacing">20</field>
+	        <field name="dpi">90</field>
+	    </record>
+	    
+        <report 
+            id="report_testing"
+            string="Testing"
+            model="sis.testing1" 
+            report_type="qweb-pdf"
+            paperformat="paperformat_testing_report"
+            file="sis_testing.sis_testing_pdf" 
+            name="sis_testing.sis_testing_pdf"
+        />
+    </data>
+    
+	<template id="sis_testing_pdf">
+		<t t-call="web.html_container">
+			<t t-call="web.external_layout">
+				<div class="page">
+					<H2>testing</H2>
+					<t t-foreach="docs" t-as="doc">
+					<span style="width: 100px;" t-field="doc.file_image" t-field-options='{"widget": "image"}'></span>
+					</t>
+				</div>
+			</t>
+		</t>
+	</template>    
+</odoo>

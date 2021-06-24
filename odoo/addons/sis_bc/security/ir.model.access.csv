@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_master_filter,master_filter,sis_bc.model_sis_report_filter_bc,,1,1,1,1
+
