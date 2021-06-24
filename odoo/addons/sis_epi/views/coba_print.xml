@@ -1,0 +1,46 @@
+<odoo>
+	<data>
+	
+		<record model="ir.ui.view" id="epi_coba_print_tree_view">
+          <field name="name">sis.coba.print.tree</field>
+          <field name="model">sis.coba.print</field>
+          <field name="arch" type="xml">
+              <tree string="Budomari">
+                <field name="date_plan"></field>
+              </tree>
+          </field>
+        </record>
+
+        <!-- Membuat tampilan form -->
+        <record model="ir.ui.view" id="epi_coba_print_form_view">
+        <field name="name">sis.coba.print.form</field>
+        <field name="model">sis.coba.print</field>
+        <field name="arch" type="xml">
+          <form string="New">
+            <sheet>
+              <group>
+                <group>
+                  <field name="date_plan"></field>
+                  <button name="print"
+	                           string="PRINT"
+	                           type="object"/>
+                </group>
+              </group>
+            </sheet>
+          </form>
+        </field>
+        </record>
+
+
+        <!-- ### Membuat Action/Event Object Kursus ### -->
+        <record model="ir.actions.act_window" id="epi_coba_print_list_action">
+          <field name="name">Master Print</field>
+          <field name="res_model">sis.coba.print</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form</field>
+          <field name="help" type="html">
+              <p class="oe_view_nocontent_create">Create a new print</p>
+          </field>
+        </record>
+	</data>
+</odoo>

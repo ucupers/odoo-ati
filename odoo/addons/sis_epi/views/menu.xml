@@ -16,6 +16,9 @@
         <!-- SUB MENU MASTER BUDOMARI -->
         <menuitem name="Master Budomari" id="sis_master_budomari_epi" parent="sis_epi_menu" action="epi_budomari_master_list_action"></menuitem>
         
+        <!-- 
+        <menuitem name="Coba Print" id="sis_coba_print" parent="sis_epi_menu" action="epi_coba_print_list_action"></menuitem>
+         -->
 		
 	</data>
 </odoo>

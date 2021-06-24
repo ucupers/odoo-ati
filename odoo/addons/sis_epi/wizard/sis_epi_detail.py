@@ -24,7 +24,7 @@ class sis_epi_detail(models.Model):
             sis_epi_id = self.env.context.get('active_id')
             sis_epi_obj = self.env['sis.epi'].browse(sis_epi_id)
             epi_detail_line_ids = len(self.epi_detail_line)
-            
+            i = 1
              
             if sis_epi_obj:
                 # hapus terlebih dahulu data yang ada
@@ -43,9 +43,11 @@ class sis_epi_detail(models.Model):
                                 'sis_epi_line_temp_ids': [(0, 0, {
                                     'size_fish_temp': size_fish,
                                     'qty_fish_temp': qty_fish,
+                                    'no_urut': i
                         
                                 })]
                             })
+                            i = i + 1
                  
                         return True
                 
@@ -97,6 +99,8 @@ class sis_epi_line_detail(models.Model):
                                   ('defrost_sj', 'Defrost SJ(%)')], default=None, string="Size Fish")
     qty_fish = fields.Float(string="Qty(ton)")
     name = fields.Char(string="Name")
+    no_urut = fields.Integer()
+    
     
     
     

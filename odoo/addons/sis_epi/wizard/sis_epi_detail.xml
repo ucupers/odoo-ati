@@ -28,6 +28,7 @@
 			            <page name="material_ikan" string="Material Ikan">
 			              <field name="epi_detail_line">
 			                <tree editable="bottom">
+			                	<field name="no_urut" invisible="1"></field>
 			                 	<field name="size_fish"></field>
 			                 	<field name="qty_fish"></field>
 			                </tree>

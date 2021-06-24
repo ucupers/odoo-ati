@@ -138,10 +138,10 @@
 			                  <field name="pps_item_id"></field>
 			                  <field name="item_no_epi" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  <field name="line_epi" force_save="1"></field>
-			                  <field name="line_count" force_save="1" invisible="1"></field>
+			                  <field name="line_count" force_save="1" groups="base.group_no_one"></field>
 			                  <field name="fish_material_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  <field name="can_size_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
-			                  <field name="speed_epi" invisible="1"></field>
+			                  <field name="speed_epi" groups="base.group_no_one"></field>
 			                  <field name="speed_epi_calculate"></field>
 			                  <field name="kaleng_per_case_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  <field name="net_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
@@ -152,13 +152,13 @@
 			                  <!-- <field name="budomari_epi"></field> -->
 			               
 			                  <field name="yieldd_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
-			                  <field name="yield_total_epi" invisible="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
+			                  <field name="yield_total_epi" groups="base.group_no_one" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  <field name="yield_total_epi_epi" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}" sum='Total Target qty'></field>
-			                  <field name="qty_fish_total_epi" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}" sum='Total Actual qty fish' options='{"fg_color": "white: qty_fish_total_epi &lt; yield_total_epi_epi",
-																							            										"bg_color": "maroon: qty_fish_total_epi &lt; yield_total_epi_epi;
+			                  <field name="qty_fish_total_epi" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}" sum='Total Actual qty fish' options='{"fg_color": "white: qty_fish_total_epi &lt; yield_total_epi_epi and qty_fish_total_epi != 0",
+																							            										"bg_color": "maroon: qty_fish_total_epi &lt; yield_total_epi_epi and qty_fish_total_epi != 0;
 																							            													wheat: qty_fish_total_epi > yield_total_epi_epi"}'></field>
 																							            										
-							  <field name="start_packing_epi" options='{"bg_color": "yellow"}' attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
+							  <field name="start_packing_epi" options='{"bg_color": "yellow: qty_fish_total_epi != 0"}' attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
 			                  <field name="waktu_packing_epi"></field>
 			                  <field name="worker_epi" attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
 			                  <field name="meat_epi" attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
@@ -214,7 +214,7 @@
 			            			<!-- <field name="fish_qty_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field> yg old semua field pake attrs -->
 			            			<field name="fish_qty_fu"></field>
 			            			<field name="fish_type_fu"></field>
-			            			<field name="tonase_fu" force_save="1" ></field>
+			            			<field name="tonase_fu" force_save="1" sum='Total Tonase'></field>
 			            			<field name="total_tonase_fu" invisible="1" options='{"fg_color": "white: total_tonase_fu > fish_qty_fu and total_tonase_fu != 0", 
 		            											  							"bg_color": "mediumseagreen: total_tonase_fu == fish_qty_fu and total_tonase_fu != 0;
 		            											  						 				maroon: total_tonase_fu > fish_qty_fu and total_tonase_fu != 0"}'></field>
@@ -375,10 +375,10 @@
 			            		<tree editable="bottom">
 			            			<field name="epi_id" invisible="1"></field>
 			            			<field name="no"></field>
-			            			<field name="fish_qty_adj"></field>
-		               				<field name="tonase_adj"></field>
-		               				<field name="total_tonase_adj" invisible="1"></field>
 			            			<field name="item_id"></field>
+			            			<field name="tonase_adj" sum="Total Tonase"></field>
+			            			<field name="fish_qty_adj" invisible="1"></field>
+		               				<field name="total_tonase_adj" invisible="1"></field>
 			            			<field name="hasil_urut_item"></field>
 			            			<field name="cutting_time" widget="float_time"></field>
 			            			<field name="adj_cutting" options='{"bg_color": "yellow: is_adj_cutting == True"}'></field>

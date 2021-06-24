@@ -143,207 +143,15 @@ class sis_epi(models.Model):
                 rec.total_target_qty_fish = target_qty
     
     
-    
-    """ Tidak dipakai
-    @api.onchange('budomari_ids')
-    def get_budomari(self):
-        for rec in self:
-            budomari = rec.budomari_ids
-            
-            if budomari:
-                for row in budomari:
-                    budomari_name = row.name
-                    print("budomari", budomari_name)
-                    
-                    if budomari_name == 'AC':
-                        rec.budomari_bool_ac = True
-                     
-                        rec.budomari_bool_sj = False
-                        rec.budomari_bool_sm = False
-                        rec.budomari_bool_tg = False
-                        rec.budomari_bool_yf = False
-                        rec.budomari_bool_yfb = False
-                        
-                        print("ac masuk sini bos", rec.budomari_bool_ac)
-                        
-                    
-                    elif budomari_name == 'SJ':
-                        rec.budomari_bool_sj = True
-                        
-                    
-                    elif budomari_name == 'SM':
-                        rec.budomari_bool_sm = True
-                        
-                    elif budomari_name == 'TG':
-                        rec.budomari_bool_tg = True
-                        
-                    elif budomari_name == 'YF':
-                        rec.budomari_bool_yf = True
-                    
-                    elif budomari_name == 'YFB':
-                        rec.budomari_bool_yfb = True
-                    
-                    else:
-                        rec.budomari_bool_ac = False
-                        rec.budomari_bool_sj = False
-                        rec.budomari_bool_sm = False
-                        rec.budomari_bool_tg = False
-                        rec.budomari_bool_yf = False
-                        rec.budomari_bool_yfb = False
-                        
-                        print("ac masuk sini", rec.budomari_bool_ac)
-                    
-                    
-        
-        
-            else:
-                rec.budomari_bool_ac = False
-                rec.budomari_bool_sj = False
-                rec.budomari_bool_sm = False
-                rec.budomari_bool_tg = False
-                rec.budomari_bool_yf = False
-                rec.budomari_bool_yfb = False 
-                
-                print("ac masuk sini terakhir", rec.budomari_bool_ac)
-            
-            """
-    
     # Button confirm
     @api.multi
     def action_confirm(self):
         for rec in self:
             
-            rec.update({'state': 'estimasi_pack'})
-        
-            
-    
-# Button action create fish using tab
-#     @api.multi
-#     def action_fish_using(self):
-#         for rec in self:
-#             epi_line = rec.epi_line_ids
-#             temp = []
-#             item_temp = 0
-#             i = 1
-#             temp_temp = []
-#             fish_using_line_ids = rec.fish_using_line_ids
-#             
-#             
-#             count_fish_using = len(self.mapped('fish_using_line_ids'))
-#             if count_fish_using > 0:
-#                 return {
-#                     'name': 'Warning',
-#                     'type': 'ir.actions.act_window',
-#                     'view_type': 'form',
-#                     'view_mode': 'form',
-#                     'res_model': 'message.fish.using',
-#                     'target': 'new',
-#                     'context': {
-#                          'default_id_epi': rec.id,
-#                          'default_name': "The data will be replaced, Are you sure create fish using again?",
-#                     }
-#                }
-#             
-#             # Create temporary line untuk tab fish using
-#             # values_temp = {}
-#             # values_temp['urutan_item_fu'] = i
-#             
-#            #  temp.append((0, 0, values_temp))
-#             
-#             for row in epi_line:
-#                 epi_line_id = row.id
-#                 start_packing = row.start_packing_epi
-#                 item_id = row.pps_item_id
-#                 start_packing = row.start_packing_epi
-#                 waktu_estimasi_pack = row.waktu_packing_epi
-#                 yield_total = (row.yield_total_epi / 1000)
-#                 qty_fish_total = row.qty_fish_total_epi
-#                 remark = row.remark_epi
-#                 epi_line_temp = row.sis_epi_line_temp_ids
-#                 epi_line_temp_count = len(row.sis_epi_line_temp_ids)
-#                 
-# #                 epi_detail_obj = self.env['sis.epi.detail'].search([('epi_line_id', '=', epi_line_id)])
-#                 if epi_line_temp:
-#                     for epi_detail in epi_line_temp:
-#                         qty_fish_temp = epi_detail.qty_fish_temp
-#                         size_fish_temp = epi_detail.size_fish_temp
-#                         
-#                         print("fish temp ", qty_fish_temp, size_fish_temp)
-#                 
-#                         j = 0
-#                 
-#                         # Jika ada qty ikan lebih dari nol, maka akan di proses di fish using
-#                         if qty_fish_temp > 0:
-#                             row_fish_using = qty_fish_temp / 4
-#                             hasil_bagi = math.floor(row_fish_using)
-#                             
-#                             if epi_line_temp_count > 1:
-#                                 if hasil_bagi == 0:
-#                                     
-#                                     values = {}
-#                                     values['epi_line_id_fu'] = row.id
-#                                 
-#                             # Jika hasil pembagian == 0 atau nilai yang diinput < 4
-#                             if hasil_bagi == 0:
-#                                 
-#                                 values = {}
-#                                 values['epi_line_id_fu'] = row.id
-#                                 values['item_id_fu'] = item_id.id
-#                                 values['waktu_packing_fu'] = waktu_estimasi_pack
-#                                 values['fish_qty_fu'] = qty_fish_total
-#                                 values['start_packing_fu'] = start_packing
-#                                 values['remark_fu'] = remark
-#                                 values['urutan_item_fu'] = i + 1 # No urut bertambah
-#                                 values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
-#                                 values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
-#                                 i = i + 1
-#                                 j = 1
-#                                 
-#                                 temp.append((0, 0, values))
-#                             
-#                             
-#                             # Jika hasil bagi > 0
-#                             else:
-#                                 
-#                                 baris = 1
-#                                 # Insert ke fish using line (pembulatan ke bawah)
-#                                 for line in range(hasil_bagi):
-#                                     # Jika line pertama pada item baru, input start packing
-#                                     
-#                                     values = {}
-#                                     values['epi_line_id_fu'] = row.id
-#                                     values['item_id_fu'] = item_id.id
-#                                     values['waktu_packing_fu'] = waktu_estimasi_pack
-#                                     values['fish_qty_fu'] = qty_fish_total
-#                                     values['remark_fu'] = remark
-#                                     
-#                                     if baris == 1:
-#                                         values['start_packing_fu'] = start_packing
-#                                         baris = baris + 1
-#                                     
-#                                     # Jika item sama dengan sebelumnya
-#                                     if item_temp == 0 or item_temp == item_id.id:
-#                                         values['urutan_item_fu'] = i # no urut sama dengan sebelumnya
-#                                         values['urutan_item_fu_2'] = j + 1 # no urut 2 increament
-#                                         values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
-#                                         j = j + 1
-#                                     
-#                                     # Jika item berbeda
-#                                     else:
-#                                         values['start_packing_fu'] = start_packing
-#                                         values['urutan_item_fu'] = i + 1 # No urut bertambah
-#                                         values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
-#                                         values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
-#                                         i = i + 1
-#                                         j = 1
-#                                 
-#                                     item_temp = item_id.id
-#                                     temp.append((0, 0, values))
-#                         
-#             return self.update({'fish_using_line_ids': temp,})
-#                     
+            rec.update({'state': 'estimasi_pack'})          
     
     
+    # CREATE FISH USING
     # Button action create fish using tab
     @api.multi
     def action_fish_using(self):
@@ -352,8 +160,11 @@ class sis_epi(models.Model):
             temp = []
             item_temp = 0
             i = 1
+            baris = 1
+            print("baris", baris)
             temp_temp = []
             fish_using_line_ids = rec.fish_using_line_ids
+            
              
             count_fish_using = len(self.mapped('fish_using_line_ids'))
             if count_fish_using > 0:
@@ -375,7 +186,8 @@ class sis_epi(models.Model):
             # values_temp['urutan_item_fu'] = i
              
            #  temp.append((0, 0, values_temp))
-             
+            
+            # Looping data epi line
             for row in epi_line:
                 start_packing = row.start_packing_epi
                 item_id = row.pps_item_id
@@ -384,70 +196,375 @@ class sis_epi(models.Model):
                 yield_total = (row.yield_total_epi / 1000)
                 qty_fish_total = row.qty_fish_total_epi
                 remark = row.remark_epi
-                 
-                j = 0
-                 
-                # Jika ada qty ikan lebih dari nol, maka akan di proses di fish using
-                if qty_fish_total > 0:
-                    row_fish_using = qty_fish_total / 4
-                    hasil_bagi = math.floor(row_fish_using)
-                     
-                    # Jika hasil pembagian == 0 atau nilai yang diinput < 4
-                    if hasil_bagi == 0:
-                        values = {}
-                        values['epi_line_id_fu'] = row.id
-                        values['item_id_fu'] = item_id.id
-                        values['waktu_packing_fu'] = waktu_estimasi_pack
-                        values['fish_qty_fu'] = qty_fish_total
-                        values['start_packing_fu'] = start_packing
-                        values['remark_fu'] = remark
-                        values['urutan_item_fu'] = i + 1 # No urut bertambah
-                        values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
-                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
-                        i = i + 1
-                        j = 1
-                         
-                        temp.append((0, 0, values))
-                     
-                    # Jika hasil bagi > 0
+                epi_line_temp = row.sis_epi_line_temp_ids
+                epi_line_temp_count = len(row.sis_epi_line_temp_ids)
+
+                if qty_fish_total != 0:
+                    # Jika mash dalam satu item yang sama
+                    if item_temp == item_id.id:
+                        j = 0
+                        if epi_line_temp:
+                            for epi_detail in epi_line_temp:
+                                qty_fish_temp = epi_detail.qty_fish_temp
+                                size_fish_temp = epi_detail.size_fish_temp
+                                no_urut_temp = epi_detail.no_urut
+                                
+                                # Line temporary untuk mengisi qty actual dan fish size
+                                # Jika jumlah line temp fish == 1 dan qty fish tidak NOL
+                                if epi_line_temp_count == 1 and qty_fish_temp != 0:
+                                    
+                                    # Jika ada qty ikan lebih dari nol, maka akan di proses di fish using
+                                    if qty_fish_temp > 0:
+                                        row_fish_using = qty_fish_temp / 4
+                                        hasil_bagi = math.floor(row_fish_using)
+                                        
+                                        # Jika hasil pembagian == 0 atau nilai yang diinput < 4
+                                        if hasil_bagi == 0 or hasil_bagi == 1:
+                                            values = {}
+                                            values['epi_line_id_fu'] = row.id
+                                            values['item_id_fu'] = item_id.id
+                                            values['waktu_packing_fu'] = waktu_estimasi_pack
+                                            values['fish_qty_fu'] = qty_fish_total
+                                            values['start_packing_fu'] = start_packing
+                                            values['remark_fu'] = remark
+                                            values['urutan_item_fu'] = i # No urut bertambah
+                                            values['urutan_item_fu_2'] = j + 1 # No urut pertama balik ke angka satu
+                                            values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                            i = i
+                                            j = j + 1
+                                            
+                                            item_temp = item_id.id
+                                            temp.append((0, 0, values))
+                                        
+                                        # Jika jumlah line temp cuman satu, tapi qty > 4 maka:
+                                        else:
+                                            
+                                            for line in range(hasil_bagi):
+                                                values = {}
+                                                
+                                                values['epi_line_id_fu'] = row.id
+                                                values['item_id_fu'] = item_id.id
+                                                values['waktu_packing_fu'] = waktu_estimasi_pack
+                                                values['fish_qty_fu'] = qty_fish_total
+                                                values['remark_fu'] = remark
+                                                
+                                                if no_urut_temp == 1 and baris ==1:
+                                                    values['start_packing_fu'] = start_packing
+                                                    values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                    values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
+                                                    values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                    
+                                                    i = i + 1
+                                                    j = j + 1
+                                                    baris = baris + 1
+                                                    item_temp = item_id.id
+                                                
+                                                
+                                                # Jika baris kedua
+                                                else:
+                                                    values['epi_line_id_fu'] = row.id
+                                                    values['item_id_fu'] = item_id.id
+                                                    values['waktu_packing_fu'] = waktu_estimasi_pack
+                                                    values['fish_qty_fu'] = qty_fish_total
+                                                    values['remark_fu'] = remark
+                                                    # Jika item sama dengan item sebelumnya
+                                                    if item_temp == item_id.id:
+                                                        
+                                                        values['urutan_item_fu'] = i # No urut bertambah
+                                                        values['urutan_item_fu_2'] = j + 1 # No urut pertama balik ke angka satu
+                                                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                        j = j + 1
+                                                    
+                                                    # jika item berbeda dengan sebelumnya
+                                                    else:
+                                                        
+                                                        values['start_packing_fu'] = start_packing
+                                                        values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                        values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
+                                                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                        
+                                                        i = i + 1
+                                                        j = 1
+                                                    
+                                                item_temp = item_id.id
+                                                temp.append((0, 0, values))
+                                
+                                # Jika jumlah line temp fish > dari satu ukuran / lebih dari satu line temp, maka :
+                                else:
+                                    
+                                    if qty_fish_temp > 0:
+                                        row_fish_using = qty_fish_temp / 4
+                                        hasil_bagi = math.floor(row_fish_using)
+                                        
+                                        # Jika qty yang diisi < 4, maka :
+                                        # Jika hasil pembagian == 0 atau nilai yang diinput < 4
+                                        if hasil_bagi == 0 or hasil_bagi == 1:
+                                            values = {}
+                                            values['epi_line_id_fu'] = row.id
+                                            values['item_id_fu'] = item_id.id
+                                            values['waktu_packing_fu'] = waktu_estimasi_pack
+                                            values['fish_qty_fu'] = qty_fish_total
+                                            values['remark_fu'] = remark
+                                                
+                                            if no_urut_temp == 1 and qty_fish_temp != 0:
+                                                
+                                                values['start_packing_fu'] = start_packing
+                                                values['urutan_item_fu'] = i  # No urut bertambah
+                                                values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
+                                                values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                
+                                                j = j + 1
+                                                i = i
+                                    
+                                            # Jika bukan baris pertama
+                                            else:
+                                                
+                                                if item_temp == item_id.id:
+                                                    
+                                                    values['urutan_item_fu'] = i  # No urut bertambah
+                                                    values['urutan_item_fu_2'] = j + 1 # No urut pertama balik ke angka satu
+                                                    values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                    i = i
+                                                    j = j + 1
+                                                    
+                                                
+                                            item_temp = item_id.id
+                                            temp.append((0, 0, values))
+                                        
+                                        else:
+                                            # Looping sesuai jumlah qty actual fish / 4
+                                            for line in range(hasil_bagi):
+                                                
+                                                values = {}
+                                                values['epi_line_id_fu'] = row.id
+                                                values['item_id_fu'] = item_id.id
+                                                values['waktu_packing_fu'] = waktu_estimasi_pack
+                                                values['fish_qty_fu'] = qty_fish_total
+                                                values['remark_fu'] = remark
+                                                
+                                                # Jika baris pertama
+                                                if no_urut_temp == 1 and baris == 1:
+                                                    values['start_packing_fu'] = start_packing
+                                                    values['urutan_item_fu'] = i # no urut sama dengan sebelumnya
+                                                    values['urutan_item_fu_2'] = j + 1 # no urut 2 increament
+                                                    values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                    
+                                                    j = j + 1
+                                                    baris = baris + 1
+                                                    
+                                                
+                                                # jika baris kedua
+                                                else:
+                                                    if item_temp == item_id.id:
+                                                        values['urutan_item_fu'] = i # no urut sama dengan sebelumnya
+                                                        values['urutan_item_fu_2'] = j + 1 # no urut 2 increament
+                                                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                        j = j + 1
+                                                    
+                                                    # jika item berbeda dengan sebelumnya
+                                                    else:
+                                                        values['epi_line_id_fu'] = row.id
+                                                        values['item_id_fu'] = item_id.id
+                                                        values['waktu_packing_fu'] = waktu_estimasi_pack
+                                                        values['fish_qty_fu'] = qty_fish_total
+                                                        values['remark_fu'] = remark
+                                                        values['start_packing_fu'] = start_packing
+                                                        values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                        values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
+                                                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                        
+                                                        i = i + 1
+                                                        j = 1
+                                                
+                                                item_temp = item_id.id      
+                                                temp.append((0, 0, values))
+                                                
+                    # Jika item pada epi line berbeda
                     else:
-                         
-                        baris = 1
-                        # Insert ke fish using line (pembulatan ke bawah)
-                        for line in range(hasil_bagi):
-                            # Jika line pertama pada item baru, input start packing
-                             
-                            values = {}
-                            values['epi_line_id_fu'] = row.id
-                            values['item_id_fu'] = item_id.id
-                            values['waktu_packing_fu'] = waktu_estimasi_pack
-                            values['fish_qty_fu'] = qty_fish_total
-                            values['remark_fu'] = remark
-                             
-                            if baris == 1:
-                                values['start_packing_fu'] = start_packing
-                                baris = baris + 1
-                             
-                            # Jika item sama dengan sebelumnya
-                            if item_temp == 0 or item_temp == item_id.id:
-                                values['urutan_item_fu'] = i # no urut sama dengan sebelumnya
-                                values['urutan_item_fu_2'] = j + 1 # no urut 2 increament
-                                values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
-                                j = j + 1
-                             
-                            # Jika item berbeda
-                            else:
-                                values['start_packing_fu'] = start_packing
-                                values['urutan_item_fu'] = i + 1 # No urut bertambah
-                                values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
-                                values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
-                                i = i + 1
-                                j = 1
-                         
-                            item_temp = item_id.id
-                            temp.append((0, 0, values))
-                         
+                        j = 0
+                        
+                        if epi_line_temp:
+                            for epi_detail in epi_line_temp:
+                                qty_fish_temp = epi_detail.qty_fish_temp
+                                size_fish_temp = epi_detail.size_fish_temp
+                                no_urut_temp = epi_detail.no_urut
+                                
+                                # Line temporary untuk mengisi qty actual dan fish size
+                                # Jika jumlah line temp fish == 1 dan qty fish tidak NOL
+                                if epi_line_temp_count == 1 and qty_fish_temp != 0:
+                                    
+                                    # Jika ada qty ikan lebih dari nol, maka akan di proses di fish using
+                                    if qty_fish_temp > 0:
+                                        row_fish_using = qty_fish_temp / 4
+                                        hasil_bagi = math.floor(row_fish_using)
+                                        
+                                        # Jika hasil pembagian == 0 atau nilai yang diinput < 4
+                                        if hasil_bagi == 0 or hasil_bagi == 1:
+                                            values = {}
+                                            values['epi_line_id_fu'] = row.id
+                                            values['item_id_fu'] = item_id.id
+                                            values['waktu_packing_fu'] = waktu_estimasi_pack
+                                            values['fish_qty_fu'] = qty_fish_total
+                                            values['start_packing_fu'] = start_packing
+                                            values['remark_fu'] = remark
+                                            values['urutan_item_fu'] = i # No urut bertambah
+                                            values['urutan_item_fu_2'] = j + 1 # No urut pertama balik ke angka satu
+                                            values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                            i = i
+                                            j = j + 1
+                                            
+                                            item_temp = item_id.id
+                                            temp.append((0, 0, values))
+                                        
+                                        # Jika jumlah line temp cuman satu, tapi qty > 4 maka:
+                                        else:
+                                            
+                                            for line in range(hasil_bagi):
+                                                values = {}
+                                                
+                                                values['epi_line_id_fu'] = row.id
+                                                values['item_id_fu'] = item_id.id
+                                                values['waktu_packing_fu'] = waktu_estimasi_pack
+                                                values['fish_qty_fu'] = qty_fish_total
+                                                values['remark_fu'] = remark
+                                                
+                                                if no_urut_temp == 1 and baris ==1:
+                                                    values['start_packing_fu'] = start_packing
+                                                    values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                    values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
+                                                    values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                    
+                                                    i = i + 1
+                                                    j = j + 1
+                                                    baris = baris + 1
+                                                    item_temp = item_id.id
+                                                
+                                                
+                                                # Jika baris kedua
+                                                else:
+                                                    values['epi_line_id_fu'] = row.id
+                                                    values['item_id_fu'] = item_id.id
+                                                    values['waktu_packing_fu'] = waktu_estimasi_pack
+                                                    values['fish_qty_fu'] = qty_fish_total
+                                                    values['remark_fu'] = remark
+                                                    # Jika item sama dengan item sebelumnya
+                                                    if item_temp == item_id.id:
+                                                        
+                                                        values['urutan_item_fu'] = i # No urut bertambah
+                                                        values['urutan_item_fu_2'] = j + 1 # No urut pertama balik ke angka satu
+                                                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                        j = j + 1
+                                                    
+                                                    # jika item berbeda dengan sebelumnya
+                                                    else:
+                                                        
+                                                        values['start_packing_fu'] = start_packing
+                                                        values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                        values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
+                                                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                        
+                                                        i = i + 1
+                                                        j = 1
+                                                    
+                                                item_temp = item_id.id
+                                                temp.append((0, 0, values))
+                                
+                                # Jika jumlah line temp fish > dari satu ukuran / lebih dari satu line temp, maka :
+                                else:
+                                    
+                                    if qty_fish_temp > 0:
+                                        row_fish_using = qty_fish_temp / 4
+                                        hasil_bagi = math.floor(row_fish_using)
+                                        
+                                        # Jika qty yang diisi < 4, maka :
+                                        # Jika hasil pembagian == 0 atau nilai yang diinput < 4
+                                        if hasil_bagi == 0 or hasil_bagi == 1:
+                                            values = {}
+                                            values['epi_line_id_fu'] = row.id
+                                            values['item_id_fu'] = item_id.id
+                                            values['waktu_packing_fu'] = waktu_estimasi_pack
+                                            values['fish_qty_fu'] = qty_fish_total
+                                            values['remark_fu'] = remark
+                                                
+                                            if no_urut_temp == 1 and qty_fish_temp != 0:
+                                                
+                                                values['start_packing_fu'] = start_packing
+                                                values['urutan_item_fu'] = i  # No urut bertambah
+                                                values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
+                                                values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                
+                                                j = j + 1
+                                                i = i
+                                    
+                                            # Jika bukan baris pertama
+                                            else:
+                                                
+                                                if item_temp == item_id.id:
+                                                    
+                                                    values['urutan_item_fu'] = i  # No urut bertambah
+                                                    values['urutan_item_fu_2'] = j + 1 # No urut pertama balik ke angka satu
+                                                    values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                    i = i
+                                                    j = j + 1
+                                                    
+                                                
+                                            item_temp = item_id.id
+                                            temp.append((0, 0, values))
+                                        # Jika hasil bagi > 0, atau yang di input > 4, maka :
+                                        else:
+                                            # Looping sesuai jumlah qty actual fish / 4
+                                            for line in range(hasil_bagi):
+                                                
+                                                values = {}
+                                                values['epi_line_id_fu'] = row.id
+                                                values['item_id_fu'] = item_id.id
+                                                values['waktu_packing_fu'] = waktu_estimasi_pack
+                                                values['fish_qty_fu'] = qty_fish_total
+                                                values['remark_fu'] = remark
+                                                
+                                                # Jika baris pertama
+                                                if no_urut_temp == 1 and baris == 1:
+                                                    values['start_packing_fu'] = start_packing
+                                                    values['urutan_item_fu'] = i # no urut sama dengan sebelumnya
+                                                    values['urutan_item_fu_2'] = j + 1 # no urut 2 increament
+                                                    values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                    
+                                                    j = j + 1
+                                                    baris = baris + 1
+                                                    
+                                                
+                                                # jika baris kedua
+                                                else:
+                                                    if item_temp == item_id.id:
+                                                        values['urutan_item_fu'] = i # no urut sama dengan sebelumnya
+                                                        values['urutan_item_fu_2'] = j + 1 # no urut 2 increament
+                                                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                        j = j + 1
+                                                    
+                                                    # jika item berbeda dengan sebelumnya
+                                                    else:
+                                                        values['epi_line_id_fu'] = row.id
+                                                        values['item_id_fu'] = item_id.id
+                                                        values['waktu_packing_fu'] = waktu_estimasi_pack
+                                                        values['fish_qty_fu'] = qty_fish_total
+                                                        values['remark_fu'] = remark
+                                                        values['start_packing_fu'] = start_packing
+                                                        values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                        values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
+                                                        values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
+                                                        
+                                                        i = i + 1
+                                                        j = 1
+                                                
+                                                item_temp = item_id.id      
+                                                temp.append((0, 0, values))
+                                    
+                        i = i + 1               
+                    item_temp = item_id.id  
+                                        
             return self.update({'fish_using_line_ids': temp, 'state': 'fish_using'})
+                         
+                
 #     
     # Button Adj Cutting
     @api.multi
@@ -829,7 +946,8 @@ class sis_epi(models.Model):
                                 
                 # Hapus terlebih dahulu
                 rec.delete_fish_using_line()           
-                return rec.update({'fish_using_line_ids': temp})   
+                rec.update({'fish_using_line_ids': temp})   
+                return rec.message_sort_urut_item_action()
             
             
     # Delete fish using ids ketika sort
@@ -842,7 +960,20 @@ class sis_epi(models.Model):
         if epi_line_obj:        
             fish_using_ids_line.append(([5]))
 
-            return epi_line_obj.update({'fish_using_line_ids': fish_using_ids_line})    
+            return epi_line_obj.update({'fish_using_line_ids': fish_using_ids_line})   
+        
+    # POP MESSAGE URUT ITEM
+    @api.multi
+    def message_sort_urut_item_action(self):
+        return {
+            'name': 'Success',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'message.get.data',
+            'target': 'new',
+            'context': {'default_name': "Data Successfully Sorted by Urut Item"}
+        } 
             
         
     
@@ -1809,7 +1940,7 @@ class sis_epi_line(models.Model):
     net_epi = fields.Float(string="Net(w)")
     can_size_epi = fields.Char(string="Can Size")
     kaleng_per_case_epi = fields.Float(string="Kaleng per Case", readonly=True, digits=(12,0))
-    speed_epi = fields.Float(string="Speed(cs/jam)", digits=(12,0))
+    speed_epi = fields.Float(string="Speed", digits=(12,0))
     speed_epi_calculate = fields.Float(string="Speed(cs/jam)", digits=(12,0), compute='calculate_speed_epi', store=True)
     target_prd = fields.Float(string="Target Produksi(cs)", track_visibility='onchange', readonly=True)
     budomari_epi = fields.Many2one('sis.budomari', string="Budomari")
@@ -2022,7 +2153,7 @@ class sis_epi_line(models.Model):
     def calculate_estimasi_wkt_packing(self):
         for rec in self:
             target_prd = rec.target_prd
-            speed = rec.speed_epi
+            speed = rec.speed_epi_calculate
              
             if speed != 0:
                 hasil = target_prd / speed
@@ -2074,8 +2205,10 @@ class sis_epi_line(models.Model):
                 for row in rec.sis_epi_line_temp_ids:
                     fish_size_temp = row.size_fish_temp
                     fish_qty_temp = row.qty_fish_temp
+                    no_urut = row.no_urut
                     
                     values = {}
+                    values['no_urut'] = no_urut
                     values['size_fish'] = fish_size_temp
                     values['qty_fish'] = fish_qty_temp
                     temp.append((0, 0, values))
@@ -2130,6 +2263,7 @@ class sis_epi_line_temp(models.Model):
     epi_line_id = fields.Many2one('sis.epi.line')
     size_fish_temp = fields.Char()
     qty_fish_temp = fields.Float()
+    no_urut = fields.Integer()
     
     
 
