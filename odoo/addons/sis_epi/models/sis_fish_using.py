@@ -28,6 +28,7 @@ class fish_using(models.Model):
     hasil_urut_item_fu = fields.Char(string="Urut Item", readonly=True)
     fish_qty_fu = fields.Float(string="Fish Qty(ton)")
     count = fields.Integer()
+    is_new_item_fu = fields.Boolean()
     
     hasil_tonase = fields.Float(string="Hasil Tonase", store=True, compute='compute_hasil_tonase')
     jam_hasil_tonase = fields.Float(string="Jam Tonase", store=True, compute='compute_hasil_tonase')

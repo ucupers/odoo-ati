@@ -35,7 +35,9 @@
         'wizard/sis_epi_detail.xml',
         'wizard/urut_cutting_wizard.xml',
         'wizard/message_get_item.xml',
+        'wizard/add_new_item.xml',
         'report/report.xml',
+        'security/security.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

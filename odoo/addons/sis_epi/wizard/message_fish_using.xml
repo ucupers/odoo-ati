@@ -8,6 +8,7 @@
                 <form string="Warning">
                 	
                 	<field name="name"></field>
+                	<field name="urutan_item_last" invisible="1"></field>
                 	<field name="id_epi" invisible="1"></field>
                 	
                     <footer>

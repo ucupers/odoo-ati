@@ -6,11 +6,12 @@
       <field name="name">EPI List</field>
       <field name="model">sis.epi</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree default_order='date_plan desc, name desc'>
           <field name="name"/>
           <field name="date_plan"></field>
           <field name="ati12_plan"></field>
           <field name="total_qty_fish"></field>
+          <field name="total_qty_fcl"></field>
           <field name="state"></field>
          
         </tree>
@@ -25,14 +26,38 @@
             <form>
             	<header>
             		<!-- BUTTON BACK  -->
+            		<button name="back_to_schedule"
+                            states="estimasi_pack"
+                            string="  Back"
+                            class="fa fa-arrow-left"
+                            type="object"/>
+                           
                     <button name="back_to_estimasi_pack"
                             states="fish_using"
                             string="  Back"
                             class="fa fa-arrow-left"
                             type="object"/>
+                    
+                    <button name="back_to_fish_using"
+                            states="adj_cutting"
+                            string="  Back"
+                            class="fa fa-arrow-left"
+                            type="object"/>
+                            
+                    <button name="back_to_adj_cutting"
+                            states="urut_cutting"
+                            string="  Back"
+                            class="fa fa-arrow-left"
+                            type="object"/>
+                            
+                    <button name="unlock"
+                            states="done"
+                            string="Unlock"
+                            groups="sis_epi.group_epi_manager"
+                            type="object"/>
             		
             		
-            		<!--  -->
+            		<!-- BUTTON -->
             		<button name="action_confirm"
                             states="schedule"
                             string="Confirm"
@@ -60,11 +85,15 @@
                             
                     <button name="action_done"
                             states="urut_cutting"
-                            string="Done"
+                            string="Lock"
                             class="btn-primary"
                             type="object"/>
                     
-                    <!-- BUTTON PRINT OUT XLS  -->        
+                    <!-- BUTTON PRINT OUT XLS  -->     
+                    <button name="xls_schedule" 
+                    		string="Schedule Xls" 
+                    		type="object"></button>
+                       
                     <button name="xls_urutan_potong" 
                     		string="Urutan Potong Xls" 
                     		type="object"
@@ -81,7 +110,7 @@
                             type="object"/>
                             
             		<field name="state" widget="statusbar"
-                               statusbar_visible="schedule,estimasi_pack,fish_using,adj_cutting,urut_cutting,done"/>
+                               statusbar_visible="schedule,estimasi_pack,fish_using,adj_cutting,urut_cutting"/>
             	</header>
                 <sheet>
                     <div class="oe_title">
@@ -113,11 +142,25 @@
                     		<field name="budomari_id_yf" attrs="{'invisible': [('budomari_bool_yf', '=', False)]}"></field>
                     		<field name="budomari_id_yfb" attrs="{'invisible': [('budomari_bool_yfb', '=', False)]}"></field>
                     		
+                    		<label for="pm" attrs="{'readonly': [('state', 'not in', ['adj_cutting'])]}"></label>
+                    		<div class="o_row">
+                    			<field name="pm" attrs="{'readonly': [('state', 'not in', ['adj_cutting'])]}"></field>
+                    			<button name="hitung_pm"
+	                                type="object"
+	                                string="Hitung"
+	                                class="btn-primary"
+	                                attrs="{'invisible': [('state', 'not in', ['adj_cutting'])]}"/>
+                    		</div>
+                    		<field name="hasil_presentase_pm"></field>
+                    		
+                    		<field name="total_tonase" groups="base.group_no_one"></field>
+                    		
                     		<field name="coba" invisible="1"></field>
                     		<field name="is_sort_asc" invisible="1"></field>
                     		<field name="is_insert_adj_cut" invisible="1"></field>
                     		<field name="is_urut_cutting" invisible="1"></field>
                     		<field name="is_get_item" invisible="1"></field>
+                    		<field name="is_new_item" invisible="1"></field>
                     		
                     	</group>
                     </group>
@@ -133,19 +176,23 @@
                      <notebook>
 			            <page name="epi_line" string="EPI Line">
                             
-			              <field name="epi_line_ids" attrs="{'readonly': [('state', '=', 'urut_cutting')]}">
+			              <field name="epi_line_ids" attrs="{'readonly': [('state', 'in', ('fish_using','urut_cutting', 'done'))]}">
 			                <tree editable="bottom">
+			                  <field name="is_new_item_epi" attrs="{'column_invisible': [('parent.is_new_item', '=', False)]}"></field>	
+		                	  <field name="line_epi" force_save="1"></field>
+			                  <field name="line_count" force_save="1" groups="base.group_no_one"></field>
 			                  <field name="pps_item_id"></field>
 			                  <field name="item_no_epi" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
-			                  <field name="line_epi" force_save="1"></field>
-			                  <field name="line_count" force_save="1" groups="base.group_no_one"></field>
-			                  <field name="fish_material_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
-			                  <field name="can_size_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
+			                  <field name="target_prd" options='{"bg_color": "lightgreen"}'></field> 
 			                  <field name="speed_epi" groups="base.group_no_one"></field>
 			                  <field name="speed_epi_calculate"></field>
+			                  <field name="waktu_packing_epi"></field>
+			                  <field name="fish_material_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
+			                  <field name="can_size_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
+			                  
 			                  <field name="kaleng_per_case_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  <field name="net_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
-			                  <field name="target_prd" options='{"bg_color": "lightgreen"}'></field> 
+			                  
 			                  <field name="meat" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  <field name="filling_epi" force_save="1" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  <field name="sm_epi" force_save="1" invisible="1"></field>
@@ -159,7 +206,7 @@
 																							            													wheat: qty_fish_total_epi > yield_total_epi_epi"}'></field>
 																							            										
 							  <field name="start_packing_epi" options='{"bg_color": "yellow: qty_fish_total_epi != 0"}' attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
-			                  <field name="waktu_packing_epi"></field>
+			                  
 			                  <field name="worker_epi" attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
 			                  <field name="meat_epi" attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
 			                  <field name="remark_epi_fz" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
@@ -169,6 +216,7 @@
 			                  <field name="sis_epi_line_temp_ids"></field>  -->
 			                  
 			                  <button name="action_detail_view" string="Input target produksi, size" type="object" icon="fa-list" options='{"warn": true}'/>
+			             
 			               
 			                </tree>
 			              </field>
@@ -190,6 +238,7 @@
 			            	<button name="sort_asc_urut_item"
 	                           string="  1. ASC Urut Item"
 	                           icon="fa-sort-alpha-asc"
+	                           attrs="{'invisible': [('state', '!=', 'fish_using')]}"
 	                           type="object"/>
 	                           
 				            <button name="calculate_epi"
@@ -198,18 +247,19 @@
 	                            attrs="{'invisible': [('state', '!=', 'fish_using')]}"
 	                            type="object"/>
 			            
-			            	<field name="fish_using_line_ids">
+			            	<field name="fish_using_line_ids" attrs="{'readonly': [('state', '!=', 'fish_using')]}">
 			            		<tree editable="bottom">
 			            			<field name="epi_line_id_fu" invisible="1"></field>
 			            			
-			            			<field name="item_id_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13;
+			            			<field name="item_id_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
 			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 			            		
 			            			<!-- <field name="fish_qty_fu" attrs="{'invisible': [('urutan_item_fu', '=', 0)]}"></field> yg old semua field pake attrs -->
 			            			<field name="fish_qty_fu"></field>
@@ -229,64 +279,70 @@
 			            			<field name="hasil_tonase"></field>
 			            			<field name="jam_hasil_tonase" widget="float_time"></field>
 			            			
-			            			<field name="start_packing_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+			            			<field name="start_packing_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 						        	<field name="finish_packing_format_fu"></field>
 						        	
-						        	<field name="start_cleaning_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+						        	<field name="start_cleaning_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 						        	<field name="finish_cleaning_format_fu"></field>
 						        	
-						        	<field name="start_pre_cleaning_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+						        	<field name="start_pre_cleaning_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 						        	<field name="finish_pre_cleaning_format_fu"></field>
 						        	
-						        	<field name="start_cooking_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+						        	<field name="start_cooking_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 						        	<field name="finish_cooking_format_fu"></field>
 						        	
-						        	<field name="start_cutting_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+						        	<field name="start_cutting_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 						        	<field name="finish_cutting_format_fu"></field>
 						        	
-						        	<field name="start_defrost_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+						        	<field name="start_defrost_format_fu" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 						        	<field name="finish_defrost_format_fu"></field>
 						        	
 						        	<field name="finish_cs_format_fu"></field>
@@ -296,66 +352,73 @@
 			            			<field name="finish_packing_fu" invisible="1"></field>
 			            			
 			            			
-			            			<field name="start_cleaning_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+			            			<field name="start_cleaning_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 			            			<field name="finish_cleaning_fu" invisible="1"></field>
 			            			
-			            			<field name="start_pre_cleaning_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+			            			<field name="start_pre_cleaning_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 			            			<field name="finish_pre_cleaning_fu" invisible="1"></field>
 			            			
-			            			<field name="start_cooking_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+			            			<field name="start_cooking_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 			            			<field name="finish_cooking_fu" invisible="1"></field>
 			            			
-			            			<field name="start_cutting_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+			            			<field name="start_cutting_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 			            			<field name="finish_cutting_fu" invisible="1"></field>
 			            			
-			            			<field name="start_defrost_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+			            			<field name="start_defrost_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 			            			<field name="finish_defrost_fu" invisible="1"></field>
 			            			
-			            			<field name="finish_cs_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 10 or urutan_item_fu == 13",
-			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 10 or urutan_item_fu == 13;
-			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 11 or urutan_item_fu == 14;
+			            			<field name="finish_cs_fu" invisible="1" options='{"fg_color": "red: urutan_item_fu == 1 or urutan_item_fu == 13",
+			            										       "bg_color": "yellow: urutan_item_fu == 1 or urutan_item_fu == 7 or urutan_item_fu == 13;
+			            												        	 lightblue: urutan_item_fu == 2 or urutan_item_fu == 8 or urutan_item_fu == 11 or urutan_item_fu == 14;
 			            												        	 wheat: urutan_item_fu == 4;
 			            												        	 lightgreen: urutan_item_fu == 5;
 			            												        	 plum: urutan_item_fu == 6;
 			            												        	 lightsalmon: urutan_item_fu == 7;
-			            												        	 hotpink: urutan_item_fu == 8"}'></field>
+			            												        	 hotpink: urutan_item_fu == 8; 
+			            												        	 khaki: urutan_item_fu == 10"}'></field>
 			            			
 			            			<field name="start_packing_fu_temp" invisible="1"></field>
+			            			<field name="is_new_item_fu" invisible="1"></field>
 			            			
 			            		</tree>
 			            	</field>
@@ -363,43 +426,48 @@
 			            </page>
 			            
 			            <!-- Page adj Cutting -->
-			            <page name="adj_cutting" string="Adj Cutting">
+			            <page name="adj_cutting" string="Adj Cutting" attrs="{'invisible': [('state', 'not in', ('adj_cutting', 'urut_cutting', 'done'))]}">
 			            <br></br>
 			            
 				            <button name="auto_fill_date"
 		                           string="Auto Fill Date"
 		                           class="btn-primary"
+		                           attrs="{'invisible': [('state', '!=', 'adj_cutting')]}"
 		                           type="object"/>
 	                           
-			            	<field name="adj_cutting_line_ids">
+			            	<field name="adj_cutting_line_ids" attrs="{'readonly': [('state', 'in', ('urut_cutting', 'fish_using', 'estimasi_pack', 'schedule', 'done'))]}">
 			            		<tree editable="bottom">
 			            			<field name="epi_id" invisible="1"></field>
 			            			<field name="no"></field>
-			            			<field name="item_id"></field>
+			            			<field name="item_id" options='{"fg_color": "white: is_pm == True", "bg_color": "darkslateblue: is_pm == True"}'></field>
 			            			<field name="tonase_adj" sum="Total Tonase"></field>
 			            			<field name="fish_qty_adj" invisible="1"></field>
 		               				<field name="total_tonase_adj" invisible="1"></field>
 			            			<field name="hasil_urut_item"></field>
 			            			<field name="cutting_time" widget="float_time"></field>
 			            			<field name="adj_cutting" options='{"bg_color": "yellow: is_adj_cutting == True"}'></field>
-			            			<field name="is_adj_cutting" invisible="1"></field>
+			            			<field name="is_adj_cutting"></field>
 			            			<field name="adj_cutting_temp" invisible="1"></field>
+			            			<field name="is_new_item_adj" invisible="1"></field>
+			            			<field name="is_pm" invisible="1"></field>
 			            		</tree>
 			            	</field>
 			            </page>
 			            
 			            <!-- Page urut cutting  -->
 			            <!-- <page name="urut_cutting" string="Urut Cutting" attrs="{'invisible': [('state', 'in', ('schedule', 'estimasi_pack', 'fish_using'))]}"> -->
-			            <page name="urut_cutting" string="Urut Cutting">
+			            <page name="urut_cutting" string="Urut Cutting" attrs="{'invisible': [('state', 'not in', ('adj_cutting', 'urut_cutting', 'done'))]}">
 			            <br></br>
 			            
 			            	<button name="sort_asc_start_cutting"
 	                           string="  1. ASC Start Cutting"
 	                           icon="fa-sort-alpha-asc"
+	                           attrs="{'invisible': [('state', '!=', 'urut_cutting')]}"
 	                           type="object"/>
 	                           
 	                     	<button name="insert_adj_cutting"
 	                           string="2. Insert Adj Cutting"
+	                           attrs="{'invisible': [('state', '!=', 'urut_cutting')]}"
 	                           type="object"/>
 	                           <!-- attrs="{'invisible': [('is_insert_adj_cut', '=', False)]}" -->
 	                           
@@ -407,11 +475,12 @@
 			             	<button name="calculate_urut_cutting"
 	                           string="3. Hitung Urut Cutting"
 	                           class="btn-primary"
+	                           attrs="{'invisible': [('state', '!=', 'urut_cutting')]}"
 	                           type="object"/>
 	                           <!-- attrs="{'invisible': [('is_urut_cutting', '=', False)]}" -->
 	                          
                            
-			            	<field name="urut_cutting_line_ids">
+			            	<field name="urut_cutting_line_ids" attrs="{'readonly': [('state', 'in', ('fish_using', 'estimasi_pack', 'schedule', 'done'))]}">
 			            		<tree editable="bottom">
 			            			<field name="epi_id_uc" invisible="1"></field>
 			            			<field name="no"></field>
@@ -422,7 +491,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="fish_type_uc"></field>
 			            			<field name="tonase_uc"></field>
 			            			<field name="total_tonase_uc"></field>
@@ -434,7 +504,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            												        	 
 			            			<field name="finish_packing_format_uc"></field>
 			            			
@@ -445,7 +516,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_cleaning_format_uc"></field>
 			            			
 			            			<field name="start_precleaning_format_uc" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -455,7 +527,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_precleaning_format_uc"></field>
 			            			
 			            			<field name="start_cooking_format_uc" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -465,7 +538,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_cooking_format_uc"></field>
 			            			
 			            			<field name="start_cutting_temp_format_uc" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -475,7 +549,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_cutting_format_uc"></field>
 			            			
 			            			<field name="start_defrost_format_uc" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -485,7 +560,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_defrost_format_uc"></field>
 			            			
 			            			<field name="finish_cs_format_uc" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -495,7 +571,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			
 			            			<field name="delay_co_pre" widget="float_time" options='{"fg_color": "white",
 			            										       				"bg_color": "maroon"}'></field>
@@ -509,7 +586,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_packing_uc" invisible="1"></field>
 			            			
 			            			<field name="start_cleaning_uc" invisible="1" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -519,7 +597,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_cleaning_uc" invisible="1"></field>
 			            			
 			            			<field name="start_precleaning_uc" invisible="1" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -529,7 +608,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_precleaning_uc" invisible="1"></field>
 			            			
 			            			<field name="start_cooking_uc" invisible="1" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -539,7 +619,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_cooking_uc" invisible="1"></field>
 			            			
 			            			<field name="start_cutting_temp_uc" invisible="1" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -549,7 +630,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_cutting_uc" invisible="1"></field>
 			            			
 			            			<field name="start_defrost_uc" invisible="1" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -559,7 +641,8 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			<field name="finish_defrost_uc" invisible="1"></field>
 			            			
 			            			<field name="finish_cs_uc" invisible="1" options='{"fg_color": "red: urutan_item_uc == 1 or urutan_item_uc == 7 or urutan_item_uc == 10 or urutan_item_uc == 13",
@@ -569,18 +652,20 @@
 			            												        	 lightgreen: urutan_item_uc == 5;
 			            												        	 plum: urutan_item_uc == 6;
 			            												        	 lightsalmon: urutan_item_uc == 7;
-			            												        	 hotpink: urutan_item_uc == 8"}'></field>
+			            												        	 hotpink: urutan_item_uc == 8; 
+			            												        	 khaki: urutan_item_uc == 10"}'></field>
 			            			
 			            			<field name="cutting_time_uc"  widget="float_time"></field>
 			            			<field name="adj_cutting_uc"></field>
 			            			<field name="toleransi"></field>
-			            			<field name="shift_potong_uc"></field>
+			            			<field name="shift_potong_uc" invisible="1"></field>
 			            			<field name="start_cutting_format_uc"></field>
 			            			<field name="remark_uc"></field>
 			            			<field name="start_cutting_uc" invisible="1"></field>
 			            			<field name='urutan_item_uc' invisible="1"></field>
 			            			<field name="adj_cutting_uc_temp" invisible="1"></field>
 			            			<field name="epi_id_uc" invisible="1"></field>
+			            			<field name="is_new_item_uc" invisible="1"></field>
 			            		</tree>
 			            	</field>
 			            

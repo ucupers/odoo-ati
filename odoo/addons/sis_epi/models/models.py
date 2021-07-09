@@ -60,7 +60,7 @@ class sis_epi(models.Model):
     
     state = fields.Selection([('schedule', 'Draft Schedule'), ('estimasi_pack', 'Estimasi Pack'), 
                               ('fish_using', 'Fish Using'),('adj_cutting', 'Adj Cutting'), ('urut_cutting', 'Urut Cutting'), 
-                              ('done', 'Done'), ('cancel', 'Cancel')], default='schedule', string="State", track_visibility='onchange')
+                              ('done', 'Locked'), ('cancel', 'Cancel')], default='schedule', string="State", track_visibility='onchange')
     total_qty_fish = fields.Float(string="Total Actual Fish(ton)", compute='compute_total_fish', store=True)
     total_target_qty_fish = fields.Float(string="Total Target Fish(ton)", compute='compute_target_qty', store=True)
     total_qty_fcl = fields.Float(string="Total Qty FCL", readonly=True)
@@ -70,11 +70,17 @@ class sis_epi(models.Model):
     date_plan_format = fields.Char(string="Date format")
     # budomari_ids = fields.Many2many('sis.epi.budomari.master', string="Budomari")
     
+    pm = fields.Float(string="PM(%)", track_visibility='onchange')
+    hasil_presentase_pm = fields.Float(string="Hasil Presentase PM", readonly=True)
+    total_tonase = fields.Float(string="Total Tonase")
+    
     # Flagging button
     is_sort_asc = fields.Boolean()
     is_insert_adj_cut = fields.Boolean()
     is_urut_cutting = fields.Boolean()
     is_get_item = fields.Boolean()
+    
+    is_new_item = fields.Boolean(default=False)
     
     # Budomari
     budomari_bool_ac = fields.Boolean(string="Budomari AC")
@@ -106,7 +112,91 @@ class sis_epi(models.Model):
     # Adj cutting
     adj_cutting_line_ids = fields.One2many('sis.adj.cutting.line', 'epi_id', string="Adj Cuttting")
     
-
+    
+    # Untuk menghitung total tonase
+    @api.multi
+    def compute_total_tonase(self):
+        for rec in self:
+            hasil = 0
+            
+            adj_cutting_line = rec.adj_cutting_line_ids
+            
+            if adj_cutting_line:
+                for row in adj_cutting_line:
+                    tonase_adj = row.tonase_adj
+                    
+                    hasil = hasil + tonase_adj
+                
+                rec.update({'total_tonase': hasil})
+    
+    # Untuk menghitung hasil presentase PM dan total tonase          
+    @api.multi
+    def hitung_pm(self):
+        for rec in self:
+            pm = rec.pm
+            total_tonase = rec.total_tonase
+            hasil_presentase = 0
+            adj_cutting_line = rec.adj_cutting_line_ids
+            temp = 0
+            array = []
+            temp_temp = []
+            temp_temp_temp = []
+            hasil = 0
+                
+            # Hitung total tonase
+            rec.compute_total_tonase()
+            
+            # Hitung total presentase PM
+            if pm != 0 and total_tonase:    
+                # Konversi angka ke presentase (dibagi 100)
+                presentase_pm = pm / 100
+                hasil = total_tonase * presentase_pm
+                
+                rec.hasil_presentase_pm = hasil
+                hasil_presentase = hasil
+                
+                # Insert presentase ke adj cutting line
+                if hasil_presentase != 0 and adj_cutting_line:
+                    
+                    # Looping adj cutting line
+                    for line in adj_cutting_line:
+                        id_line = line.id
+                        tonase_adj = line.tonase_adj
+                        
+                        # Set semua menjadi false terlebih dahulu
+                        line.update({'is_pm': False})
+                        
+                        # Masukkan nilai adj tonase ke dalam variabel
+                        temp = temp + tonase_adj
+                        
+                        # Cek apakah temp <= hasil presentase, jika ya, tampung ke dalam array
+                        if temp <= hasil_presentase:
+                            # Tampung ke dalam array
+                            array.append(id_line)
+                    
+                    # Jika array ada isinya
+                    if array:
+                        for isi in array:
+                            values = {}
+                            values['is_pm'] = True
+                            
+                            # Update berdasarkan id line adj cutting line
+                            temp_temp.append((1, isi, values))
+                        
+                        rec.update({'adj_cutting_line_ids': temp_temp})
+            
+            # Jika PM tidak diisi
+            else:
+                rec.hasil_presentase_pm = hasil
+                
+                for line in adj_cutting_line:
+                        id_line = line.id
+                        tonase_adj = line.tonase_adj
+                        
+                        # Set semua menjadi false terlebih dahulu
+                        line.update({'is_pm': False})
+                       
+            
     
     @api.model
     def create(self, vals):
@@ -164,10 +254,49 @@ class sis_epi(models.Model):
             print("baris", baris)
             temp_temp = []
             fish_using_line_ids = rec.fish_using_line_ids
+            item_array = []
+            nama = ""
+            var = 0
             
              
             count_fish_using = len(self.mapped('fish_using_line_ids'))
             if count_fish_using > 0:
+                # Looping fish using line
+                for fu in fish_using_line_ids:
+                    id_line_max = fu.id
+                    
+                    if id_line_max:
+                        # Query untuk mencari urutan terakhir
+                        self.env.cr.execute("select urutan_item_fu from sis_epi_fish_using_line where epi_id_fu = '" + str(rec.id) + "' "
+                                            "order by id desc "
+                                            "limit 1")
+                        
+                        max_fu = self.env.cr.fetchone()
+                        if max_fu:
+                            max_urutan_item = max_fu[0]
+                            var = max_urutan_item + 1
+                            
+                            break
+                
+                for aa in epi_line:
+                    is_new_item = aa.is_new_item_epi
+                    start_packing_epi = aa.start_packing_epi
+                    
+                    # Jika boolean di centang dan start packing diisi, maka ambil itemnya.
+                    if is_new_item == True and start_packing_epi:
+                        new_item_id = aa.pps_item_id
+                        start_packing = aa.start_packing_epi
+                        
+                        # Tampung ke dalam array
+                        item_array.append((new_item_id))
+                
+                if item_array:
+                    i = 1
+                    for isi in item_array:
+                        nama += "\n" + "[" + str(i) + "]" + ". " + isi.description
+                        i += 1
+                        
+                        
                 return {
                     'name': 'Warning',
                     'type': 'ir.actions.act_window',
@@ -177,7 +306,8 @@ class sis_epi(models.Model):
                     'target': 'new',
                     'context': {
                          'default_id_epi': rec.id,
-                         'default_name': "The data will be replaced, Are you sure create fish using again?",
+                         'default_urutan_item_last': var,
+                         'default_name': "The data will be added a '"+ nama +"', Are you sure add the item?",
                     }
                }
              
@@ -250,11 +380,11 @@ class sis_epi(models.Model):
                                                 
                                                 if no_urut_temp == 1 and baris ==1:
                                                     values['start_packing_fu'] = start_packing
-                                                    values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                    values['urutan_item_fu'] = i # No urut bertambah
                                                     values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
                                                     values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
                                                     
-                                                    i = i + 1
+                                                    i = i
                                                     j = j + 1
                                                     baris = baris + 1
                                                     item_temp = item_id.id
@@ -279,11 +409,11 @@ class sis_epi(models.Model):
                                                     else:
                                                         
                                                         values['start_packing_fu'] = start_packing
-                                                        values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                        values['urutan_item_fu'] = i # No urut bertambah
                                                         values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
                                                         values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
                                                         
-                                                        i = i + 1
+                                                        i = 1
                                                         j = 1
                                                     
                                                 item_temp = item_id.id
@@ -369,17 +499,17 @@ class sis_epi(models.Model):
                                                         values['fish_qty_fu'] = qty_fish_total
                                                         values['remark_fu'] = remark
                                                         values['start_packing_fu'] = start_packing
-                                                        values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                        values['urutan_item_fu'] = i # No urut bertambah
                                                         values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
                                                         values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
                                                         
-                                                        i = i + 1
+                                                        i = i
                                                         j = 1
                                                 
                                                 item_temp = item_id.id      
                                                 temp.append((0, 0, values))
                                                 
-                    # Jika item pada epi line berbeda
+                    # Jika item pada epi line berbeda (untuk item pertama pasti masuk sini)
                     else:
                         j = 0
                         
@@ -430,11 +560,11 @@ class sis_epi(models.Model):
                                                 
                                                 if no_urut_temp == 1 and baris ==1:
                                                     values['start_packing_fu'] = start_packing
-                                                    values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                    values['urutan_item_fu'] = i # No urut bertambah
                                                     values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
                                                     values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
                                                     
-                                                    i = i + 1
+                                                    
                                                     j = j + 1
                                                     baris = baris + 1
                                                     item_temp = item_id.id
@@ -459,11 +589,11 @@ class sis_epi(models.Model):
                                                     else:
                                                         
                                                         values['start_packing_fu'] = start_packing
-                                                        values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                        values['urutan_item_fu'] = i# No urut bertambah
                                                         values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
                                                         values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
                                                         
-                                                        i = i + 1
+                                                        
                                                         j = 1
                                                     
                                                 item_temp = item_id.id
@@ -549,17 +679,17 @@ class sis_epi(models.Model):
                                                         values['fish_qty_fu'] = qty_fish_total
                                                         values['remark_fu'] = remark
                                                         values['start_packing_fu'] = start_packing
-                                                        values['urutan_item_fu'] = i + 1 # No urut bertambah
+                                                        values['urutan_item_fu'] = i # No urut bertambah
                                                         values['urutan_item_fu_2'] = 1 # No urut pertama balik ke angka satu
                                                         values['hasil_urut_item_fu'] = str(values['urutan_item_fu']) + "." + str(values['urutan_item_fu_2']) # Menggabungkan no urut
                                                         
-                                                        i = i + 1
+#                                                         i = i + 1
                                                         j = 1
                                                 
                                                 item_temp = item_id.id      
                                                 temp.append((0, 0, values))
                                     
-                        i = i + 1               
+                    i = i + 1               
                     item_temp = item_id.id  
                                         
             return self.update({'fish_using_line_ids': temp, 'state': 'fish_using'})
@@ -587,9 +717,30 @@ class sis_epi(models.Model):
     
     # BUTTON BACK
     @api.multi
+    def back_to_schedule(self):
+        for rec in self:
+            rec.update({'state': 'schedule'})
+        
+    @api.multi
     def back_to_estimasi_pack(self):
         for rec in self:
             rec.update({'state': 'estimasi_pack'})
+    
+    @api.multi
+    def back_to_fish_using(self):
+        for rec in self:
+            rec.update({'state': 'fish_using'})
+    
+    @api.multi
+    def back_to_adj_cutting(self):
+        for rec in self:
+            rec.update({'state': 'adj_cutting'})
+            
+    
+    # BUTTON UNCLOCK
+    def unlock(self):
+        for rec in self:
+            rec.update({'state': 'urut_cutting'})
     
     
     @api.constrains('total_qty_fish')
@@ -618,16 +769,22 @@ class sis_epi(models.Model):
             ati12_plan = rec.ati12_plan
             temp = []
             is_get_item = rec.is_get_item
+            epi_line_ids = rec.epi_line_ids
+            item_temp = []
+            nama = ""
+            
+            qty_fish_temp = 0
+            size_fish_temp = ""
             
             
             # Koneksi ke database live untuk mengambil data
-#             conn = psycopg2.connect(
-#                 host="localhost",
-#                 database="PT_ATI",
-#                 user="odoo",
-#                 password=passwd
-#             )
-#             cur = conn.cursor()
+            conn = psycopg2.connect(
+                host="localhost",
+                database="PT_ATI",
+                user="odoo",
+                password=passwd
+            )
+            cur = conn.cursor()
             
             if date_plan and ati12_plan:
                 
@@ -649,7 +806,7 @@ class sis_epi(models.Model):
                         rec.total_qty_fcl = sum_qty
                 
                 # Delete sis_epi_line terlebih dahulu
-                rec.delete_sis_epi_line()
+                # rec.delete_sis_epi_line()
                 
                 SQL_db_local=" SELECT DISTINCT ph.id as header_id, "+\
                     " spi.description as desc, "+\
@@ -703,17 +860,18 @@ class sis_epi(models.Model):
                     " AND spi.ati12 = '" +ati12_plan+ "'"+\
                     " AND t"+str(int(date_plan[8:10]))+">0 and ph.ati12='"+ati12_plan+"'"+\
                     " AND ssp.spec_state = 'confirm'"+\
+                    " AND NOT EXISTS (select * from sis_epi_line as sel where sel.pps_item_id = spi.id and sel.epi_id = "+ str(rec.id) +")"+\
                     " ORDER BY spi.line"
                 
-
+                
                 # UNTUK KONEKSI DB KE SERVER (PASTI BUTUH)     
-#                 cur.execute(SQL_db_live)
-#                 data_plan = cur.fetchall()
+                cur.execute(SQL_db_live)
+                data_plan = cur.fetchall()
                 
-                rec.env.cr.execute(SQL_db_live)
-                data_plan = rec.env.cr.fetchall()
+                # UNTUK KONEKSI DB KE LOKAL (PASTI BUTUH)
+#                 rec.env.cr.execute(SQL_db_live)
+#                 data_plan = rec.env.cr.fetchall()
             
-                
                 if data_plan:
                     
                     for row in data_plan:
@@ -738,6 +896,10 @@ class sis_epi(models.Model):
                         fish_material = row[14]
                         item_no = row[15]
                         nw = row[16]
+                        
+                        # Tampung ke dalam array (description item)
+                        item_temp.append((desc_item))
+
                         
                         # Menghitung filling dan SM    
                         filling = 0
@@ -814,14 +976,31 @@ class sis_epi(models.Model):
                     
                     # Jika sudah pernah di get item, maka muncul pop up message
                     if is_get_item == True:
-                        return rec.message_get_item_action()
+                        # Jika di dalam array ada isinya
+                        if item_temp:
+                            ii = 1
+                            for isi_item in item_temp:
+                                nama += "\n" + "[" +str(ii) + "]" + ". " + isi_item
+                                ii += 1
+                        
+                        # Munculkan pop message
+                        return {
+                            'name': 'Success',
+                            'type': 'ir.actions.act_window',
+                            'view_type': 'form',
+                            'view_mode': 'form',
+                            'res_model': 'message.get.data',
+                            'target': 'new',
+                            'context': {'default_name': "Data Successfully Updated :  '"+ nama +"'"}
+                        }
                     
                     # Update flagging buttong get item
                     rec.update({'is_get_item': True})
-                    
+                
+                # Jika tidak ada data yang baru pada query 
                 else:
                     raise UserError(_(
-                         'Nothing data from production plan!'))
+                         'Nothing updated data from production plan!'))
                     
             else:
                 raise UserError(_(
@@ -868,7 +1047,7 @@ class sis_epi(models.Model):
                 self.env.cr.execute("select id as id, item_id_fu as item_id, hasil_urut_item_fu "
                                     "from sis_epi_fish_using_line "
                                     "where epi_id_fu = '"+ str(epi_id) +"' "
-                                    "order by hasil_urut_item_fu")
+                                    "order by urutan_item_fu, urutan_item_fu_2")
                 
                 # Data ASC
                 sql = self.env.cr.fetchall()
@@ -1203,17 +1382,36 @@ class sis_epi(models.Model):
             rec.date_plan_format = change
                                 
                                 
-                                
+                        
     # Action urut cutting wizard
     @api.multi
     def action_urut_cutting(self):
         for rec in self:
             fish_using_line = rec.fish_using_line_ids
+            fish_using_line_count = len(fish_using_line)
+            is_new_item = rec.is_new_item
+            epi_id = rec.id
+            
+            adj_cutting_ids = rec.adj_cutting_line_ids
             
             temp = []
             cutting_time = 0
+            max_id = 0
             
-            if fish_using_line:
+            # Jika fish using line sudah ada datanya dan is new item = True, maka :
+            # Artinya user sudah pernah klik add new item
+            if fish_using_line and is_new_item == True:
+                
+                # Cek urutan terakhir dari adj cutting line
+                self.env.cr.execute("select no from sis_adj_cutting_line where epi_id = '" + str(epi_id) + "' "
+                                    "order by id desc "
+                                    "limit 1")
+                
+                sql = self.env.cr.fetchone()
+                if sql:
+                    max_id = sql[0]
+
+                
                 for row in fish_using_line:
                     item_id = row.item_id_fu
                     urutan_item_fu = row.urutan_item_fu
@@ -1236,6 +1434,72 @@ class sis_epi(models.Model):
                     tonase = row.tonase_fu
                     total_tonase = row.temp_total_tonase_fu
                     fish_qty = row.fish_qty_fu
+                    is_new_item = row.is_new_item_fu
+                    
+                    # Jika urutan item != 0
+                    if urutan_item_fu != 0 and is_new_item == True:
+                        # Mengambil data cutting time
+                        for data in fish_type:
+                            cutting_time = data.cutting_time
+                        
+                        values = {}
+                        values['item_id_wiz'] = item_id.id
+                        values['start_packing_wiz'] = start_packing
+                        values['finish_packing_wiz'] = finish_packing
+                        values['start_cleaning_wiz'] = start_cleaning
+                        values['finish_cleaning_wiz'] = finish_cleaning
+                        values['start_precleaning_wiz'] = start_precleaning
+                        values['finish_precleaning_wiz'] = finish_precleaning
+                        values['start_cutting_wiz'] = start_cutting
+                        values['finish_cutting_wiz'] = finish_cutting
+                        values['start_cooking_wiz'] = start_cooking
+                        values['finish_cooking_wiz'] = finish_cooking
+                        values['start_defrost_wiz'] = start_defrost
+                        values['finish_defrost_wiz'] = finish_defrost
+                        values['finish_cs_wiz'] = finish_cs
+                        values['urutan_item_wiz'] = urutan_item_fu
+                        values['hasil_urut_item_wiz'] = hasil_urut_item
+                        values['cutting_time_wiz'] = cutting_time
+                        values['fish_type_wiz'] = fish_type.id
+                        values['remark_wiz'] = remark
+                        values['tonase_wiz'] = tonase
+                        values['total_tonase_wiz'] = total_tonase
+                        values['fish_qty_wiz'] = fish_qty
+                        values['is_new_item_wiz'] = True
+                        
+                        temp.append((0, 0, values))
+            
+            # Jika fish using line ada datanya, dan adj cutting line ada datanya tapi user belum pernah klik tombol add new item, maka :
+            # USER BELUM KLIK TOMBOL ADD NEW ITEM        
+            elif adj_cutting_ids:
+                return rec.update({'state': 'adj_cutting'})
+            
+            # Jika fish using line ada datanya, dan adj cutting line tidak ada datanya tapi user belum pernah klik tombol add new item, maka :
+            # USER BELUM KLIK TOMBOL ADD NEW ITEM          
+            else:
+                for row in fish_using_line:
+                    item_id = row.item_id_fu
+                    urutan_item_fu = row.urutan_item_fu
+                    start_packing = row.start_packing_fu
+                    finish_packing = row.finish_packing_fu
+                    start_cleaning = row.start_cleaning_fu
+                    finish_cleaning = row.finish_cleaning_fu
+                    start_precleaning = row.start_pre_cleaning_fu
+                    finish_precleaning = row.finish_pre_cleaning_fu
+                    start_cutting = row.start_cutting_fu
+                    finish_cutting = row.finish_cutting_fu
+                    start_cooking = row.start_cooking_fu
+                    finish_cooking = row.finish_cooking_fu
+                    start_defrost = row.start_defrost_fu
+                    finish_defrost = row.finish_defrost_fu
+                    hasil_urut_item = row.hasil_urut_item_fu
+                    finish_cs = row.finish_cs_fu
+                    fish_type = row.fish_type_fu
+                    remark = row.remark_fu
+                    tonase = row.tonase_fu
+                    total_tonase = row.temp_total_tonase_fu
+                    fish_qty = row.fish_qty_fu
+                    is_new_item = row.is_new_item_fu
                     
                     # Jika urutan item != 0
                     if urutan_item_fu != 0:
@@ -1268,6 +1532,7 @@ class sis_epi(models.Model):
                         values['fish_qty_wiz'] = fish_qty
                         
                         temp.append((0, 0, values))
+                
                     
                     
             return {
@@ -1279,10 +1544,24 @@ class sis_epi(models.Model):
                 'target': 'new',
                 'context': {
                      'default_epi_id_wiz': rec.id,
+                     'default_last_no': max_id + 1, # Tambah no urut terakhir dengan angka satu
                      'default_urut_cutting_ids': temp
                 }
             }
-            
+    
+    
+    # DELETE ADJ CUTTING LINE
+    @api.multi
+    def delete_adj_cutting_line(self):
+        adj_cutting_ids_line = []
+        epi_id = self.id
+        
+        epi_line_obj = self.env['sis.epi'].search([('id', '=', epi_id)])
+        if epi_line_obj:        
+            adj_cutting_ids_line.append(([5]))
+
+            return epi_line_obj.update({'adj_cutting_line_ids': adj_cutting_ids_line})
+        
     
     # FUNGSI AUTO FILL ADJ CUTTING
     # Auto fill Adj Cutting
@@ -1294,6 +1573,7 @@ class sis_epi(models.Model):
             
             format_datetime = '%Y-%m-%d %H:%M:%S'
             temp = []
+            hasil = 0
             
             
             if adj_cutting_line:
@@ -1301,9 +1581,12 @@ class sis_epi(models.Model):
                     id_line = row.id
                     adj_cutting = row.adj_cutting
                     cutting_time = row.cutting_time
+                    is_adj_cut = row.is_adj_cutting
+                    tonase_adj = row.tonase_adj
+                    
                     
                     # Jika ada adj cutting
-                    if adj_cutting:
+                    if adj_cutting and is_adj_cut == True:
             
                         dd = '{0:02.0f}:{1:02.0f}'.format(*divmod(float(cutting_time) * 60, 60))
                         hour = int(dd[:2])
@@ -1333,7 +1616,6 @@ class sis_epi(models.Model):
                                 # Insert finish cutting di adj cutting wizard
                                 row.write({'adj_cutting_temp': finish_adj})
                   
-                    
     
     # FUNGSI INSERT ADJ CUTTING
     # Insert adj cutting ke urut cutting
@@ -1694,6 +1976,236 @@ class sis_epi(models.Model):
                             hasil = (filling_line / presentase_yfb) * 100
                             line.write({'yieldd_epi': hasil}) 
                             rec.coba = hasil
+    
+    
+    # XLS
+    # Create XLS report schedule
+    def xls_schedule(self):
+        filename = ' SCHEDULE '+datetime.now().strftime('%Y-%m-%d')+'.xlsx'
+        workbook = xlsxwriter.Workbook('/tmp/'+filename)
+        row = 5
+        col = 0
+        col_col = 0
+        row_custom = 0
+        
+        # STYLE
+        format_judul = workbook.add_format({'font_size': 14, 'align': 'center'})
+        normal_style = workbook.add_format({'valign':'vcenter', 'border':1, 'font_size':10, 'text_wrap': True})
+        normal_style2 = workbook.add_format({'valign':'vcenter', 'font_size':10})
+        header_style = workbook.add_format({'font_size': 10, 'bold': True, 'border':1, 'align': 'center', 'text_wrap': True, 'valign':'vcenter'})
+        header2_style = workbook.add_format({'font_size': 10, 'bold': True})
+        header3_style = workbook.add_format({'font_size': 10, 'bold': True, 'align': 'center', 'text_wrap': True, 'valign':'vcenter'})
+        value_style = workbook.add_format({'font_size': 10, 'align': 'center'})
+        left_style = workbook.add_format({'font_size': 10})
+        right_style = workbook.add_format({'font_size': 10, 'align': 'right'})
+        warning_style = workbook.add_format({'font_size': 10, 'align': 'right', 'bg_color': 'red'})
+        urutan_pertama_style = workbook.add_format({'font_size': 10, 'bold': True})
+        
+        # WORKSHEET
+        worksheet = workbook.add_worksheet('EPI Schedule')
+        worksheet.set_column('A:AJ', 8.2)
+        
+        # Membuat Judul
+        worksheet.merge_range('D1:K1', 'ESTIMASI PENGGUNAAN IKAN ', format_judul)
+        worksheet.merge_range('D2:K2', self.date_plan, header3_style)
+        
+        # Set lebar kolom
+        worksheet.set_column('A:A', 25) # Product
+        worksheet.set_column('B:B', 8) # estimasi product
+        worksheet.set_column('C:C', 8) # Fish qty
+        worksheet.set_column('D:D', 8) # Running time
+        worksheet.set_column('E:E', 4) # SSS
+        worksheet.set_column('F:F', 4) # SS
+        worksheet.set_column('G:G', 4) # S
+        worksheet.set_column('H:H', 4) # M
+        worksheet.set_column('I:I', 4) # L
+        worksheet.set_column('J:J', 4) # +7
+        worksheet.set_column('K:K', 4) # +10/+20
+        worksheet.set_column('L:L', 4) # BE
+        worksheet.set_column('M:M', 4) # TG
+        worksheet.set_column('N:N', 4) # Bonito
+        worksheet.set_column('O:O', 4) # Salmon
+        worksheet.set_column('P:P', 4) # Hg NI
+        worksheet.set_column('Q:Q', 4) # Total
+        worksheet.set_column('R:R', 15) # Remark Ikan (doc)
+        worksheet.set_column('S:S', 15) # Remark FZ
+        
+        # Set tinggi row (Baris, tinggi kolom) : Baris dimulai dari index ke 0
+        worksheet.set_row(4, 45)
+        
+               
+        # Set header
+        worksheet.write('A4', 'EPI:', header2_style)
+        worksheet.write('B4', self.name, normal_style2)
+        
+        worksheet.write('F4', 'Qty in FCL:', header2_style)
+        worksheet.write('H4', self.total_qty_fcl, normal_style2)
+        
+        worksheet.write('A5', 'Product', header_style)
+        worksheet.write('B5', 'Est Product c/s', header_style)
+        worksheet.write('C5', 'Fish Qty(ton)', header_style)
+        worksheet.write('D5', 'Running Time  (jam)', header_style)
+        worksheet.write('E5', 'SSS', header_style)
+        worksheet.write('F5', 'SS', header_style)
+        worksheet.write('G5', 'S', header_style)
+        worksheet.write('H5', 'M', header_style)
+        worksheet.write('I5', 'L', header_style)
+        worksheet.write('J5', '+7', header_style)
+        worksheet.write('K5', '+10/+20', header_style)
+        worksheet.write('L5', 'BE', header_style)
+        worksheet.write('M5', 'TG', header_style)
+        worksheet.write('N5', 'Bonito', header_style)
+        worksheet.write('O5', 'Salmon', header_style)
+        worksheet.write('P5', 'Hg Ni', header_style)
+        worksheet.write('Q5', 'Total', header_style)
+        worksheet.write('R5', 'Remark Doc', header_style)
+        worksheet.write('S5', 'Remark Fz', header_style)
+        
+        # Value tabel
+        epi_line_ids = self.epi_line_ids
+        name = self.name
+        total_actl_qty = self.total_qty_fish
+        
+        if epi_line_ids:
+            for line in epi_line_ids:
+                item = line.pps_item_id.description
+                target_prd = line.target_prd
+                fish_qty_ton = line.yield_total_epi_epi
+                running_time = line.waktu_packing_epi
+                qty_fish_total_epi = line.qty_fish_total_epi
+                remark_doc = line.remark_epi
+                remark_fz = line.remark_epi_fz
+                epi_line_temp_ids = line.sis_epi_line_temp_ids
+                
+                worksheet.write(row, col, item, normal_style)
+                worksheet.write(row, col + 1, target_prd, normal_style)
+                worksheet.write(row, col + 2, fish_qty_ton, normal_style)
+                worksheet.write(row, col + 3, running_time, normal_style)
+                
+                # Epi temp detail
+                for epi_detail in epi_line_temp_ids:
+                    qty_fish_temp = epi_detail.qty_fish_temp
+                    size_fish_temp = epi_detail.size_fish_temp
+                    no_urut_temp = epi_detail.no_urut
+                    
+                    # jika ada size dan qty != 0, maka proses
+                    if size_fish_temp and qty_fish_temp != 0:
+                        
+                        if size_fish_temp == 'sss':
+                            worksheet.write(row, col + 4, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 4, None, normal_style)
+                            
+                            
+                        if size_fish_temp == 'ss':
+                            worksheet.write(row, col + 5, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 5, None, normal_style)
+                        
+                        
+                        if size_fish_temp == 's':
+                            worksheet.write(row, col + 6, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 6, None, normal_style)
+                        
+                        
+                        if size_fish_temp == 'm':
+                            worksheet.write(row, col + 7, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 7, None, normal_style)
+                        
+                        
+                        if size_fish_temp == 'l':
+                            worksheet.write(row, col + 8, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 8, None, normal_style)
+                        
+                        
+                        if size_fish_temp == 'plus_tujuh':
+                            worksheet.write(row, col + 9, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 9, None, normal_style)
+                        
+                        
+                        if size_fish_temp == 'plus_sepuluh_duapuluh':
+                            worksheet.write(row, col + 10, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 10, None, normal_style)
+                            
+
+                        if size_fish_temp == 'be':
+                            worksheet.write(row, col + 11, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 11, None, normal_style)
+                            
+                            
+                        if size_fish_temp == 'tonggol':
+                            worksheet.write(row, col + 12, qty_fish_temp, normal_style)   
+                        else:
+                            worksheet.write(row, col + 12, None, normal_style) 
+                            
+                        
+                        if size_fish_temp == 'bonito':
+                            worksheet.write(row, col + 13, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 13, None, normal_style)
+                            
+                        
+                        if size_fish_temp == 'salmon':
+                            worksheet.write(row, col + 14, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 14, None, normal_style)
+                            
+                        
+                        if size_fish_temp == 'hg_ni':
+                            worksheet.write(row, col + 15, qty_fish_temp, normal_style)
+                        else:
+                            worksheet.write(row, col + 15, None, normal_style)
+                        
+                     
+                # jika qty total fish epi == 0, maka isi kolom dengan border                
+                if qty_fish_total_epi == 0:
+                    # Agar kolom ada border ketika tidak ada value
+                    worksheet.write(row, col + 4, None, normal_style)
+                    worksheet.write(row, col + 5, None, normal_style)
+                    worksheet.write(row, col + 6, None, normal_style)
+                    worksheet.write(row, col + 7, None, normal_style)
+                    worksheet.write(row, col + 8, None, normal_style)
+                    worksheet.write(row, col + 9, None, normal_style)
+                    worksheet.write(row, col + 10, None, normal_style)
+                    worksheet.write(row, col + 11, None, normal_style)
+                    worksheet.write(row, col + 12, None, normal_style)
+                    worksheet.write(row, col + 13, None, normal_style)
+                    worksheet.write(row, col + 14, None, normal_style)
+                    worksheet.write(row, col + 15, None, normal_style)
+                    worksheet.write(row, col + 16, None, normal_style)
+                
+                # jika ada isinya, maka isi sesuai dengan value
+                else:
+                    worksheet.write(row, col + 16, qty_fish_total_epi, normal_style)
+                
+                worksheet.write(row, col + 17, remark_doc, normal_style)
+                worksheet.write(row, col + 18, remark_fz, normal_style)
+              
+                            
+                row = row + 1
+                col_col = col_col + 1
+        
+        # row + 1 karena row dimulai dari integer 0
+        row_custom = row + 1   
+        worksheet.merge_range('E'+str(row_custom)+':P'+str(row_custom)+'', 'TOTAL ', header_style)
+        worksheet.write(row, col + 16, total_actl_qty, header_style)
+            
+        
+        workbook.close()
+        ids=self.env['sis.epi.xls'].create({'report':base64.b64encode(open("/tmp/"+filename, "rb").read())})
+        return {
+            'type': 'ir.actions.act_url',
+            'name': 'contract',
+            'url': '/web/content/sis.epi.xls/%s/report/%s?download=true' %((ids.id),filename)
+    
+        }     
+        
      
     # XLS               
     # Create XLS report urutan potong
@@ -1758,7 +2270,7 @@ class sis_epi(models.Model):
                 no = line.no
                 finish_cs = line.finish_cs_format_uc
                 start_defrost = line.start_defrost_format_uc
-                start_cutting = line.start_cutting_format_uc
+                start_cutting = line.start_cutting_temp_format_uc
                 remark = line.remark_uc
                 shift_potong = line.shift_potong_uc
                 tonase = line.tonase_uc
@@ -1790,19 +2302,19 @@ class sis_epi(models.Model):
             'name': 'contract',
             'url': '/web/content/sis.epi.xls/%s/report/%s?download=true' %((ids.id),filename)
     
-        }        
-     
-    # XLS   
-    # Create XLS CU-CO
+        }       
+    
+    # XLS               
+    # Create XLS report urutan potong
     def xls_cu_co(self):
-        filename = 'REPORT CU-CO'+datetime.now().strftime('%Y-%m-%d')+'.xlsx'
+        filename = ' REPORT CU-CO '+datetime.now().strftime('%Y-%m-%d')+'.xlsx'
         workbook = xlsxwriter.Workbook('/tmp/'+filename)
         row = 6
         col = 0
         
         # STYLE
         format_judul = workbook.add_format({'font_size': 14, 'align': 'center'})
-        normal_style = workbook.add_format({'valign':'vcenter', 'border':1, 'font_size':10, 'text_wrap': True})
+        normal_style = workbook.add_format({'align':'top', 'border':1, 'font_size':10, 'text_wrap': True})
         normal_style2 = workbook.add_format({'valign':'vcenter', 'font_size':10})
         header_style = workbook.add_format({'font_size': 10, 'bold': True, 'border':1, 'align':'center', 'valign': 'vcenter'})
         header2_style = workbook.add_format({'font_size': 10, 'bold': True})
@@ -1824,7 +2336,7 @@ class sis_epi(models.Model):
         
         # Set lebar kolom
         worksheet.set_column('A:A', 3)
-        worksheet.set_column('B:B', 4)
+        worksheet.set_column('B:B', 6)
         worksheet.set_column('C:C', 25)
         worksheet.set_column('D:D', 6)
         worksheet.set_column('E:E', 25)
@@ -1832,9 +2344,22 @@ class sis_epi(models.Model):
         worksheet.set_column('G:G', 10)
         worksheet.set_column('H:H', 10)
         worksheet.set_column('I:I', 10)
-        worksheet.set_column('J:J', 10)
-        worksheet.set_column('K:K', 10)
-        worksheet.set_column('L:L', 10)
+        # Basket
+        worksheet.set_column('J:J', 3)
+        worksheet.set_column('K:K', 3)
+        worksheet.set_column('L:L', 3)
+        worksheet.set_column('M:M', 3)
+        worksheet.set_column('N:N', 3)
+        worksheet.set_column('O:O', 3)
+        worksheet.set_column('P:P', 3)
+        # Cooking time
+        worksheet.set_column('Q:Q', 10)
+        worksheet.set_column('R:R', 10)
+        worksheet.set_column('S:S', 10)
+        
+        # Set tinggi row (Baris, tinggi kolom) : Baris dimulai dari index ke 0
+        worksheet.set_row(4, 25)
+        worksheet.set_row(5, 25)
         
         
         # Set header
@@ -1855,20 +2380,24 @@ class sis_epi(models.Model):
         
         # Defrost
         worksheet.merge_range('F5:G5', 'Defrost', header_style)
-        worksheet.write('F6', 'Start Defrost', header_style)
-        worksheet.write('G6', 'Finish Defrost', header_style)
+        worksheet.write('F6', 'Start', header_style)
+        worksheet.write('G6', 'Finish', header_style)
         
         # Cutting
         worksheet.merge_range('H5:I5', 'Cutting', header_style)
-        worksheet.write('H6', 'Start Cutting', header_style)
-        worksheet.write('I6', 'Finish Cutting', header_style)
+        worksheet.write('H6', 'Start', header_style)
+        worksheet.write('I6', 'Finish', header_style)
+        
+        # Basket
+        worksheet.merge_range('J5:P6', 'Basket No', header_style)
+        
         
         # Cooking
-        worksheet.merge_range('J5:K5', 'Cooking', header_style)
-        worksheet.write('J6', 'Start Cooking', header_style)
-        worksheet.write('K6', 'Start Cooking', header_style)
+        worksheet.merge_range('Q5:R5', 'Cooking', header_style)
+        worksheet.write('Q6', 'Start', header_style)
+        worksheet.write('R6', 'Finish', header_style)
         
-        worksheet.merge_range('L5:L6', 'Delay CO-PRE', header_style)
+        worksheet.merge_range('S5:S6', 'Delay CO-PRE', header_style)
         
         # Isi tabel
         urut_cutting_ids = self.urut_cutting_line_ids
@@ -1883,22 +2412,21 @@ class sis_epi(models.Model):
                 item = line.item_id_uc.description
                 start_defrost = line.start_defrost_format_uc
                 finish_defrost = line.finish_defrost_format_uc
-                start_cutting = temp.append(line.start_cutting_format_uc)
+                start_cutting = line.start_cutting_temp_format_uc
                 finish_cutting = line.finish_cutting_format_uc
                 start_cooking = line.start_cooking_format_uc
                 finish_cooking = line.finish_cooking_format_uc
                 delay_co_pre = line.delay_co_pre
+            
                 
                 dd = '{0:02.0f}:{1:02.0f}'.format(*divmod(float(delay_co_pre) * 60, 60))
                 hour = str(dd[:2])
                 minut = str(dd[3:])
                 
                 delay_char = hour + ":" + minut
-
                 
-                # Sorting desc
-                sorted_desc = sorted(temp, reverse=True)
-                print("srot", sorted_desc)
+                # Set lebar row berdasarkan jumlah data (Baris, tinggi kolom)
+                worksheet.set_row(row, 70)
                 
                 worksheet.write(row, col, urut_cutting, normal_style)
                 worksheet.write(row, col + 1, fish_material, normal_style)
@@ -1909,12 +2437,22 @@ class sis_epi(models.Model):
                 worksheet.write(row, col + 6, finish_defrost, normal_style)
                 worksheet.write(row, col + 7, start_cutting, normal_style)
                 worksheet.write(row, col + 8, finish_cutting, normal_style)
-                worksheet.write(row, col + 9, start_cooking, normal_style)
-                worksheet.write(row, col + 10, finish_cooking, normal_style)
-                worksheet.write(row, col + 11, (delay_char), normal_style)
+                # Basket
+                worksheet.write(row, col + 9, None, normal_style)
+                worksheet.write(row, col + 10, None, normal_style)
+                worksheet.write(row, col + 11, None, normal_style)
+                worksheet.write(row, col + 12, None, normal_style)
+                worksheet.write(row, col + 13, None, normal_style)
+                worksheet.write(row, col + 14, None, normal_style)
+                worksheet.write(row, col + 15, None, normal_style)
+                
+                worksheet.write(row, col + 16, start_cooking, normal_style)
+                worksheet.write(row, col + 17, finish_cooking, normal_style)
+                worksheet.write(row, col + 18, (delay_char), normal_style)
                 
                 row = row + 1
-                
+        
+        
         
         workbook.close()
         ids=self.env['sis.epi.xls'].create({'report':base64.b64encode(open("/tmp/"+filename, "rb").read())})
@@ -1923,10 +2461,9 @@ class sis_epi(models.Model):
             'name': 'contract',
             'url': '/web/content/sis.epi.xls/%s/report/%s?download=true' %((ids.id),filename)
     
-        }        
+        }
  
  
-               
 
 class sis_epi_line(models.Model):
     _name = 'sis.epi.line'
@@ -1934,15 +2471,15 @@ class sis_epi_line(models.Model):
     _order = 'line_epi'
     
     epi_id = fields.Many2one('sis.epi', ondelete='cascade')
-    pps_item_id = fields.Many2one('sis.pps.item', string="Item")
+    pps_item_id = fields.Many2one('sis.pps.item', string="Item", required=True)
     item_no_epi = fields.Char(size=20,string="Item No.")
     line_epi = fields.Char(string="Line")
     net_epi = fields.Float(string="Net(w)")
     can_size_epi = fields.Char(string="Can Size")
     kaleng_per_case_epi = fields.Float(string="Kaleng per Case", readonly=True, digits=(12,0))
     speed_epi = fields.Float(string="Speed", digits=(12,0))
-    speed_epi_calculate = fields.Float(string="Speed(cs/jam)", digits=(12,0), compute='calculate_speed_epi', store=True)
-    target_prd = fields.Float(string="Target Produksi(cs)", track_visibility='onchange', readonly=True)
+    speed_epi_calculate = fields.Float(string="Speed(cs/jam)", digits=(12,0), compute='calculate_speed_epi', store=True, help="Ambil dari sis_pps_item field cap.case/line/hour")
+    target_prd = fields.Float(string="Target Produksi(cs)", track_visibility='onchange')
     budomari_epi = fields.Many2one('sis.budomari', string="Budomari")
     filling_epi = fields.Float(string="Meat/cs(kg)", compute='calculate_filling_epi') # Awalnya Filling
     sm_epi = fields.Float(string="SM", compute='calculate_sm_epi')
@@ -1959,6 +2496,7 @@ class sis_epi_line(models.Model):
     remark_epi_fz = fields.Char(string="Remark Fz")
     meat = fields.Float(string="Meat(gr)")
     worker_epi = fields.Integer(string="Worker")
+    is_new_item_epi = fields.Boolean(string="Is New Item", help="Fields ini sebgai flagging sudah pernah create fish using apa belum")
     
     sis_epi_line_temp_ids = fields.One2many('sis.epi.line.temp', 'epi_line_id')
     

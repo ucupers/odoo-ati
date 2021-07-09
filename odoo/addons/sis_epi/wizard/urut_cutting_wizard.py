@@ -13,6 +13,7 @@ class urut_cutting_wizard(models.TransientModel):
     
     epi_id_wiz = fields.Many2one('sis.epi', string="Epi Id Wiz")
     urut_cutting_ids = fields.One2many('urut.cutting.wizard.line', 'urut_cutting_wiz_id')
+    last_no = fields.Integer()
                                             
     
     @api.multi
@@ -25,10 +26,13 @@ class urut_cutting_wizard(models.TransientModel):
             temp_temp = []
             baris = 1
             i = 1
+            last = rec.last_no
+            
             
             # Sis epi object
             sis_epi_obj = rec.env['sis.epi'].search([('id', '=', epi_id.id)])
             
+            # Jika adj cutting line dan urut cutting line sudah ada datanya, maka :
             if urut_cutting_ids:
                 for row in urut_cutting_ids:
                     id_line = row.id
@@ -57,60 +61,135 @@ class urut_cutting_wizard(models.TransientModel):
                     tonase = row.tonase_wiz
                     total_tonase = row.total_tonase_wiz
                     fish_qty = row.fish_qty_wiz
+                    is_new_item = row.is_new_item_wiz
                     
+                    if is_new_item == True:
+                        
+                        # INSERT ADJ CUTTING LINE
+                        values_adj = {}
+                        values_adj['no'] = last
+                        values_adj['item_id'] = item
+                        values_adj['hasil_urut_item'] = hasil_urut_item
+                        values_adj['cutting_time'] = cutting_time
+                        values_adj['fish_type_adj'] = fish_type.id
+                        values_adj['tonase_adj'] = tonase
+                        values_adj['total_tonase_adj'] = total_tonase
+                        values_adj['fish_qty_adj'] = fish_qty
+                        values_adj['is_new_item_adj'] = is_new_item
+                        
+                        temp_temp.append((0, 0, values_adj))
+                        
+                        # Insert ke urut cutting line
+                        values = {}
+                        values['no'] = last
+                        values['urut_potong'] = baris
+                        values['hasil_urut_item_uc'] = hasil_urut_item
+                        values['urutan_item_uc'] = urutan_item_wiz
+                        values['item_id_uc'] = item.id
+                        values['fish_type_uc'] = fish_type.id
+                        values['start_packing_uc'] = start_packing
+                        values['finish_packing_uc'] = finish_packing
+                        values['start_cleaning_uc'] = start_cleaning
+                        values['finish_cleaning_uc'] = finish_cleaning
+                        values['start_precleaning_uc'] = start_precleaning
+                        values['finish_precleaning_uc'] = finish_precleaning
+                        values['start_cutting_uc'] = start_cutting
+                        values['finish_cutting_uc'] = finish_cutting
+                        values['start_cooking_uc'] = start_cooking
+                        values['finish_cooking_uc'] = finish_cooking
+                        values['start_defrost_uc'] = start_defrost
+                        values['finish_defrost_uc'] = finish_defrost
+                        values['finish_cs_uc'] = finish_cs
+                        values['remark_uc'] = remark
+                        values['tonase_uc'] = tonase
+                        values['total_tonase_uc'] = total_tonase
+                        values['fish_qty_uc'] = fish_qty
+                        values['is_new_item_uc'] = True
+                        
+                        last = last + 1
+                                        
+                        
+                        temp.append((0, 0, values))
                     
-                    # INSERT ADJ CUTTING LINE
-                    values_adj = {}
-                    values_adj['no'] = i
-                    values_adj['item_id'] = item
-                    values_adj['hasil_urut_item'] = hasil_urut_item
-                    values_adj['cutting_time'] = cutting_time
-                    values_adj['fish_type_adj'] = fish_type.id
-                    values_adj['tonase_adj'] = tonase
-                    values_adj['total_tonase_adj'] = total_tonase
-                    values_adj['fish_qty_adj'] = fish_qty
-                    
-                    temp_temp.append((0, 0, values_adj))
-                    
-                    
-                    # Insert ke urut cutting line
-                    values = {}
-                    values['no'] = i
-                    values['urut_potong'] = baris
-                    values['hasil_urut_item_uc'] = hasil_urut_item
-                    values['urutan_item_uc'] = urutan_item_wiz
-                    values['item_id_uc'] = item.id
-                    values['fish_type_uc'] = fish_type.id
-                    values['start_packing_uc'] = start_packing
-                    values['finish_packing_uc'] = finish_packing
-                    values['start_cleaning_uc'] = start_cleaning
-                    values['finish_cleaning_uc'] = finish_cleaning
-                    values['start_precleaning_uc'] = start_precleaning
-                    values['finish_precleaning_uc'] = finish_precleaning
-                    values['start_cutting_uc'] = start_cutting
-                    values['finish_cutting_uc'] = finish_cutting
-                    values['start_cooking_uc'] = start_cooking
-                    values['finish_cooking_uc'] = finish_cooking
-                    values['start_defrost_uc'] = start_defrost
-                    values['finish_defrost_uc'] = finish_defrost
-                    values['finish_cs_uc'] = finish_cs
-                    values['remark_uc'] = remark
-                    values['tonase_uc'] = tonase
-                    values['total_tonase_uc'] = total_tonase
-                    values['fish_qty_uc'] = fish_qty
-                    
-                    i = i + 1
-                                    
-                    
-                    temp.append((0, 0, values))
+                    else:
+                        # INSERT ADJ CUTTING LINE
+                        values_adj = {}
+                        values_adj['no'] = i
+                        values_adj['item_id'] = item
+                        values_adj['hasil_urut_item'] = hasil_urut_item
+                        values_adj['cutting_time'] = cutting_time
+                        values_adj['fish_type_adj'] = fish_type.id
+                        values_adj['tonase_adj'] = tonase
+                        values_adj['total_tonase_adj'] = total_tonase
+                        values_adj['fish_qty_adj'] = fish_qty
+                        values_adj['is_new_item_adj'] = is_new_item
+                        
+                        temp_temp.append((0, 0, values_adj))
+                        
+
+                        # Insert ke urut cutting line
+                        values = {}
+                        values['no'] = i
+                        values['urut_potong'] = baris
+                        values['hasil_urut_item_uc'] = hasil_urut_item
+                        values['urutan_item_uc'] = urutan_item_wiz
+                        values['item_id_uc'] = item.id
+                        values['fish_type_uc'] = fish_type.id
+                        values['start_packing_uc'] = start_packing
+                        values['finish_packing_uc'] = finish_packing
+                        values['start_cleaning_uc'] = start_cleaning
+                        values['finish_cleaning_uc'] = finish_cleaning
+                        values['start_precleaning_uc'] = start_precleaning
+                        values['finish_precleaning_uc'] = finish_precleaning
+                        values['start_cutting_uc'] = start_cutting
+                        values['finish_cutting_uc'] = finish_cutting
+                        values['start_cooking_uc'] = start_cooking
+                        values['finish_cooking_uc'] = finish_cooking
+                        values['start_defrost_uc'] = start_defrost
+                        values['finish_defrost_uc'] = finish_defrost
+                        values['finish_cs_uc'] = finish_cs
+                        values['remark_uc'] = remark
+                        values['tonase_uc'] = tonase
+                        values['total_tonase_uc'] = total_tonase
+                        values['fish_qty_uc'] = fish_qty
+                        values['is_new_item_uc'] = True
+                        
+                        i = i + 1     
+                        
+                        temp.append((0, 0, values))
                     
                 # Insert ke urut cutting line 
                 if sis_epi_obj:
-#                     sis_epi_obj.update({'urut_cutting_line_ids': temp, 'state': 'urut_cutting'})
-                    sis_epi_obj.update({'urut_cutting_line_ids': temp, 
-                                        'adj_cutting_line_ids': temp_temp, 
-                                        'state': 'adj_cutting'
-                    })
+                    
+                    for o in sis_epi_obj:
+                        is_new_item = o.is_new_item
+                        urut_cutting_line_ids = o.urut_cutting_line_ids
+                        
+                        # Jika ada urut cutting line dan  new item telah di tekan, maka
+                        if urut_cutting_line_ids and is_new_item == True:
+                            # Update item baru
+                            sis_epi_obj.update({'urut_cutting_line_ids': temp, 
+                                                'adj_cutting_line_ids': temp_temp, 
+                                                'state': 'adj_cutting'
+                            })
+                        
+                        # Jika urut cutting line ids sudah ada tapi tidak ada item baru, maka :
+                        elif urut_cutting_line_ids:
+                            # update state saja
+                            sis_epi_obj.update({
+                                                'state': 'adj_cutting'
+                            })
+                        
+                        # Jika alur normal
+                        else:
+                            # Update item baru
+                            sis_epi_obj.update({'urut_cutting_line_ids': temp, 
+                                                'adj_cutting_line_ids': temp_temp, 
+                                                'state': 'adj_cutting'
+                            })
+                            
+            
+            
                     
                         
 
@@ -145,6 +224,7 @@ class urut_cutting_wizard_line(models.TransientModel):
     tonase_wiz = fields.Float(string="Tonase")
     total_tonase_wiz = fields.Float(string="Total Tonase")
     fish_qty_wiz = fields.Float(string="Fish Qty(ton)")
+    is_new_item_wiz = fields.Boolean()
     
     
     

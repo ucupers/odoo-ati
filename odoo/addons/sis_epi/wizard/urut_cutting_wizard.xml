@@ -8,6 +8,7 @@
                 <form string="Urut Cutting ">
                 	<group>
                 		<field name="epi_id_wiz" invisible="1"/>
+                		<field name="last_no" invisible="1"></field>
                 	</group>
                 	
                 	<field name="urut_cutting_ids">
@@ -27,7 +28,7 @@
                				<field name="finish_cooking_wiz" invisible="1"></field>
                				<field name="start_defrost_wiz" invisible="1"></field>
                				<field name="finish_defrost_wiz" invisible="1"></field>
-               				
+               				<field name="is_new_item_wiz" invisible="1"></field>
                			</tree>
                			
                		</field>

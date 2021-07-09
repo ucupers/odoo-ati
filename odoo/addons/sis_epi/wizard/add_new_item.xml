@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="wizard_form_add_new_item">
+            <field name="name">sis.new.item.form</field>
+            <field name="model">sis.new.item</field>
+            <field name="arch" type="xml">
+                <form string="Send to Production">
+                    
+                	<field name="epi_id"></field>
+                    <field name="name"></field>
+
+                    <newline/>
+                    <footer>
+                        <button class="oe_highlight"
+                                 name="add_item"
+                                 string="Add Item"
+                                 type="object"
+                                 help="calls python function"
+                                 target="new">
+                         </button>
+                        <button special="cancel" string="Discard"/>
+                    </footer>
+                </form>
+            </field>
+         </record>
+
+        <act_window id="launch_production_wizard"
+                name="Add Item"
+                src_model="sis.epi"
+                res_model="sis.new.item"
+                view_mode="form"
+                target="new"
+                context="{'default_epi_id' : active_id, 'epi_id' : active_id, 'default_name': 'State will back to Schedule, are you sure?'}"
+                key2="client_action_multi"/>
+    </data>
+</odoo>

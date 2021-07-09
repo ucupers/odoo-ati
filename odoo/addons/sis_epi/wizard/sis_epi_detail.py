@@ -95,7 +95,8 @@ class sis_epi_line_detail(models.Model):
     
     epi_detail_id = fields.Many2one('sis.epi.detail', ondelete='cascade')
     size_fish = fields.Selection([('sss', 'SSS'), ('ss', 'SS'), ('s', 'S'), ('m', 'M'), ('l', 'L'), 
-                                  ('salmon', 'Salmon'), ('tonggol', 'Tonggol'), ('bonito', 'Bonito'), ('be', 'BE'), 
+                                  ('salmon', 'Salmon'), ('tonggol', 'Tonggol'), ('bonito', 'Bonito'), ('be', 'BE'), ('plus_tujuh', '+7'), 
+                                  ('plus_sepuluh_duapuluh', '+10/+20'), ('hg_ni', 'Hg Ni'),
                                   ('defrost_sj', 'Defrost SJ(%)')], default=None, string="Size Fish")
     qty_fish = fields.Float(string="Qty(ton)")
     name = fields.Char(string="Name")

@@ -45,6 +45,8 @@ class urut_cutting(models.Model):
     shift_potong_uc = fields.Selection([('pp', 'PP'), ('pm', 'PM')], string="Shift", default=None, compute='get_shift_potong')
     fish_type_uc = fields.Many2one('sis.master.time', string="Fish Type")
     fish_qty_uc = fields.Float(string="Fish Qty(ton)")
+    is_new_item_uc = fields.Boolean()
+   
     
     # Format date
     start_packing_format_uc = fields.Char(string="Start Packing", compute='get_date_format')
@@ -183,11 +185,13 @@ class adj_cutting(models.Model):
     hasil_urut_item = fields.Char(string="Hasil Urut Item")
     item_id = fields.Many2one('sis.pps.item', string="Item")
     cutting_time = fields.Float(string="Cutting Time")
-    is_adj_cutting = fields.Boolean(default=False)
+    is_adj_cutting = fields.Boolean(string="Check", default=False)
     fish_type_adj = fields.Many2one('sis.master.time', string="Fish Type")
     tonase_adj = fields.Float(string="Tonase")
     total_tonase_adj = fields.Float(string="Total Tonase")
     fish_qty_adj = fields.Float(string="Fish Qty(ton)")
+    is_new_item_adj = fields.Boolean()
+    is_pm = fields.Boolean()
     
      
     @api.onchange('adj_cutting')
