@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <record model="ir.ui.view" id="sis_paircity_tree">
+            <field name="name">sis.paircity.tree</field>
+            <field name="model">sis.paircity</field>
+            <field name="arch" type="xml">
+            	<tree string="Pair Cities" editable="top">
+			    <field name="old"/>
+			    <field name="new"/>			    
+			    </tree>
+            </field>
+        </record>
+
+        <record id="sis_paircity_action" model="ir.actions.act_window">
+            <field name="name">Pair Cities</field>
+            <field name="res_model">sis.paircity</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_sis_paircity" name="Pair Cities" action="sis_paircity_action" parent="menu_sis_master"/>
+        
+	</data>
+</openerp>

@@ -19,6 +19,7 @@ class sis_production_bom(models.Model):
     linenum=fields.Integer(string="LineNum",readonly=True)
     lineitem=fields.Char(size=20,string="Line Item",readonly=True)            
     linedesc=fields.Char(size=200,string="Line Description",readonly=True)
+    linevar=fields.Char(size=20,string="Line Variant",readonly=True)
     lineqty=fields.Float(string="Line Qty",readonly=True)
     linerouting=fields.Char(size=20,string="Routing",readonly=True)        
     lineqtyper=fields.Float(string="Qty Per",readonly=True)

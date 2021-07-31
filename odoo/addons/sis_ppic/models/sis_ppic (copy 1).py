@@ -125,7 +125,7 @@ class sis_pps_header(models.Model):
     def additem(self): 
         return {
             'name': self.id,
-            'res_model': 'sis.pps.detail.add',
+            'res_model': 'sis.pps.detail.add1',
             'type': 'ir.actions.act_window',
             'context': {},
             'view_mode': 'form',

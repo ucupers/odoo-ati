@@ -4,8 +4,8 @@ from odoo.exceptions import UserError
 class sis_gl_account(models.Model):
     _name='sis.gl.account'
     _table='sis_gl_account'
-    _auto=False
     _order='name'
+    _auto=False
 
     no=fields.Char(size=20,string="Account No.",readonly=True)
     name=fields.Char(size=200,string="Description",readonly=True)

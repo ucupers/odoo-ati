@@ -51,6 +51,7 @@
             		<button name="click_button" string="PreCL OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_precl','=',False)]}" context="{'check_user':'PreCL'}"/>            		
             		<button name="click_button" string="CL OK" type="object" class="oe_highlight" attrs="{'invisible':[('check_access_cl','=',False)]}" context="{'check_user':'CL'}"/>
 					<button name="make_excel" string="XLSX" type="object" class="oe_link oe_right" attrs="{'invisible':[('status','!=','released')]}"/> 
+					<button name="make_excel_counter" string="COUNTER" type="object" class="oe_link oe_right" attrs="{'invisible':[('status','!=','released')]}"/> 
  			    	<field name="status" widget="statusbar"/>       		       		            		            		            		            		            		            		 			    	           		       		            		            		            		            		            		            		
  			    	<field name="check_access_button" invisible="1"/>
  			    	<field name="check_access_composition" invisible="1"/>

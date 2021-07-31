@@ -10,7 +10,7 @@ class SisCoba(models.Model):
     
     itemno = fields.Char(string="Item", readonly=True)
 #     sis_bin_id = fields.Many2one('', string="Bin")
-    sis_item_id = fields.Many2one('sis.items', string="Item Name", ondelete='cascade')
+    
     sis_itc = fields.Char(string="Itc")
     sis_bin_id = fields.Many2one('sis.bin', string="Bin Code")
     sis_code_bin = fields.Char(string="Bin Name")

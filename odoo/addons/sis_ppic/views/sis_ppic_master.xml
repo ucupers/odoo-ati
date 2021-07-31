@@ -216,6 +216,7 @@
             <field name="res_model">sis.pps.item</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
+            <field name="view_id" ref="sis_pps_item_tree"></field>
         </record>
 
         <menuitem id="menu_sis_ppic_master" name="Master" parent="menu_sis_ppic"/> 

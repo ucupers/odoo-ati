@@ -18,7 +18,28 @@
 			    	<field name="itm" />
 				    <field name="variant"  />	
 				    <field name="line_id" invisible="1" />	
-				    <field name="item_no" invisible="1"/>		    
+				</group>
+				</form>
+			</field>
+		</record>			    
+
+        <record model="ir.ui.view" id="sis_pps_detail_add_new_form">
+            <field name="name">sis.pps.detail.add.new.form</field>
+            <field name="model">sis.pps.detail.add.new</field>
+            <field name="arch" type="xml">
+            	<form string="Add Item">
+            	    <script>
+        $(document).ready(function(){
+        $(".modal-footer").hide();
+        });
+    </script>
+            	<header>
+           			<button name="additem" string="Add Item" type="object" class="oe_highlight"/>           			
+            	</header>
+           		<group>
+			    	<field name="itm" />
+				    <field name="variant"  />	
+				    <field name="line_id" invisible="1" />	
 				</group>
 				</form>
 			</field>
@@ -54,7 +75,9 @@
             	<form string="Production Planning">
             	<header>
             		<button name="getso" string="Get Sales" type="object" class="oe_highlight"/>
-           			<button name="additem" string="Add Item" type="object" class="oe_highlight"/>
+<!--            			<button name="additem" string="Add Item" type="object" class="oe_highlight"/>
+ -->
+           			<button name="additemnew" string="Add Item" type="object" class="oe_highlight"/>
            			<button name="countmaterial" string="Calc.Material" type="object" class="oe_highlight"/>             			
            			<button name="countfgstock" string="Calc.FG Stock" type="object" class="oe_highlight"/>             			
            			<button name="open_treeview" string="Prod.Planning" type="object"/>
@@ -578,6 +601,18 @@
 
             </field>
         </record>
+
+		<record id="sis_pps_detail_search" model="ir.ui.view">
+			<field name="name">sis.pps.detail.search</field>
+			<field name="model">sis.pps.detail</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+                    <field name="description" filter_domain="[('description','ilike', self)]"/>                 	
+                    <field name="line_id" filter_domain="[('line_id','ilike', self)]"/>                 	
+                    <field name="type" filter_domain="[('type','=', self)]"/>                 	
+				</search>
+			</field>
+		</record>
 
         <record model="ir.ui.view" id="sis_pps_material_tree">
             <field name="name">sis.pps.material.tree</field>

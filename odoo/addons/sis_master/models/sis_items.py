@@ -25,6 +25,8 @@ class sis_items(models.Model):
     purchuom=fields.Char(size=20,string="Purchase UoM")
     purchqtyperuom=fields.Float(size=20,string="Purch Qty/UoM") 
     unitcost=fields.Float(string="Unit cost") 
+    gw=fields.Float(string="G.W.",digits=(12,4)) 
+    nw=fields.Float(string="N.W.",digits=(12,4)) 
             
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
@@ -57,6 +59,7 @@ class sis_items_local(models.Model):
     purchuom=fields.Char(size=20,string="Purchase UoM")
     purchqtyperuom=fields.Float(size=20,string="Purch Qty/UoM") 
     unitcost=fields.Float(string="Unit cost") 
+    gw=fields.Float(string="G.W.",digits=(12,4)) 
             
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
@@ -69,34 +72,36 @@ class sis_items_local(models.Model):
         return recs.name_get()        
 
     def upload_from_NAV(self):
-        self.env.cr.execute(" insert into sis_items_local(id,itemno,description,itc,pgc,blocked,refitem,realitem,qtyperfcl,salesuom,qtyperuom,baseuom,routingno,prodbomno,fishmaterial,purchuom,purchqtyperuom,unitcost) "+ \
-                            " select id,itemno,description,itc,pgc,blocked,refitem,realitem,qtyperfcl,salesuom,qtyperuom,baseuom,routingno,prodbomno,fishmaterial,purchuom,purchqtyperuom,unitcost "+ \
-                            " from sis_items where itemno not in (select itemno from sis_items_local)")
+        self.env.cr.execute(" insert into sis_items_local(id,itemno,description,itc,pgc,blocked,refitem,realitem,qtyperfcl,salesuom,qtyperuom,baseuom,routingno,prodbomno,fishmaterial,purchuom,purchqtyperuom,unitcost,gw) "+ \
+                            " select id,itemno,description,itc,pgc,blocked,refitem,realitem,qtyperfcl,salesuom,qtyperuom,baseuom,routingno,prodbomno,fishmaterial,purchuom,purchqtyperuom,unitcost,gw "+ \
+                            " from sis_items where itemno not in (select itemno from sis_items_local where itemno is not NULL)")
 
         self.env.cr.execute(" update sis_items_local sl set itemno=si.itemno,description=si.description,itc=si.itc,pgc=si.pgc,blocked=si.blocked,refitem=si.refitem,realitem=si.realitem,qtyperfcl=si.qtyperfcl, "+\
-                            " salesuom=si.salesuom,qtyperuom=si.qtyperuom,baseuom=si.baseuom,routingno=si.routingno,prodbomno=si.prodbomno,fishmaterial=si.fishmaterial,purchuom=si.purchuom,purchqtyperuom=si.purchqtyperuom "+ \
+                            " salesuom=si.salesuom,qtyperuom=si.qtyperuom,baseuom=si.baseuom,routingno=si.routingno,prodbomno=si.prodbomno,fishmaterial=si.fishmaterial,purchuom=si.purchuom,purchqtyperuom=si.purchqtyperuom,gw=si.gw "+ \
                             " from sis_items si"+ \
                             " where sl.itemno=si.itemno and (sl.description!=si.description or sl.itc!=si.itc or sl.pgc!=si.pgc or sl.blocked!=si.blocked or sl.refitem!=si.refitem or sl.realitem!=si.realitem or sl.qtyperfcl!=si.qtyperfcl or  "+\
-                            " sl.salesuom!=si.salesuom or sl.qtyperuom!=si.qtyperuom or sl.baseuom!=si.baseuom or sl.routingno!=si.routingno or sl.prodbomno!=si.prodbomno or sl.fishmaterial!=si.fishmaterial or sl.purchuom!=si.purchuom or sl.purchqtyperuom!=si.purchqtyperuom) ")
+                            " sl.salesuom!=si.salesuom or sl.qtyperuom!=si.qtyperuom or sl.baseuom!=si.baseuom or sl.routingno!=si.routingno or sl.prodbomno!=si.prodbomno or sl.fishmaterial!=si.fishmaterial or sl.purchuom!=si.purchuom "+\
+                            " or sl.purchqtyperuom!=si.purchqtyperuom or sl.gw!=si.gw or sl.gw is null) ")
 
-        self.env.cr.execute(" insert into sis_item_variants_local(id,itemno,description,blocked,qtyperfcl,uom,qtyperuom,variant) "+ \
-                            " select id,itemno,description,blocked,qtyperfcl,uom,qtyperuom,variant "+ \
-                            " from sis_item_variants where itemno not in (select itemno from sis_item_variants_local)")
+        self.env.cr.execute(" insert into sis_item_variants_local(id,itemno,description,blocked,qtyperfcl,uom,qtyperuom,variant,gw) "+ \
+                            " select id,itemno,description,blocked,qtyperfcl,uom,qtyperuom,variant,gw "+ \
+                            " from sis_item_variants where itemno||variant not in (select itemno||variant from sis_item_variants_local)")
 
         self.env.cr.execute(" update sis_item_variants_local sl set itemno=si.itemno,description=si.description,blocked=si.blocked,qtyperfcl=si.qtyperfcl, "+\
-                            " uom=si.uom,qtyperuom=si.qtyperuom "+ \
+                            " uom=si.uom,qtyperuom=si.qtyperuom,gw=si.gw "+ \
                             " from sis_item_variants si"+ \
                             " where sl.itemno=si.itemno and sl.variant=si.variant and (sl.description!=si.description or sl.blocked!=si.blocked or sl.qtyperfcl!=si.qtyperfcl or  "+\
-                            " sl.uom!=si.uom or sl.qtyperuom!=si.qtyperuom) ")
+                            " sl.uom!=si.uom or sl.qtyperuom!=si.qtyperuom or sl.gw!=si.gw or sl.gw is null) ")
 
-
-    itemno=fields.Char(size=20,string="Item No.",readonly=True)
-    variant=fields.Char(size=20,string="Variant",readonly=True)
-    blocked=fields.Boolean(string="Blocked",readonly=True)
-    qtyperfcl=fields.Float(string="Qty/FCL",readonly=True)
-    uom=fields.Char(size=20,string="Sales UoM",readonly=True)
-    qtyperuom=fields.Float(size=20,string="Qty/UoM",readonly=True)
-    description=fields.Char(size=200,string="Description",readonly=True)    
+        self.env.cr.execute("DROP TABLE IF EXISTS sis_uom_conversion_local")
+        self.env.cr.execute("CREATE TABLE sis_uom_conversion_local AS SELECT * FROM sis_uom_conversion; ")
+#     itemno=fields.Char(size=20,string="Item No.",readonly=True)
+#     variant=fields.Char(size=20,string="Variant",readonly=True)
+#     blocked=fields.Boolean(string="Blocked",readonly=True)
+#     qtyperfcl=fields.Float(string="Qty/FCL",readonly=True)
+#     uom=fields.Char(size=20,string="Sales UoM",readonly=True)
+#     qtyperuom=fields.Float(size=20,string="Qty/UoM",readonly=True)
+#     description=fields.Char(size=200,string="Description",readonly=True)    
         
         
 class sis_item_variants(models.Model):
@@ -112,7 +117,8 @@ class sis_item_variants(models.Model):
     uom=fields.Char(size=20,string="Sales UoM",readonly=True)
     qtyperuom=fields.Float(size=20,string="Qty/UoM",readonly=True)
     description=fields.Char(size=200,string="Description",readonly=True)    
-
+    gw=fields.Float(string="G.W.",digits=(12,4)) 
+    
 class sis_item_variants_local(models.Model):
     _name='sis.item.variants.local'
     _rec_name='variant'
@@ -124,3 +130,4 @@ class sis_item_variants_local(models.Model):
     uom=fields.Char(size=20,string="Sales UoM",readonly=True)
     qtyperuom=fields.Float(size=20,string="Qty/UoM",readonly=True)
     description=fields.Char(size=200,string="Description",readonly=True)    
+    gw=fields.Float(string="G.W.",digits=(12,4)) 

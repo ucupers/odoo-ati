@@ -7,6 +7,7 @@
         <!-- SUB MENU EPI -->
         <menuitem name="EPI" id="epi_submenu" parent="sis_epi_menu" action="sis_epi_action"/>
         
+        
         <!-- SUB MENU MASTER ITEM EPI -->
         <menuitem name="Master Item EPI" id="sis_master_item_epi" parent="sis_epi_menu" action="sis_master_item_epi_action"></menuitem>
         
@@ -15,6 +16,13 @@
         
         <!-- SUB MENU MASTER BUDOMARI -->
         <menuitem name="Master Budomari" id="sis_master_budomari_epi" parent="sis_epi_menu" action="epi_budomari_master_list_action"></menuitem>
+        
+        
+        <!-- MENU PERHITUNGAN SHREDED -->
+        <menuitem name="Shreded" id="perhitungan_shreded_menu" parent="sis_epi_menu"/>
+        
+        <!-- SUB MENU PERHITUNGAN SHREDED  -->
+        <menuitem name="Perhitungan Shreded" id="sis_perhitungan_shreded_submenu" parent="perhitungan_shreded_menu" action="sis_shreded_list_action"/>
         
         <!-- 
         <menuitem name="Coba Print" id="sis_coba_print" parent="sis_epi_menu" action="epi_coba_print_list_action"></menuitem>

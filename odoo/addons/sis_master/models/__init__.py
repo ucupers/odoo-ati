@@ -3,3 +3,5 @@ from . import sis_items
 from . import sis_production_bom
 from . import sis_ile
 from . import sis_gl_account
+from . import sis_paircity
+from . import sis_production_order

@@ -18,9 +18,9 @@
 			    <field name="uom" readonly="1"/>
 			    <field name="qtyppic" readonly="1"/>
 			    <field name="uomppic" readonly="1"/>
-			    <field name="ati1qtyppic"/>
+			    <field name="ati1qtyppic" invisible="1"/>
 			    <field name="ati1date" widget="datepicker"/>
-			    <field name="ati2qtyppic"/>
+			    <field name="ati2qtyppic" invisible="1"/>
 			    <field name="ati2date" widget="datepicker"/>
 			    <field name="remark"/>
 			    <field name="whshipno" readonly="1"/>			    		    

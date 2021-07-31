@@ -140,6 +140,7 @@
         					<field name="budomari_id_sm" attrs="{'invisible': [('budomari_bool_sm', '=', False)]}"></field>
                     		<field name="budomari_id_tg" attrs="{'invisible': [('budomari_bool_tg', '=', False)]}"></field>
                     		<field name="budomari_id_yf" attrs="{'invisible': [('budomari_bool_yf', '=', False)]}"></field>
+                    		<field name="budomari_id_ybnf" attrs="{'invisible': [('budomari_bool_yf', '=', False)]}"></field>
                     		<field name="budomari_id_yfb" attrs="{'invisible': [('budomari_bool_yfb', '=', False)]}"></field>
                     		
                     		<label for="pm" attrs="{'readonly': [('state', 'not in', ['adj_cutting'])]}"></label>
@@ -156,6 +157,7 @@
                     		<field name="total_tonase" groups="base.group_no_one"></field>
                     		
                     		<field name="coba" invisible="1"></field>
+                    		<field name="coba2" invisible="1"></field>
                     		<field name="is_sort_asc" invisible="1"></field>
                     		<field name="is_insert_adj_cut" invisible="1"></field>
                     		<field name="is_urut_cutting" invisible="1"></field>
@@ -209,12 +211,13 @@
 			                  
 			                  <field name="worker_epi" attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
 			                  <field name="meat_epi" attrs="{'column_invisible': [('parent.state', '!=', 'estimasi_pack')]}"></field>
-			                  <field name="remark_epi_fz" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
+			                  <field name="remark_epi_fz" sum="Total" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  <field name="remark_epi" attrs="{'column_invisible': [('parent.state', '=', 'estimasi_pack')]}"></field>
 			                  
 			                  <!-- dikomen, jika tidak error access right 
 			                  <field name="sis_epi_line_temp_ids"></field>  -->
 			                  
+			                  <field name="total_point_epi" sum="Total Point"></field>
 			                  <button name="action_detail_view" string="Input target produksi, size" type="object" icon="fa-list" options='{"warn": true}'/>
 			             
 			               
@@ -223,10 +226,17 @@
 			
 			               <!-- Perhitungan -->
 			               <group class="oe_subtotal_footer">
-			               	  <field name="total_qty_fcl"></field>
-			                  <!-- <field name="total_qty_fish"/>
-			                  <field name="total_target_qty_fish"></field> -->
+				               	
+		               		    <field name="total_qty_fcl"></field>
+
+			                	<field name="total_rawmat_sj" attrs="{'invisible': [('total_rawmat_sj', '=', 0)]}"></field>
+			                	<field name="total_rawmat_yf" attrs="{'invisible': [('total_rawmat_yf', '=', 0)]}"></field>
+			                	<field name="total_rawmat_ac" attrs="{'invisible': [('total_rawmat_ac', '=', 0)]}"></field>
+		                	  
+			                  
 			                </group>
+			                
+			                
 			                
 			            </page>
 			            <!-- 
@@ -247,7 +257,7 @@
 	                            attrs="{'invisible': [('state', '!=', 'fish_using')]}"
 	                            type="object"/>
 			            
-			            	<field name="fish_using_line_ids" attrs="{'readonly': [('state', '!=', 'fish_using')]}">
+			            	<field name="fish_using_line_ids">
 			            		<tree editable="bottom">
 			            			<field name="epi_line_id_fu" invisible="1"></field>
 			            			

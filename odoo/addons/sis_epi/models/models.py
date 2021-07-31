@@ -61,8 +61,8 @@ class sis_epi(models.Model):
     state = fields.Selection([('schedule', 'Draft Schedule'), ('estimasi_pack', 'Estimasi Pack'), 
                               ('fish_using', 'Fish Using'),('adj_cutting', 'Adj Cutting'), ('urut_cutting', 'Urut Cutting'), 
                               ('done', 'Locked'), ('cancel', 'Cancel')], default='schedule', string="State", track_visibility='onchange')
-    total_qty_fish = fields.Float(string="Total Actual Fish(ton)", compute='compute_total_fish', store=True)
-    total_target_qty_fish = fields.Float(string="Total Target Fish(ton)", compute='compute_target_qty', store=True)
+    total_qty_fish = fields.Float(string="Total Actual Fish(ton)", compute='compute_total_fish')
+    total_target_qty_fish = fields.Float(string="Total Target Fish(ton)", compute='compute_target_qty')
     total_qty_fcl = fields.Float(string="Total Qty FCL", readonly=True)
     
     # Production plan
@@ -96,10 +96,17 @@ class sis_epi(models.Model):
     budomari_id_sm = fields.Many2one('sis.budomari', string="Presentase SM(%)", domain=[('fish', '=', 'SM')], default=_get_default_sm)
     budomari_id_tg = fields.Many2one('sis.budomari', string="Presentase TG(%)", domain=[('fish', '=', 'TG')], default=_get_default_tg)
     budomari_id_yf = fields.Many2one('sis.budomari', string="Presentase YF(%)", domain=[('fish', '=', 'YF')], default=_get_default_yf)
-    budomari_id_yfb = fields.Many2one('sis.budomari', string="Presentase YFB%)", domain=[('fish', '=', 'YBF')], default=_get_default_yfb)
+    budomari_id_yfb = fields.Many2one('sis.budomari', string="Presentase YFB(%)", domain=[('fish', '=', 'YFB')], default=_get_default_yfb)
+    budomari_id_ybnf = fields.Many2one('sis.budomari', string="Presentase YBNF(%)", domain=[('fish', '=', 'YF')])
+    
+    # TOTAL RAW MATERIAL (SJ, YF, AC)
+    total_rawmat_sj = fields.Float(string="Total SJ", compute='compute_raw_material')
+    total_rawmat_yf = fields.Float(string="Total YF", compute='compute_raw_material')
+    total_rawmat_ac = fields.Float(string="Total AC", compute='compute_raw_material')
     
     # Field ini DIPAKAI!
     coba = fields.Float(compute='calculate_budomari')
+    coba2 = fields.Float(compute='calculate_budomari')
     
     ati12_plan = fields.Selection([('ati1','ATI1'),('ati2','ATI2')], string="ATI1/ATI2", required=True)
     
@@ -111,90 +118,6 @@ class sis_epi(models.Model):
     
     # Adj cutting
     adj_cutting_line_ids = fields.One2many('sis.adj.cutting.line', 'epi_id', string="Adj Cuttting")
-    
-    
-    # Untuk menghitung total tonase
-    @api.multi
-    def compute_total_tonase(self):
-        for rec in self:
-            hasil = 0
-            
-            adj_cutting_line = rec.adj_cutting_line_ids
-            
-            if adj_cutting_line:
-                for row in adj_cutting_line:
-                    tonase_adj = row.tonase_adj
-                    
-                    hasil = hasil + tonase_adj
-                
-                rec.update({'total_tonase': hasil})
-    
-    # Untuk menghitung hasil presentase PM dan total tonase          
-    @api.multi
-    def hitung_pm(self):
-        for rec in self:
-            pm = rec.pm
-            total_tonase = rec.total_tonase
-            hasil_presentase = 0
-            adj_cutting_line = rec.adj_cutting_line_ids
-            temp = 0
-            array = []
-            temp_temp = []
-            temp_temp_temp = []
-            hasil = 0
-                
-            # Hitung total tonase
-            rec.compute_total_tonase()
-            
-            # Hitung total presentase PM
-            if pm != 0 and total_tonase:    
-                # Konversi angka ke presentase (dibagi 100)
-                presentase_pm = pm / 100
-                hasil = total_tonase * presentase_pm
-                
-                rec.hasil_presentase_pm = hasil
-                hasil_presentase = hasil
-                
-                # Insert presentase ke adj cutting line
-                if hasil_presentase != 0 and adj_cutting_line:
-                    
-                    # Looping adj cutting line
-                    for line in adj_cutting_line:
-                        id_line = line.id
-                        tonase_adj = line.tonase_adj
-                        
-                        # Set semua menjadi false terlebih dahulu
-                        line.update({'is_pm': False})
-                        
-                        # Masukkan nilai adj tonase ke dalam variabel
-                        temp = temp + tonase_adj
-                        
-                        # Cek apakah temp <= hasil presentase, jika ya, tampung ke dalam array
-                        if temp <= hasil_presentase:
-                            # Tampung ke dalam array
-                            array.append(id_line)
-                    
-                    # Jika array ada isinya
-                    if array:
-                        for isi in array:
-                            values = {}
-                            values['is_pm'] = True
-                            
-                            # Update berdasarkan id line adj cutting line
-                            temp_temp.append((1, isi, values))
-                        
-                        rec.update({'adj_cutting_line_ids': temp_temp})
-            
-            # Jika PM tidak diisi
-            else:
-                rec.hasil_presentase_pm = hasil
-                
-                for line in adj_cutting_line:
-                        id_line = line.id
-                        tonase_adj = line.tonase_adj
-                        
-                        # Set semua menjadi false terlebih dahulu
-                        line.update({'is_pm': False})
                        
             
     
@@ -231,6 +154,33 @@ class sis_epi(models.Model):
                     target_qty = target_qty + row.yield_total_epi_epi
                 
                 rec.total_target_qty_fish = target_qty
+    
+    # Compute total raw materials
+    @api.depends('epi_line_ids.qty_fish_total_epi')
+    def compute_raw_material(self):
+        for rec in self:
+            epi_line = rec.epi_line_ids
+            sj = 0
+            yf = 0
+            ac = 0
+            
+            if epi_line:
+                for row in epi_line:
+                    fish_material = row.fish_material_epi
+                    
+                    if fish_material == 'AC':
+                        ac = ac + row.qty_fish_total_epi
+                    
+                    if fish_material == 'SJS' or fish_material == 'SJP' or fish_material == 'SJ':
+                        sj = sj + row.qty_fish_total_epi
+                    
+                    if fish_material == 'YFS' or fish_material == 'YFP' or fish_material == 'YF':
+                        yf = yf + row.qty_fish_total_epi
+                            
+                            
+                rec.total_rawmat_sj = sj
+                rec.total_rawmat_yf = yf
+                rec.total_rawmat_ac = ac
     
     
     # Button confirm
@@ -1561,8 +1511,95 @@ class sis_epi(models.Model):
             adj_cutting_ids_line.append(([5]))
 
             return epi_line_obj.update({'adj_cutting_line_ids': adj_cutting_ids_line})
-        
     
+    
+    # ADJ CUTTING
+    # Untuk menghitung total tonase
+    @api.multi
+    def compute_total_tonase(self):
+        for rec in self:
+            hasil = 0
+            
+            adj_cutting_line = rec.adj_cutting_line_ids
+            
+            if adj_cutting_line:
+                for row in adj_cutting_line:
+                    tonase_adj = row.tonase_adj
+                    
+                    hasil = hasil + tonase_adj
+                
+                rec.update({'total_tonase': hasil})
+    
+    
+    # ADJ CUTTING
+    # Untuk menghitung hasil presentase PM dan total tonase          
+    @api.multi
+    def hitung_pm(self):
+        for rec in self:
+            pm = rec.pm
+            total_tonase = rec.total_tonase
+            hasil_presentase = 0
+            adj_cutting_line = rec.adj_cutting_line_ids
+            temp = 0
+            array = []
+            temp_temp = []
+            temp_temp_temp = []
+            hasil = 0
+                
+            # Hitung total tonase
+            rec.compute_total_tonase()
+            
+            # Hitung total presentase PM
+            if pm != 0 and total_tonase:    
+                # Konversi angka ke presentase (dibagi 100)
+                presentase_pm = pm / 100
+                hasil = total_tonase * presentase_pm
+                
+                rec.hasil_presentase_pm = hasil
+                hasil_presentase = hasil
+                
+                # Insert presentase ke adj cutting line
+                if hasil_presentase != 0 and adj_cutting_line:
+                    
+                    # Looping adj cutting line
+                    for line in adj_cutting_line:
+                        id_line = line.id
+                        tonase_adj = line.tonase_adj
+                        
+                        # Set semua menjadi false terlebih dahulu
+                        line.update({'is_pm': False})
+                        
+                        # Masukkan nilai adj tonase ke dalam variabel
+                        temp = temp + tonase_adj
+                        
+                        # Cek apakah temp <= hasil presentase, jika ya, tampung ke dalam array
+                        if temp <= hasil_presentase:
+                            # Tampung ke dalam array
+                            array.append(id_line)
+                    
+                    # Jika array ada isinya
+                    if array:
+                        for isi in array:
+                            values = {}
+                            values['is_pm'] = True
+                            
+                            # Update berdasarkan id line adj cutting line
+                            temp_temp.append((1, isi, values))
+                        
+                        rec.update({'adj_cutting_line_ids': temp_temp})
+            
+            # Jika PM tidak diisi
+            else:
+                rec.hasil_presentase_pm = hasil
+                
+                for line in adj_cutting_line:
+                        id_line = line.id
+                        tonase_adj = line.tonase_adj
+                        
+                        # Set semua menjadi false terlebih dahulu
+                        line.update({'is_pm': False})
+        
+    # ADJ CUTTING
     # FUNGSI AUTO FILL ADJ CUTTING
     # Auto fill Adj Cutting
     @api.multi
@@ -1918,22 +1955,43 @@ class sis_epi(models.Model):
             budomari_yfb = rec.budomari_bool_yfb
             epi_line = rec.epi_line_ids
             
+            budomari_id_ybnf = rec.budomari_id_ybnf
+            
             presentase_ac = 0
             presentase_sj = 0
             presentase_sm = 0
             presentase_tg = 0
             presentase_yf = 0
+            presentase_ybnf = 0
             presentase_yfb = 0
             filling_line = 0
             hasil = 0
             fish_material_line = ""
+            is_ybnf = 0
+            selisih = 0
             
             
             if epi_line:
                 for line in epi_line:
                     fish_material_line = line.fish_material_epi
                     filling_line = line.filling_epi
+                    pps_item_id = line.pps_item_id.description
                     
+                    qty_fish_total_epi = line.qty_fish_total_epi
+                    yield_total_epi_epi = line.yield_total_epi_epi
+                    
+                    # Mencari item ybnf
+                    item = pps_item_id.find("YBNF")
+                    
+                    # ITEM YBNF
+                    if item != -1:
+                        is_ybnf = item
+                    
+                    # BUKAN ITEM YBNF
+                    else:
+                        is_ybnf = item
+                        
+                        
                     if fish_material_line:
                         if fish_material_line == 'AC' and budomari_ac == True:
                             presentase_ac = rec.budomari_id_ac.budomari 
@@ -1941,13 +1999,44 @@ class sis_epi(models.Model):
                             hasil = (filling_line / presentase_ac) * 100
                             line.write({'yieldd_epi': hasil}) 
                             rec.coba = hasil
-                        
+                            
+                            if qty_fish_total_epi != 0:
+                                # Perhitungan pemakaian fz loin
+                                selisih = ((yield_total_epi_epi - qty_fish_total_epi))
+                                # Jika hasil tidak minus atau target qty > actual qty, maka :
+                                if selisih > 0:
+                                    hasil_hasil = (selisih * presentase_ac * 1000) / 5
+                                
+                                    line.write({'remark_epi_fz': hasil_hasil})
+                                    rec.coba2 = hasil_hasil
+                            
+                            # jika qty actual = 0 (input ppic)
+                            else:
+                                line.write({'remark_epi_fz': 0})
+                                rec.coba2 = 0
+                                    
+                                
                         if (fish_material_line == 'SJS' or fish_material_line == 'SJP' or fish_material_line == 'SJ') and budomari_sj == True:
                             presentase_sj = rec.budomari_id_sj.budomari
                             
                             hasil = (filling_line / presentase_sj) * 100
                             line.write({'yieldd_epi': hasil}) 
                             rec.coba = hasil
+                            
+                            if qty_fish_total_epi != 0:
+                                # Perhitungan pemakaian fz loin
+                                selisih = ((yield_total_epi_epi - qty_fish_total_epi))
+                                # Jika hasil tidak minus atau target qty > actual qty, maka :
+                                if selisih > 0:
+                                    hasil_hasil = (selisih * presentase_sj * 1000) / 5
+                                
+                                    line.write({'remark_epi_fz': hasil_hasil})
+                                    rec.coba2 = hasil_hasil
+                            
+                            # jika qty actual = 0 (input ppic)
+                            else:
+                                line.write({'remark_epi_fz': 0})
+                                rec.coba2 = 0
                         
                         if fish_material_line == 'SM' and budomari_sm == True:
                             presentase_sm = rec.budomari_id_sm.budomari
@@ -1955,6 +2044,21 @@ class sis_epi(models.Model):
                             hasil = (filling_line / presentase_sm) * 100
                             line.write({'yieldd_epi': hasil}) 
                             rec.coba = hasil
+                            
+                            if qty_fish_total_epi != 0:
+                                # Perhitungan pemakaian fz loin
+                                selisih = ((yield_total_epi_epi - qty_fish_total_epi))
+                                # Jika hasil tidak minus atau target qty > actual qty, maka :
+                                if selisih > 0:
+                                    hasil_hasil = (selisih * presentase_sm * 1000) / 5
+                                
+                                    line.write({'remark_epi_fz': hasil_hasil})
+                                    rec.coba2 = hasil_hasil
+                            
+                            # jika qty actual = 0 (input ppic)
+                            else:
+                                line.write({'remark_epi_fz': 0})
+                                rec.coba2 = 0
                         
                         if fish_material_line == 'TG' and budomari_tg == True:
                             presentase_tg = rec.budomari_id_tg.budomari
@@ -1963,12 +2067,73 @@ class sis_epi(models.Model):
                             line.write({'yieldd_epi': hasil}) 
                             rec.coba = hasil
                             
-                        if (fish_material_line == 'YFS' or fish_material_line == 'YFP' or fish_material_line == 'YF') and budomari_yf == True:
-                            presentase_yf = rec.budomari_id_yf.budomari
+                            if qty_fish_total_epi != 0:
+                                # Perhitungan pemakaian fz loin
+                                selisih = ((yield_total_epi_epi - qty_fish_total_epi))
+                                # Jika hasil tidak minus atau target qty > actual qty, maka :
+                                if selisih > 0:
+                                    hasil_hasil = (selisih * presentase_tg * 1000) / 5
+                                
+                                    line.write({'remark_epi_fz': hasil_hasil})
+                                    rec.coba2 = hasil_hasil
                             
-                            hasil = (filling_line / presentase_yf) * 100
-                            line.write({'yieldd_epi': hasil}) 
-                            rec.coba = hasil
+                            # jika qty actual = 0 (input ppic)
+                            else:
+                                line.write({'remark_epi_fz': 0})
+                                rec.coba2 = 0
+                            
+                        if (fish_material_line == 'YFS' or fish_material_line == 'YFP' or fish_material_line == 'YF') and budomari_yf == True:
+                            # Jika item YBNF
+                            if is_ybnf != -1:
+                                presentase_ybnf = rec.budomari_id_ybnf.budomari
+                                
+                                # jika presentase YBNF diisi
+                                if presentase_ybnf != 0:
+                                    hasil = (filling_line / presentase_ybnf) * 100
+                                    line.write({'yieldd_epi': hasil}) 
+                                    rec.coba = hasil
+                                    
+                                    if qty_fish_total_epi != 0:
+                                        # Perhitungan pemakaian fz loin
+                                        selisih = ((yield_total_epi_epi - qty_fish_total_epi))
+                                        # Jika hasil tidak minus atau target qty > actual qty, maka :
+                                        if selisih > 0:
+                                            hasil_hasil = (selisih * presentase_ybnf * 1000) / 5
+                                        
+                                            line.write({'remark_epi_fz': hasil_hasil})
+                                            rec.coba2 = hasil_hasil
+                                    
+                                    # jika qty actual = 0 (input ppic)
+                                    else:
+                                        line.write({'remark_epi_fz': 0})
+                                        rec.coba2 = 0
+                                
+                                # Jika presentase YBNF tidak diisi
+                                else:
+                                    line.write({'yieldd_epi': 0}) 
+                                
+                            # Jika bukan item YBNF
+                            else:
+                                presentase_yf = rec.budomari_id_yf.budomari
+                                
+                                hasil = (filling_line / presentase_yf) * 100
+                                line.write({'yieldd_epi': hasil}) 
+                                rec.coba = hasil
+                                
+                                if qty_fish_total_epi != 0:
+                                    # Perhitungan pemakaian fz loin
+                                    selisih = ((yield_total_epi_epi - qty_fish_total_epi))
+                                    # Jika hasil tidak minus atau target qty > actual qty, maka :
+                                    if selisih > 0:
+                                        hasil_hasil = (selisih * presentase_yf * 1000) / 5
+                                    
+                                        line.write({'remark_epi_fz': hasil_hasil})
+                                        rec.coba2 = hasil_hasil
+                                
+                                # jika qty actual = 0 (input ppic)
+                                else:
+                                    line.write({'remark_epi_fz': 0})
+                                    rec.coba2 = 0
                         
                         if fish_material_line == 'YFB' and budomari_yfb == True:
                             presentase_yfb = rec.budomari_id_yfb.budomari
@@ -1976,6 +2141,21 @@ class sis_epi(models.Model):
                             hasil = (filling_line / presentase_yfb) * 100
                             line.write({'yieldd_epi': hasil}) 
                             rec.coba = hasil
+                           
+                            if qty_fish_total_epi != 0: 
+                                # Perhitungan pemakaian fz loin
+                                selisih = ((yield_total_epi_epi - qty_fish_total_epi))
+                                # Jika hasil tidak minus atau target qty > actual qty, maka :
+                                if selisih > 0:
+                                    hasil_hasil = (selisih * presentase_yfb * 1000) / 5
+                                
+                                    line.write({'remark_epi_fz': hasil_hasil})
+                                    rec.coba2 = hasil_hasil
+                            
+                            # jika qty actual = 0 (input ppic)
+                            else:
+                                line.write({'remark_epi_fz': 0})
+                                rec.coba2 = 0
     
     
     # XLS
@@ -2065,6 +2245,7 @@ class sis_epi(models.Model):
         epi_line_ids = self.epi_line_ids
         name = self.name
         total_actl_qty = self.total_qty_fish
+        temp_id = 0
         
         if epi_line_ids:
             for line in epi_line_ids:
@@ -2076,12 +2257,15 @@ class sis_epi(models.Model):
                 remark_doc = line.remark_epi
                 remark_fz = line.remark_epi_fz
                 epi_line_temp_ids = line.sis_epi_line_temp_ids
+                item_id = line.pps_item_id
                 
                 worksheet.write(row, col, item, normal_style)
                 worksheet.write(row, col + 1, target_prd, normal_style)
                 worksheet.write(row, col + 2, fish_qty_ton, normal_style)
                 worksheet.write(row, col + 3, running_time, normal_style)
                 
+#                 i = 1
+#                 while i <= 5:
                 # Epi temp detail
                 for epi_detail in epi_line_temp_ids:
                     qty_fish_temp = epi_detail.qty_fish_temp
@@ -2161,36 +2345,39 @@ class sis_epi(models.Model):
                             worksheet.write(row, col + 15, qty_fish_temp, normal_style)
                         else:
                             worksheet.write(row, col + 15, None, normal_style)
-                        
+                
                      
-                # jika qty total fish epi == 0, maka isi kolom dengan border                
-                if qty_fish_total_epi == 0:
-                    # Agar kolom ada border ketika tidak ada value
-                    worksheet.write(row, col + 4, None, normal_style)
-                    worksheet.write(row, col + 5, None, normal_style)
-                    worksheet.write(row, col + 6, None, normal_style)
-                    worksheet.write(row, col + 7, None, normal_style)
-                    worksheet.write(row, col + 8, None, normal_style)
-                    worksheet.write(row, col + 9, None, normal_style)
-                    worksheet.write(row, col + 10, None, normal_style)
-                    worksheet.write(row, col + 11, None, normal_style)
-                    worksheet.write(row, col + 12, None, normal_style)
-                    worksheet.write(row, col + 13, None, normal_style)
-                    worksheet.write(row, col + 14, None, normal_style)
-                    worksheet.write(row, col + 15, None, normal_style)
-                    worksheet.write(row, col + 16, None, normal_style)
+                 
+                    # jika qty total fish epi == 0, maka isi kolom dengan border                
+                    if qty_fish_total_epi == 0:
+                        # Agar kolom ada border ketika tidak ada value
+                        worksheet.write(row, col + 4, None, normal_style)
+                        worksheet.write(row, col + 5, None, normal_style)
+                        worksheet.write(row, col + 6, None, normal_style)
+                        worksheet.write(row, col + 7, None, normal_style)
+                        worksheet.write(row, col + 8, None, normal_style)
+                        worksheet.write(row, col + 9, None, normal_style)
+                        worksheet.write(row, col + 10, None, normal_style)
+                        worksheet.write(row, col + 11, None, normal_style)
+                        worksheet.write(row, col + 12, None, normal_style)
+                        worksheet.write(row, col + 13, None, normal_style)
+                        worksheet.write(row, col + 14, None, normal_style)
+                        worksheet.write(row, col + 15, None, normal_style)
+                        worksheet.write(row, col + 16, None, normal_style)
+                    
+                    # jika ada isinya, maka isi sesuai dengan value
+                    else:
+                        worksheet.write(row, col + 16, qty_fish_total_epi, normal_style)
+                    
+                    worksheet.write(row, col + 17, remark_doc, normal_style)
+                    worksheet.write(row, col + 18, remark_fz, normal_style)
+                   
+                    
+                        
+                    row = row + 1
+                    col_col = col_col + 1
                 
-                # jika ada isinya, maka isi sesuai dengan value
-                else:
-                    worksheet.write(row, col + 16, qty_fish_total_epi, normal_style)
                 
-                worksheet.write(row, col + 17, remark_doc, normal_style)
-                worksheet.write(row, col + 18, remark_fz, normal_style)
-              
-                            
-                row = row + 1
-                col_col = col_col + 1
-        
         # row + 1 karena row dimulai dari integer 0
         row_custom = row + 1   
         worksheet.merge_range('E'+str(row_custom)+':P'+str(row_custom)+'', 'TOTAL ', header_style)
@@ -2214,6 +2401,7 @@ class sis_epi(models.Model):
         workbook = xlsxwriter.Workbook('/tmp/'+filename)
         row = 5
         col = 0
+        row_custom = 0
         
         # STYLE
         format_judul = workbook.add_format({'font_size': 14, 'align': 'center'})
@@ -2249,6 +2437,10 @@ class sis_epi(models.Model):
         worksheet.write('A4', 'EPI:', header2_style)
         worksheet.write('B4', self.name, normal_style2)
         
+        # Date
+        worksheet.write('D4', 'Date:', header2_style)
+        worksheet.write('E4', self.date_plan)
+        
         worksheet.write('A5', 'No', header_style)
         worksheet.write('B5', 'Jam keluar CS', header_style)
         worksheet.write('C5', 'Jam Mulai Defrost', header_style)
@@ -2263,6 +2455,7 @@ class sis_epi(models.Model):
         urut_cutting_ids = self.urut_cutting_line_ids
         name = self.name
         hasil = ""
+        total = 0
         
         if urut_cutting_ids:
             for line in urut_cutting_ids:
@@ -2275,6 +2468,7 @@ class sis_epi(models.Model):
                 shift_potong = line.shift_potong_uc
                 tonase = line.tonase_uc
                 fish_type = line.fish_type_uc.size
+                total = total + line.tonase_uc
                 
                 if shift_potong == 'pp':
                     hasil = 'PP'
@@ -2293,6 +2487,9 @@ class sis_epi(models.Model):
                 
                 row = row + 1
         
+        row_custom = row + 1   
+        worksheet.merge_range('E'+str(row_custom)+':F'+str(row_custom)+'', 'TOTAL ', header_style)
+        worksheet.write(row, col + 6, total, header_style)
         
         
         workbook.close()
@@ -2478,25 +2675,26 @@ class sis_epi_line(models.Model):
     can_size_epi = fields.Char(string="Can Size")
     kaleng_per_case_epi = fields.Float(string="Kaleng per Case", readonly=True, digits=(12,0))
     speed_epi = fields.Float(string="Speed", digits=(12,0))
-    speed_epi_calculate = fields.Float(string="Speed(cs/jam)", digits=(12,0), compute='calculate_speed_epi', store=True, help="Ambil dari sis_pps_item field cap.case/line/hour")
+    speed_epi_calculate = fields.Float(string="Speed(cs/jam)", digits=(12,0), compute='calculate_speed_epi', help="Ambil dari sis_pps_item field cap.case/line/hour")
     target_prd = fields.Float(string="Target Produksi(cs)", track_visibility='onchange')
     budomari_epi = fields.Many2one('sis.budomari', string="Budomari")
     filling_epi = fields.Float(string="Meat/cs(kg)", compute='calculate_filling_epi') # Awalnya Filling
     sm_epi = fields.Float(string="SM", compute='calculate_sm_epi')
     yieldd_epi = fields.Float(string="Fish/Cs(kg)") # Awalnya Yield
-    yield_total_epi = fields.Float(string="Yield Total", store=True, compute='calculate_total_yield')
-    yield_total_epi_epi = fields.Float(string="Target Qty Fish(ton)", compute='calculate_yield_epi_epi', store=True)
-    waktu_packing_epi = fields.Float(string="Est Wkt Pack(jam)", store=True, compute='calculate_estimasi_wkt_packing')
+    yield_total_epi = fields.Float(string="Yield Total", compute='calculate_total_yield')
+    yield_total_epi_epi = fields.Float(string="Target Qty Fish(ton)", compute='calculate_yield_epi_epi')
+    waktu_packing_epi = fields.Float(string="Est Wkt Pack(jam)", compute='calculate_estimasi_wkt_packing')
     meat_epi = fields.Float(string="Meat/jam(kg)", compute='calculate_meat')
     qty_fish_total_epi = fields.Float(string="Actl Fish Total(ton)", readonly=True)
     start_packing_epi = fields.Datetime(string="Start Pack")
     line_count = fields.Integer(string="Line Count", compute='calculate_speed_epi')
     fish_material_epi = fields.Char(string="Fish Material")
     remark_epi = fields.Char(string="Doc")
-    remark_epi_fz = fields.Char(string="Remark Fz")
+    remark_epi_fz = fields.Float(string="Remark Fz")
     meat = fields.Float(string="Meat(gr)")
     worker_epi = fields.Integer(string="Worker")
     is_new_item_epi = fields.Boolean(string="Is New Item", help="Fields ini sebgai flagging sudah pernah create fish using apa belum")
+    total_point_epi = fields.Float(string="Total Point")
     
     sis_epi_line_temp_ids = fields.One2many('sis.epi.line.temp', 'epi_line_id')
     
@@ -2719,6 +2917,8 @@ class sis_epi_line(models.Model):
             hasil = yield_total_epi / 1000
             
             rec.yield_total_epi_epi = hasil
+    
+
 
     
     # Button untuk mengisi qty di line
@@ -2735,6 +2935,7 @@ class sis_epi_line(models.Model):
             sis_epi_line_temp = rec.sis_epi_line_temp_ids
             sis_epi_line_temp_count = len(sis_epi_line_temp)
             yield_total_epi_epi = rec.yield_total_epi_epi
+            total_point = rec.total_point_epi
             print(sis_epi_line_temp_count)
             
             # Jika terdapat data temporary, maka : 
@@ -2744,11 +2945,15 @@ class sis_epi_line(models.Model):
                     fish_size_temp = row.size_fish_temp
                     fish_qty_temp = row.qty_fish_temp
                     no_urut = row.no_urut
+                    point = row.point
+                    total_point = row.total_point
                     
                     values = {}
                     values['no_urut'] = no_urut
                     values['size_fish'] = fish_size_temp
                     values['qty_fish'] = fish_qty_temp
+                    values['point'] = point
+                    values['total_point'] = total_point
                     temp.append((0, 0, values))
                                                          
                               
@@ -2767,6 +2972,7 @@ class sis_epi_line(models.Model):
                             'default_epi_line_id': rec.id,
                             'default_target_prd_detail': target_prd,
                             'default_yield_total_detail': yield_total_epi_epi,
+                            'default_total_point_detaul': total_point
                         }
                             
                 }
@@ -2802,6 +3008,8 @@ class sis_epi_line_temp(models.Model):
     size_fish_temp = fields.Char()
     qty_fish_temp = fields.Float()
     no_urut = fields.Integer()
+    point = fields.Float()
+    total_point = fields.Float()
     
     
 

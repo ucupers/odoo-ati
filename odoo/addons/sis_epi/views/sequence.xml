@@ -7,6 +7,13 @@
             <field name="prefix">EPI/%(y)s%(month)s%(day)s/</field>
             <field name="padding">5</field>
         </record>
+        
+        <record id="seq_shreded" model="ir.sequence">
+            <field name="name">Sequence for Shreded</field>
+            <field name="code">sequence.sis.shreded</field>
+            <field name="prefix">SRH/%(y)s%(month)s%(day)s/</field>
+            <field name="padding">5</field>
+        </record>
 		
 	</data>
 </odoo>

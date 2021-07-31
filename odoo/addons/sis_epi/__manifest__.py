@@ -30,6 +30,7 @@
         'views/sis_master_item_inherit.xml',
         'views/sis_master_time.xml',
         'views/sis_budomari_master.xml',
+        'views/sis_perhitungan_shreded.xml',
 #         'views/coba_print.xml',
         'wizard/message_fish_using.xml',
         'wizard/sis_epi_detail.xml',

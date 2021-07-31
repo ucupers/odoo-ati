@@ -398,6 +398,271 @@ class sis_ppic_dpe(models.Model):
     
         }        
 
+    def make_excel_counter(self):
+#         sp = io.BytesIO()
+        filename = ' COUNTER '+datetime.now().strftime('%Y-%m-%d, %H:%M:%S')+'.xlsx'
+        workbook = xlsxwriter.Workbook('/tmp/'+filename)
+ 
+        # STYLE
+        workbook.formats[0].set_font_size(9)
+        workbook.formats[0].set_font_name('Arial')
+        #################################################################################
+        rtnoborder_style = workbook.add_format({'bold': 1, 'valign':'vcenter', 'align':'right',
+            'font_name':'Arial', 'font_size':9})
+        #################################################################################
+        ctnoborder_style = workbook.add_format({'bold': 1, 'valign':'vcenter', 'align':'center',
+            'font_name':'Arial', 'font_size':9})
+        #################################################################################
+        ltnoborder_style = workbook.add_format({'bold': 1, 'valign':'vcenter', 'align':'left',
+            'font_name':'Arial', 'font_size':9})
+        #################################################################################
+        top_style = workbook.add_format({'bold': 1, 'valign':'vcenter', 'align':'left',
+            'border':0, 'font_name':'Arial', 'font_size':12})
+        #################################################################################
+        top_green_style = workbook.add_format({'bold': 1, 'valign':'vcenter', 'align':'center', 'text_wrap':1,
+            'border':1, 'bg_color':'#9FE2BF','font_name':'Arial', 'font_size':9})
+        #################################################################################
+        blue_normal_style = workbook.add_format({'valign':'vcenter', 'border':1,
+            'font_name':'Arial', 'bg_color':'#85C1E9','font_size':9})
+        #################################################################################
+        yellow_normal_style = workbook.add_format({'valign':'vcenter', 'border':1,
+            'font_name':'Arial', 'bg_color':'yellow','font_size':9})
+        #################################################################################
+        lblue_normal_style = workbook.add_format({'valign':'vcenter', 'border':1,
+            'font_name':'Arial', 'bg_color':'#AED6F1','font_size':9})
+        #################################################################################
+        normal_style = workbook.add_format({'valign':'vcenter', 'border':0,
+            'font_name':'Arial', 'font_size':9})
+        #################################################################################
+        bnormal_style = workbook.add_format({'valign':'vcenter', 'border':1,'text_wrap':1,
+            'font_name':'Arial', 'font_size':9,'num_format': '#,##0.00'})
+        #################################################################################
+        yellow_bnormal_style = workbook.add_format({'valign':'vcenter', 'border':1,'text_wrap':1,
+            'font_name':'Arial', 'bg_color':'yellow','font_size':9,'num_format': '#,##0.00'})
+        #################################################################################
+        green_nodec_bnormal_style = workbook.add_format({'valign':'vcenter', 'border':1,'text_wrap':1,
+            'font_name':'Arial', 'bg_color':'#9FE2BF','font_size':9,'num_format': '#,##0'})
+        #################################################################################
+        red_bnormal_style = workbook.add_format({'valign':'vcenter', 'border':1,'text_wrap':1,
+            'font_name':'Arial', 'font_color':'red','font_size':9,'num_format': '#,##0.00'})
+        #################################################################################
+        blue_bnormal_style = workbook.add_format({'valign':'vcenter', 'border':1,'text_wrap':1,
+            'font_name':'Arial', 'font_color':'blue','font_size':9,'num_format': '#,##0.00'})
+        #################################################################################
+        yellow_red_bnormal_style = workbook.add_format({'valign':'vcenter', 'border':1,'text_wrap':1,
+            'font_name':'Arial', 'bg_color':'yellow','font_color':'red','font_size':9,'num_format': '#,##0.00'})
+        #################################################################################
+
+        nodec_bnormal_style = workbook.add_format({'valign':'vcenter', 'border':1,'text_wrap':1,
+            'font_name':'Arial', 'font_size':9,'num_format': '#,##0'})
+        #################################################################################
+        dec_normal_style = workbook.add_format({'valign':'vcenter', 'border':0,
+            'font_name':'Arial', 'font_size':9,'num_format': '#,##0.00'})
+        #################################################################################
+        date_normal_style = workbook.add_format({'valign':'vcenter', 'border':1,
+            'num_format': 'd/mmm/yy','font_name':'Arial', 'font_size':9 })
+        #################################################################################
+        bold_style = workbook.add_format({'bold': 1, 'valign':'vcenter', 'align':'vcenter','border':1,
+            'font_name':'Arial', 'font_size':9})
+        #################################################################################
+        bolder_style = workbook.add_format({'bold': 1, 'valign':'vcenter', 'border':1,
+            'font_name':'Arial', 'font_size':11})
+        #################################################################################
+        center_style = workbook.add_format({'valign':'vcenter', 'align':'center', 'border':1,
+            'font_name':'Arial', 'font_size':9})
+        #################################################################################
+        date_center_style = workbook.add_format({'valign':'vcenter', 'align':'center', 'border':1,
+            'font_name':'Arial', 'num_format': 'd-mmm','font_size':9})
+        #################################################################################
+        red_center_style = workbook.add_format({'valign':'vcenter', 'align':'center', 'border':1,
+            'font_name':'Arial', 'font_color':'red','font_size':9})
+        #################################################################################
+        date_red_center_style = workbook.add_format({'valign':'vcenter', 'align':'center', 'border':1,
+            'font_name':'Arial', 'num_format': 'd-mmm','font_color':'red','font_size':9})
+        #################################################################################
+
+        blue_center_style = workbook.add_format({'valign':'vcenter', 'align':'center', 'border':1,
+            'font_name':'Arial', 'bg_color':'#85C1E9','font_size':9})
+        #################################################################################
+        lblue_center_style = workbook.add_format({'valign':'vcenter', 'align':'center', 'border':1,
+            'font_name':'Arial', 'bg_color':'#AED6F1','font_size':9})
+        #################################################################################
+        green_center_style = workbook.add_format({'valign':'vcenter', 'align':'center', 'border':1,
+            'font_name':'Arial', 'bg_color':'#9FE2BF','font_size':9})
+        #################################################################################
+        b_center_style = workbook.add_format({'bold': 1, 'valign':'vcenter', 'align':'center',
+            'border':1, 'font_name':'Arial', 'font_size':9})
+        #################################################################################
+        right_style = workbook.add_format({'valign':'vcenter', 'align':'right', 'border':1,
+            'num_format': '###0.00', 'font_name':'Arial', 'font_size':9})
+        #################################################################################
+         
+        worksheet = workbook.add_worksheet('Stuffing Plan')
+     
+        worksheet.set_column('A:AJ', 8.2)
+
+        worksheet.write(0,0, 'COUNTER ', top_style)
+
+        worksheet.write(1,0, (self.no or ''), top_style)
+
+        worksheet.write(3,0, 'Date:', normal_style)
+        worksheet.write(4,0, 'Printed:', normal_style)
+
+        worksheet.write(3,1, self.dpe_date, normal_style)
+        worksheet.write(4,1, datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), normal_style)
+
+        worksheet.set_row(0,20)
+        worksheet.set_row(1,20)
+        worksheet.set_row(2,20)
+        worksheet.set_row(3,20)
+        worksheet.set_row(4,20)
+        worksheet.set_row(5,35)
+
+        worksheet.set_row(5,40)
+        row=5
+        worksheet.write(row, 0, 'LINE', top_green_style)            
+        worksheet.merge_range(row, 1, row, 1+3,'PRODUCT', top_green_style)
+        worksheet.write(row, 5, 'M', top_green_style)
+        worksheet.write(row, 6, 'TOL.', top_green_style)
+        worksheet.write(row, 7, 'O', top_green_style)        
+        worksheet.merge_range(row, 8, row, 8+1,'REMARK OIL', top_green_style)        
+        worksheet.write(row, 10, 'B', top_green_style)                                                
+        worksheet.write(row, 11, 'VG', top_green_style)                                                
+        worksheet.write(row, 12, 'BUMBU', top_green_style)                                                
+        worksheet.write(row, 13, 'Topping', top_green_style)                                                        
+        worksheet.write(row, 14, 'NW', top_green_style)                                                
+        worksheet.write(row, 15, 'GW ', top_green_style)
+        worksheet.write(row, 16, 'Qty', top_green_style)                                                
+        worksheet.write(row, 17, 'Start', top_green_style)                                                
+
+        worksheet.merge_range(row-1, 18, row-1, 18+3,'COUNTER', top_green_style)        
+        worksheet.merge_range(row, 18, row, 18+1, 'CW(pcs)', top_green_style)
+        worksheet.merge_range(row, 20, row, 20+1,'Seamer (cs)', top_green_style)        
+
+
+        worksheet.merge_range(row-1, 22, row-1, 22+3,'COUNTER DIGITAL', top_green_style)        
+        worksheet.merge_range(row, 22, row, 22+1,'SHIFT 1-2(cs)', top_green_style)
+        worksheet.merge_range(row, 24, row, 24+1,'Total', top_green_style)        
+
+        worksheet.write(row, 26, 'Finish', top_green_style)                                                
+
+        worksheet.merge_range(row-1, 27, row-1, 27+3,'OUTPUT', top_green_style)        
+        worksheet.merge_range(row, 27, row, 27+1,'WH(pcs)', top_green_style)
+        worksheet.merge_range(row, 29, row, 29+1,'EC(cs)', top_green_style)        
+
+        row+=1
+        for d in self.detail_id:
+            worksheet.set_row(row,40)            
+            worksheet.write(row, 0, d.line or '', bnormal_style)
+
+            if d.baru and d.ccpl:
+                worksheet.merge_range(row, 1, row, 1+3,d.product or '', yellow_red_bnormal_style)
+            elif d.baru:
+                worksheet.merge_range(row, 1, row, 1+3,d.product or '', yellow_bnormal_style)
+            elif d.ccpl:
+                worksheet.merge_range(row, 1, row, 1+3,d.product or '', red_bnormal_style)
+            else:
+                worksheet.merge_range(row, 1, row, 1+3,d.product or '', bnormal_style)
+                        
+            worksheet.write(row, 5, d.meat or '', bnormal_style)
+            worksheet.write(row, 6, d.toleransi or '', bnormal_style)
+            worksheet.write(row, 7, d.oil or '', bnormal_style)        
+            worksheet.merge_range(row, 8, row, 8+1,d.remark_oil or '', bnormal_style)        
+            worksheet.write(row, 10, d.brine or '', bnormal_style)                                                
+            worksheet.write(row, 11, d.vg or '', bnormal_style)                                                
+            worksheet.write(row, 12, d.bumbu or '', bnormal_style)                                                
+            worksheet.write(row, 13, d.topping or '', bnormal_style)                                                        
+            worksheet.write(row, 14, d.nw or '', bnormal_style)                                                
+
+            toleransi=False
+            body=False
+            lid=False
+            if d.product:
+                if d.product[:2] not in ['UC'] and d.product[:3] not in ['P3K','P1K','P80']: 
+                    i=False
+                    for i in range(0,len(d.toleransi or '')):
+                        if d.toleransi[i] in ['0','1','2','3','4','5','6','7','8','9','.']:
+                            break
+                    if i:
+                        toleransi=float(d.toleransi[i:])
+                    else:
+                        toleransi=0
+            if d.body:
+                body=self.env['sis.items.local'].search([('itemno','=',d.body[:d.body.find(':')])]).gw*1000
+                if body==False or body==0:
+                    body=self.env['sis.item.variants.local'].search([('itemno','=',d.body[:d.body.find(':')]),('gw','!=',0)],limit=1).gw*1000                    
+            if d.lid:
+                lid=self.env['sis.items.local'].search([('itemno','=',d.lid[:d.lid.find(':')])]).gw*1000
+                if lid==False or lid==0:
+                    lid=self.env['sis.item.variants.local'].search([('itemno','=',d.lid[:d.lid.find(':')]),('gw','!=',0)],limit=1).gw*1000                    
+               
+            gw=float(d.nw)-(toleransi or 0)+(body or 0)+(lid or 0)
+            
+            if (d.body and body==False) or (d.lid and lid==False): 
+                worksheet.write(row, 15, gw, yellow_bnormal_style)                                                               
+            else:
+                worksheet.write(row, 15, gw, bnormal_style)
+
+            worksheet.write(row, 16, d.qtycase or '', nodec_bnormal_style)
+            worksheet.write(row, 17, '', bnormal_style)                                                
+    
+            worksheet.merge_range(row, 18, row, 18+1,'', bnormal_style)
+            worksheet.merge_range(row, 20, row, 20+1,'', bnormal_style)        
+    
+    
+            worksheet.merge_range(row, 22, row, 22+1,'', bnormal_style)
+            worksheet.merge_range(row, 24, row, 24+1,'', bnormal_style)        
+    
+            worksheet.write(row, 26, '', bnormal_style)                                                
+    
+            worksheet.merge_range(row, 27, row, 27+1,'', bnormal_style)
+            worksheet.merge_range(row, 29, row, 29+1,'', bnormal_style)        
+            if d.line: 
+                a=1
+                if d.line.find(',')>-1: 
+                    a=len(d.line.split(','))
+                elif d.line.find('.')>-1: 
+                    a=len(d.line.split('.'))
+                for i in range(1,a+1):
+                    row+=1
+                    worksheet.set_row(row,40)            
+                    worksheet.write(row, 0, '', bnormal_style)
+                    worksheet.merge_range(row, 1, row, 1+3,'', bnormal_style)
+                    worksheet.write(row, 5, '', bnormal_style)
+                    worksheet.write(row, 6, '', bnormal_style)
+                    worksheet.write(row, 7, '', bnormal_style)        
+                    worksheet.merge_range(row, 8, row, 8+1,'', bnormal_style)        
+                    worksheet.write(row, 10, '', bnormal_style)                                                
+                    worksheet.write(row, 11, '', bnormal_style)                                                
+                    worksheet.write(row, 12, '', bnormal_style)                                                
+                    worksheet.write(row, 13, '', bnormal_style)                                                        
+                    worksheet.write(row, 14, '', bnormal_style)                                                
+                    worksheet.write(row, 15, '', bnormal_style)
+                    worksheet.write(row, 16, '', nodec_bnormal_style)
+                    worksheet.write(row, 17, '', bnormal_style)                                                
+                    worksheet.merge_range(row, 18, row, 18+1,'', bnormal_style)
+                    worksheet.merge_range(row, 20, row, 20+1,'', bnormal_style)        
+                    worksheet.merge_range(row, 22, row, 22+1,'', bnormal_style)
+                    worksheet.merge_range(row, 24, row, 24+1,'', bnormal_style)        
+                    worksheet.write(row, 26, '', bnormal_style)                                                
+                    worksheet.merge_range(row, 27, row, 27+1,'', bnormal_style)
+                    worksheet.merge_range(row, 29, row, 29+1,'', bnormal_style)                     
+            row+=1
+ 
+        row+=1
+        worksheet.merge_range(row, 1, row, 1+1,'Diserahkan Oleh', bnormal_style)
+        worksheet.merge_range(row, 26, row, 26+1,'Diterima Oleh', bnormal_style)
+
+        workbook.close()
+        ids=self.env['sis.ppic.dpe.xls'].create({'report':base64.b64encode(open("/tmp/"+filename, "rb").read())})
+        return {
+            'type': 'ir.actions.act_url',
+            'name': 'contract',
+            'url': '/web/content/sis.ppic.dpe.xls/%s/report/%s?download=true' %((ids.id),filename)
+    
+        }        
+
+
     def click_button(self):
         sec=self.env.context.get('check_user')
         if sec:
@@ -546,6 +811,10 @@ class sis_ppic_dpe(models.Model):
     def get_data(self):
         if self.status=='released':
             raise UserError('Cannot get data if RELEASED')
+        self.env.cr.execute('delete from sis_temp_production_bom')
+        self.env.cr.execute("insert into sis_temp_production_bom(id,itemno,description,uom,qtyperuom,variant,variantdesc,variantuom,variantqtyperuom,linenum,lineitem,linedesc,linevar,lineqty,linerouting,lineqtyper,lineuom,lineitc,linepgc) "+\
+        "select id,itemno,description,uom,qtyperuom,variant,variantdesc,variantuom,variantqtyperuom,linenum,lineitem,linedesc,linevar,lineqty,linerouting,lineqtyper,lineuom,lineitc,linepgc from sis_production_bom")   
+
         self.detail_id.write({'exist':False})
         SQL=" select ph.id,line_id,item_no, description,qtyperuom,t"+str(int(self.dpe_date[8:10]))+\
             " from sis_pps_header ph inner join sis_pps_detail pd on ph.id=pd.header_id and pd.type='production' "+\
@@ -566,7 +835,7 @@ class sis_ppic_dpe(models.Model):
             if len(mitem)==0:
                 raise UserError("No SIS Master Item error for "+item_no)
             item=self.env['sis.items.local'].search([('itemno','=',item_no)])
-            if item.qtyperfcl==0:
+            if item.qtyperfcl==0 and mitem.qtyperfcl==0:
                 raise UserError('Qty/fcl = 0 for '+item_no)
             if not item or len(item)!=1:
                 raise UserError ('NAV Master Item error for '+item_no)            
@@ -667,7 +936,7 @@ class sis_ppic_dpe(models.Model):
             if dpe_view_only==True:
                 s.check_access_rnd=False
             else:
-                s.check_access_rnd=s.access_check(section,['RND'],pabrik)
+                s.check_access_rnd=s.access_check(section,['RND'],'---')
     
     def _check_access_qca(self):
         section,pabrik,dpe_view_only = self._get_section()
@@ -694,7 +963,7 @@ class sis_ppic_dpe(models.Model):
             if dpe_view_only==True:
                 s.check_access_qa=False
             else:
-                s.check_access_qa=s.access_check(section,['QA'],pabrik)
+                s.check_access_qa=s.access_check(section,['QA'],'---')
 
     def _check_access_ss(self):
         section,pabrik,dpe_view_only = self._get_section()
@@ -836,12 +1105,13 @@ class sis_ppic_dpe_detail(models.Model):
         for s in self:
             topping=0
             if s.topping and len(s.topping)>0:
-                try:
-                    topping=eval(s.topping)
-                except Exception as e:
-                    raise UserError(e)
-
-                    raise UserError('Topping formula error !')
+                if s.topping.find('+')==-1:
+                    try:
+                        topping=eval(s.topping)
+                    except Exception as e:
+                        raise UserError(e)
+    
+                        raise UserError('Topping formula error !')
 
             s.nw=s.meat+s.oil+s.brine+s.vg+s.bumbu+topping
 
@@ -907,3 +1177,15 @@ class sis_ppic_dpe_detail(models.Model):
                 s.qtyfcl=s.qtycase/(s.qtyperfcl*s.qtyperuomsale/s.qtyperuom)*s.factor
             else:
                 s.qtyfcl=0
+            
+    @api.onchange('product')                
+    def _onchange_product(self):
+        for s in self:
+            sps=self.env['sis.spec.prod'].search([('item_desc','=',s.product),('spec_state','=','confirm')],order='id desc',limit=1)
+            if len(sps)==1:
+                vals={'spec_id':sps.id,
+                      'itemno':sps.item_no}
+            
+                s.write(vals)
+            else:
+                raise UserError('Product Spec not found, please check product or contact RnD')

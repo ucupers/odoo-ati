@@ -8,7 +8,7 @@
       <field name="arch" type="xml">
         <tree>
         	<field name="itemno"></field>
-			<field name="sis_item_id"></field>
+			
 			<field name="sis_itc"></field>
 			<field name="sis_bin_id"></field>
 			<field name="sis_code_bin"></field>
@@ -26,7 +26,6 @@
                         <group>
                             <group>
                                 <field name="itemno"/>
-          						<field name="sis_item_id"></field>
           						<field name="sis_itc" readonly="1" force_save="1"></field>
                             </group>
                             <group>

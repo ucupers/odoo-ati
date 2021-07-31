@@ -12,6 +12,7 @@
               "reports/report_binlabel_form.xml",
               "views/sis_items.xml",
               "views/sis_production_bom.xml",             
-              "views/sis_gl_account.xml"                           
+              "views/sis_gl_account.xml",
+              "views/sis_paircity.xml",                           
              ],
 }

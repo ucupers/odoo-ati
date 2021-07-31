@@ -1,0 +1,192 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="sis_shreded_tree_view">
+          <field name="name">sis.perhitungan.shreded.tree</field>
+          <field name="model">sis.perhitungan.shreded</field>
+          <field name="arch" type="xml">
+              <tree string="Perhitungan Shreded">
+                <field name="name"></field>
+                <field name="date_shreded"></field>
+                <field name="ati12"></field>
+              </tree>
+          </field>
+        </record>
+
+        <!-- Membuat tampilan form -->
+        <record model="ir.ui.view" id="sis_shreded_form_view">
+        <field name="name">sis.perhitungan.shreded.form</field>
+        <field name="model">sis.perhitungan.shreded</field>
+        <field name="arch" type="xml">
+          <form string="New">
+            <sheet>
+              <group>
+                <group>
+                  <field name="name"></field>
+                  <field name="date_shreded"></field>
+                  <field name="ati12"></field>
+                  <field name="epi_id_shreded"></field>
+                </group>
+                
+                <group>
+                	<field name="budomari_cl_sj"></field>
+                	<field name="budomari_cl_yf"></field>
+                	<field name="budomari_cl_ac"></field>
+                	
+                	<label for="hasil_output_cl_sj"/>
+                        <div>
+                            <field name="hasil_output_cl_sj"
+                                   class="oe_inline"></field>
+                           kg
+                        </div>
+                    
+                    <label for="hasil_output_cl_yf"/>
+                        <div>
+                            <field name="hasil_output_cl_yf"
+                                   class="oe_inline"></field>
+                           kg
+                        </div>
+                        
+                     <label for="hasil_output_cl_ac"/>
+                        <div>
+                            <field name="hasil_output_cl_ac"
+                                   class="oe_inline"></field>
+                           kg
+                        </div>   
+                    
+                </group>
+              </group>
+              
+              <button name="get_item_epi"
+                      string="Get Item"
+                      class="btn-primary"
+                      type="object"/>
+              
+              	<!-- Notebook page -->
+                <notebook>
+		            <page name="shreded_line" string="Shreded Line">
+		              <field name="shreded_line_ids">
+		                <tree editable="bottom">
+		                	<field name="epi_id" invisible="1"></field>
+		                	<field name="item_id"></field>
+		                	<field name="no_item"></field>
+		                 	<field name="qty_target"></field>
+		                 	<field name="kaleng_per_case"></field>
+		                 	<field name="pemakaian_shreded"></field>
+		                 	<field name="komposisi_meat"></field>
+		                 	<field name="kebutuhan_shreded"></field>
+		                 	
+		                 	<field name="shreded_defrost_sj" options='{"bg_color": "Lightblue"}'></field>
+		                 	<field name="hasil_shreded_defrost_sj" sum="Total"></field>
+		                 	
+		                 	<field name="shreded_defrost_yf" options='{"bg_color": "Lightblue"}'></field>
+		                 	<field name="hasil_shreded_defrost_yf" sum="Total"></field>
+		                 	
+		                 	<field name="shreded_defrost_ac" options='{"bg_color": "Lightblue"}'></field>
+		                 	<field name="hasil_shreded_defrost_ac" sum="Total"></field>
+		                 	
+		                 	<field name="shreded_cleaning_sj" options='{"bg_color": "Lightblue"}'></field>
+		                 	<field name="hasil_shreded_cleaning_sj" sum="Total"></field>
+		                 	
+		                 	<field name="shreded_cleaning_yf" options='{"bg_color": "Lightblue"}'></field>
+		                 	<field name="hasil_shreded_cleaning_yf" sum="Total"></field>
+		                 	
+		                 	<field name="shreded_cleaning_ac" options='{"bg_color": "Lightblue"}'></field>
+		                 	<field name="hasil_shreded_cleaning_ac" sum="Total"></field>
+		                 	
+		                 	<field name="shreded_cleaning_bsb" options='{"bg_color": "Lightblue"}'></field>
+		                 	<field name="hasil_shreded_cleaning_bsb" sum="Total"></field>
+		                 	
+		                 	<field name="shreded_ati_sj" options='{"bg_color": "lightskyblue"}'></field>
+		                 	<field name="hasil_shreded_ati_sj" sum="Total"></field>
+		                 	<field name="shreded_ati_yf_ac" options='{"bg_color": "lightskyblue"}'></field>
+		                 	<field name="hasil_shreded_ati_yf_ac" sum="Total"></field>
+		                 	<field name="repack_sj" options='{"bg_color": "lightskyblue"}'></field>
+		                 	<field name="hasil_repack_sj" sum="Total"></field>
+		                 	<field name="repack_yf" options='{"bg_color": "lightskyblue"}'></field>
+		                 	<field name="hasil_repack_yf" sum="Total"></field>
+		                 	<field name="kepala_rahang" options='{"bg_color": "lightskyblue"}'></field>
+		                 	<field name="hasil_kepala_rahang" sum="Total"></field>
+		                 	<field name="giling_loin" options='{"bg_color": "lightskyblue"}'></field>
+		                 	<field name="hasil_giling_loin" sum="Total"></field>
+		                 	
+		                 
+		                </tree>
+		              </field>
+		              
+		              <group class="oe_subtotal_footer">
+		              	  <field name="sisa_output_cl_sj"></field>
+		              	  <field name="sisa_output_cl_yf"></field>
+		              	  <field name="sisa_output_cl_ac"></field>
+		              	  
+		              	  <field name="total_kebutuhan_shreded" invisible="1"></field>
+		              	  <field name="total_shreded_defrost_sj" invisible="1"></field>
+		              	  <field name="total_shreded_defrost_yf" invisible="1"></field>
+		              	  <field name="total_shreded_defrost_ac" invisible="1"></field>
+		              	  
+		              	  <field name="total_shreded_cleaning_sj" invisible="1"></field>
+		              	  <field name="total_shreded_cleaning_yf" invisible="1"></field>
+		              	  <field name="total_shreded_cleaning_ac" invisible="1"></field>
+		              	  <field name="total_shreded_cleaning_bsb" invisible="1"></field>
+		              	  
+		              	  <field name="total_shreded_ati_sj" invisible="1"></field>
+		              	  <field name="total_shreded_ati_yf_ac" invisible="1"></field>
+		              	  <field name="total_repack_sj" invisible="1"></field>
+		              	  <field name="total_repack_yf" invisible="1"></field>
+		              	  <field name="total_kepala_rahang" invisible="1"></field>
+		              	  <field name="total_giling_loin" invisible="1"></field>
+		              	  
+		               </group>
+			                
+	            	</page>
+	            	<!-- 
+	            	<page name="Additional">
+	            		<field name="shreded_line_optional_ids">
+	            			<tree editable="bottom">
+	            				<field name="shreded_ati_sj" options='{"bg_color": "lightskyblue"}'></field>
+			                 	<field name="hasil_shreded_ati_sj"></field>
+			                 	<field name="shreded_ati_yf_ac" options='{"bg_color": "lightskyblue"}'></field>
+			                 	<field name="hasil_shreded_ati_yf_ac"></field>
+			                 	<field name="repack_sj" options='{"bg_color": "lightskyblue"}'></field>
+			                 	<field name="hasil_repack_sj"></field>
+			                 	<field name="repack_yf" options='{"bg_color": "lightskyblue"}'></field>
+			                 	<field name="hasil_repack_yf"></field>
+			                 	<field name="kepala_rahang" options='{"bg_color": "lightskyblue"}'></field>
+			                 	<field name="hasil_kepala_rahang"></field>
+			                 	<field name="giling_loin" options='{"bg_color": "lightskyblue"}'></field>
+			                 	<field name="hasil_giling_loin"></field>
+	            			</tree>
+	            		
+	            		</field>
+	            	</page> -->
+	            	
+	            	
+	            	
+	          	</notebook>
+	          	
+	          	
+              
+            </sheet>
+            
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+          </form>
+        </field>
+        </record>
+
+
+        <!-- ### Membuat Action/Event Object Kursus ### -->
+        <record model="ir.actions.act_window" id="sis_shreded_list_action">
+          <field name="name">Perhitungan Shreded</field>
+          <field name="res_model">sis.perhitungan.shreded</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form</field>
+          <field name="help" type="html">
+              <p class="oe_view_nocontent_create">Create a new data</p>
+          </field>
+        </record>
+
+
+    </data>
+</odoo>

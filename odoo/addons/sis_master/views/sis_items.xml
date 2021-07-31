@@ -23,6 +23,8 @@
 			    <field name="prodbomno"/>
 			    <field name="purchuom"/>
 			    <field name="purchqtyperuom"/>
+			    <field name="gw" />	
+			    <field name="nw"/>			    
 			    </tree>
             </field>
         </record>
@@ -38,6 +40,7 @@
 			    <field name="qtyperfcl"/>			    
 			    <field name="uom"/>			    
 			    <field name="qtyperuom"/>			    			    			    			    
+			    <field name="gw"/>	    
 			    </tree>
             </field>
         </record>

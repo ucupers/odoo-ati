@@ -18,7 +18,8 @@
 			            										"bg_color": "maroon: qty_fish_total > yield_total_detail"}'/> / <field name="yield_total_detail"></field>
                             </div>
                     		
-    
+                    		
+    						<field name="total_point_detail" invisible="1"></field>
                     		<field name="epi_line_id" invisible="1"></field>
                     	</group>
                     </group>
@@ -31,6 +32,8 @@
 			                	<field name="no_urut" invisible="1"></field>
 			                 	<field name="size_fish"></field>
 			                 	<field name="qty_fish"></field>
+			                 	<field name="point"></field>
+			                 	<field name="total_point" invisible="1"></field>
 			                </tree>
 			              </field>
 			                

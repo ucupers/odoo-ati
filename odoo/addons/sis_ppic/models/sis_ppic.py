@@ -8,7 +8,6 @@ class sis_pps_detail_add(models.TransientModel):
 
     itm = fields.Many2one('sis.items.local',string='Item',domain=[('itc','=','FG')],required=True)
     variant = fields.Many2one('sis.item.variants.local',string='Variant', domain=lambda self: [('itemno','=',self.itm.itemno)])
-    item_no = fields.Char(related='itm.itemno',string="Item No.")
     variant_code = fields.Char(related='variant.variant',string='Variant Code')
     line_id = fields.Char(size=20,string='Line')
 
@@ -35,7 +34,7 @@ class sis_pps_detail_add(models.TransientModel):
             detailnum=0
         detailnum+=1
 
-        rs=self.env['sis.pps.item'].search([('item_no','=',self.item_no),('ati12','=', head.ati12)])
+        rs=self.env['sis.pps.item'].search([('item_no','=',self.itm.itemno),('ati12','=', head.ati12)])
         if len(rs)>1:
             raise UserError('Double in Item Settings !')
         if len(rs)==1:
@@ -82,6 +81,88 @@ class sis_pps_detail_add(models.TransientModel):
         rec.header_id.sort_sequence()
             #else:
             #    raise UserError('Data already exist !')
+
+class sis_pps_detail_add_new(models.Model):
+    _name='sis.pps.detail.add.new'
+
+    itm = fields.Many2one('sis.items.local',string='Item',domain=[('itc','=','FG')],required=True)
+    variant = fields.Many2one('sis.item.variants.local',string='Variant', domain=lambda self: [('itemno','=',self.itm.itemno)])
+#     item_no = fields.Char(related='itm.itemno',string="Item No.")
+    variant_code = fields.Char(related='variant.variant',string='Variant Code')
+    line_id = fields.Char(size=20,string='Line')
+
+#     def _get_default_line(self):
+#         if self.item_no:
+#             rs=self.env['sis.pps.item'].search([('item_no','=',self.item_no)])
+#             if len(rs)==1:
+#                 return rs.line
+
+    def additem(self):
+        self.env['sis.pps.detail.add.new'].unlink()
+        try:
+            head=self.env['sis.pps.header'].search([('id','=',self._context['insert_id'])])
+
+        except:
+            head=self.env['sis.pps.detail'].search([('id','=',self._context['active_id'])]).header_id            
+
+        idd=head.id
+
+        self.env.cr.execute("select max(detailnum) from sis_pps_detail where header_id="+str(idd))
+        ds=self.env.cr.fetchall()
+        if ds!=[(None,)]:
+            [(detailnum,)]=ds
+        else:
+            detailnum=0
+        detailnum+=1
+
+        rs=self.env['sis.pps.item'].search([('item_no','=',self.itm.itemno),('ati12','=', head.ati12)])
+        if len(rs)>1:
+            raise UserError('Double in Item Settings !')
+        if len(rs)==1:
+            line= rs.line
+        else:
+            raise UserError('No Line in Item Settings !')
+        
+        if len(self.variant)>0:
+            uom=self.variant.uom
+            qtyperuom=self.variant.qtyperuom
+        else:
+            uom=self.itm.salesuom
+            qtyperuom=self.itm.qtyperuom
+        
+        if head.ul=='unlabeled':
+            uom=self.itm.purchuom
+            qtyperuom=self.itm.purchqtyperuom
+        for i in ('sales','inventory','production'):
+            #if self.env['sis.pps.detail'].search_count([('header_id','=',idd),('item_no','=',self.item_no),('variant_code','=',self.variant_code),('type','=',i)])==0:
+                vals = {
+                    'header_id':idd,
+                    'header':idd,
+                    'item_no':self.itm.itemno,
+                    'variant_code':self.variant.variant,
+                    'description':self.itm.description,     
+                    'type':i,
+                    'uom':uom,
+                    'qtyperuom':qtyperuom,
+                    'detailnum':detailnum
+                    }    
+
+                if i=='production':
+                    if line and len(line)>0:
+                        vals.update({'line_id':line})
+                else:
+                    vals.pop('line_id',None)
+
+                if i=='sales':
+                    vals.update({'hideline':False})
+                else:
+                    vals.update({'hideline':True})                    
+
+                rec=self.env['sis.pps.detail'].create(vals)
+        rec.header_id.sort_sequence()
+            #else:
+            #    raise UserError('Data already exist !')
+
     
 class sis_pps_header(models.Model):
     _name='sis.pps.header'
@@ -144,6 +225,7 @@ class sis_pps_header(models.Model):
             'view_mode': 'tree',
             'view_type': 'form',
             'view_id': self.env.ref('sis_ppic.sis_pps_detail_tree').id,
+            'search_view_id': self.env.ref('sis_ppic.sis_pps_detail_search').id,
             'target': 'current',
             'domain' : [('header_id','=',self.id),('type','in',['sales','inventory','production','alternative'])]
         }
@@ -269,6 +351,22 @@ class sis_pps_header(models.Model):
             'context':"{'insert_id':"+str(self.id)+"}"
         }
         return vals
+
+    def additemnew(self): 
+        vals= {
+            'name': self.id,
+            'res_model': 'sis.pps.detail.add.new',
+            'type': 'ir.actions.act_window',
+            'context': {},
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': self.env.ref('sis_ppic.sis_pps_detail_add_form').id,
+            'target': 'new',
+            'nodestroy':True,
+            'context':"{'insert_id':"+str(self.id)+"}"
+        }
+        return vals
+
 
     def countfcl(self):
         self.env.cr.execute('update sis_pps_fcl set total=0 where header_id='+str(self.id))
@@ -1046,7 +1144,7 @@ class sis_pps_header(models.Model):
             self.env.cr.execute("select max(posting_date) from sis_ile_mat"+ \
                             " where item_no='"+mat.item_no+"' " \
 #                            " and entrytype = 'Purchase'" + \
-                            " and bg='"+self.ati12.upper()+"'")        
+                            " and bg='"+self.ati12.upper()+"'  and location_code not ilike '%RJCT%' ")        
             matdates=self.env.cr.fetchall()
             for matdate in matdates:
                 (tgl,)=matdate
@@ -1082,7 +1180,7 @@ class sis_pps_header(models.Model):
                                 " where ((extract(month from posting_date)<"+str(self.month)+ \
                                 " and extract(year from posting_date)="+str(self.year)+ ") "+
                                 " or extract(year from posting_date)<"+str(self.year)+")"+\
-                                " and item_no='"+mat.item_no+"' " \
+                                " and item_no='"+mat.item_no+"'  and location_code not ilike '%RJCT%' " \
                                 " and bg='"+self.ati12.upper()+"'")
                 t0mats=self.env.cr.fetchall()
                 t0=False
@@ -1120,7 +1218,7 @@ class sis_pps_header(models.Model):
                                 " where extract(month from posting_date)="+str(self.month)+ \
                                 " and extract(year from posting_date)="+str(self.year)+ \
                                 " and item_no='"+mat.item_no+"' " \
-                                " and bg='"+self.ati12.upper()+"'"+ \
+                                " and bg='"+self.ati12.upper()+"' and location_code not ilike '%RJCT%' "+ \
                                 " group by extract(day from posting_date)")
                 actmats=self.env.cr.fetchall()
 
@@ -1152,7 +1250,7 @@ class sis_pps_header(models.Model):
                             " where extract(month from posting_date)="+str(self.month)+ \
                             " and extract(year from posting_date)="+str(self.year)+ \
                             " and item_no='"+mat.item_no+"' " \
-                            " and bg='"+self.ati12.upper()+"'"+ \
+                            " and bg='"+self.ati12.upper()+"'  and location_code not ilike '%RJCT%' "+ \
                             " group by extract(day from posting_date), entrytype" +\
                             " order by entrytype, extract(day from posting_date)")
             actinvs=self.env.cr.fetchall()

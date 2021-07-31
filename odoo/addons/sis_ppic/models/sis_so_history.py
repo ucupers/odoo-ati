@@ -81,16 +81,74 @@ class sis_pps_so_current(models.Model):
 
     ati1qty = fields.Float(compute='compute_qty1sales',string='ATI1 Qty Sales')
     ati1qtyppic = fields.Float(string='ATI1 Qty')
+#     ati1date = fields.Date(compute="compute_atidate",string='ATI1 Date')
     ati1date = fields.Date(string='ATI1 Date')
+
     ati2qty = fields.Float(compute='compute_qty2sales',string='ATI2 Qty Sales')
     ati2qtyppic = fields.Float(string='ATI2 Qty')
     ati2date = fields.Date(string='ATI2 Date')
+
+#     ati2date = fields.Date(compute="compute_atidate",string='ATI2 Date')
     remark = fields.Char(size=200,string="Remark")
     
     existnav = fields.Boolean(string="in Update")
     fbg = fields.Boolean(compute="_compute_fbg",string="Buss.Grp")    
 
     changetimeUTC7=fields.Datetime(compute='_compute_changetimeUTC7',string='Change Time')
+
+#     def compute_atidate(self):
+#         for s in self:
+#             tgl=int(s.postingdate[8:10])
+#             month=int(s.postingdate[5:7])
+#             year=int(s.postingdate[:4])
+#             
+#             ketemu=False
+#             down=True
+#             refitem=self.env['sis.items.local'].search([('itemno','=',s.itemno)]).refitem
+#             if not refitem or len(refitem)==0:
+#                 continue
+#                 raise UserError ('NAV Master Item error for '+s.itemno)
+#             while not ketemu:
+#                 inv=self.env['sis.pps.detail'].search([('ati12','=',s.bg.lower()),('month','=',month),('year','=',year),('item_no','=',refitem),('type','=','inventory')])
+#                 if len(inv)==0:
+#                     if self.env['sis.pps.detail'].search_count([('ati12','=',s.bg),('month','=',month),('year','=',year)])==0:
+#                         break
+#                 if len(inv)>0 and inv['a'+str(tgl)]:
+#                     break
+#                 if len(inv)>0:
+#                     if s.qtyppic > inv['t'+str(tgl)]:
+#                         while tgl<32 and s.qtyppic > inv['t'+str(tgl)] and not inv['a'+str(tgl)]:
+#                             tgl+=1
+#                         if tgl<32:
+#                             tgl-=1
+#                             ketemu=True
+#                     else:
+#                         while tgl>0 and s.qtyppic < inv['t'+str(tgl)] and not inv['a'+str(tgl)]:
+#                             tgl-=1
+#                         if tgl>0:
+#                             tgl+=1
+#                             ketemu=True
+#                 if tgl==0:
+#                     month-=1
+#                     if month==0:
+#                         month=12
+#                         year-=1
+#                     if not ketemu:
+#                         tgl=31
+#                 if tgl==32:
+#                     month+=1
+#                     if month==13:
+#                         month=1
+#                         year+=1
+#                     if not ketemu:
+#                         tgl=1
+# 
+#             if ketemu:
+#                 datee=datetime.strptime(str(year)+'/'+str(month)+'/'+str(tgl),'%Y/%m/%d')
+#                 if s.bg=='ATI2':
+#                     s.ati1date=datee
+#                 else:
+#                     s.ati1date=datee
 
     @api.one
     @api.depends('write_date')
